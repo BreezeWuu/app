@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.zotye.wms.R" />
+
+        <variable
+            name="buttonItem"
+            type="com.zotye.wms.data.api.model.Resource" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/spacing_small"
+        android:layout_marginLeft="@dimen/spacing_smaller"
+        android:layout_marginRight="@dimen/spacing_smaller"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/action_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginBottom="4dp"
+            app:glide_do_animate="@{false}"
+            app:glide_error="@{R.mipmap.ic_launcher_round}"
+            app:glide_imageUrl="@{buttonItem.icon}"
+            app:glide_placeholder="@{R.mipmap.ic_launcher_round}" />
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{buttonItem.name}"
+            android:textSize="@dimen/sp_12"
+            android:textStyle="bold" />
+    </LinearLayout>
+</layout>

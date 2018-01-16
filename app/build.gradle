@@ -1,0 +1,137 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+def today = new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
+def appName = "WMS"
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion build_tools_version
+    defaultConfig {
+        applicationId "com.zotye.wms"
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode version_code
+        versionName version_name
+        multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            postprocessing {
+                buildConfigField('String', 'API_URL', '\"http://192.168.1.38:5678/mobile_api/\"')
+            }
+        }
+        release {
+            postprocessing {
+                removeUnusedCode false
+                removeUnusedResources false
+                obfuscate false
+                optimizeCode false
+                proguardFile 'proguard-rules.pro'
+                buildConfigField('String', 'API_URL', '\"http://192.168.1.38:5678/mobile_api/\"')
+            }
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    buildTypes.all {
+        type ->
+            buildConfigField('String', 'OS', '\"Android\"')
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            if (variant.buildType.name) {
+                outputFileName = "${appName}_${variant.flavorName}_${today}_${rootProject.ext.git_version_name}_${variant.versionName}_${variant.buildType.name}.apk"
+                println "Change output apk name ${outputFileName}"
+            }
+        }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+    lintOptions {
+        abortOnError false
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    //Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.anko:anko:$kotlin_anko_version"
+
+    //Android Support
+    implementation "com.android.support:support-v4:$android_support_version"
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    implementation "com.android.support:design:$android_support_version"
+    implementation "com.android.support.constraint:constraint-layout:$android_support_constraint_layout_version"
+    implementation "com.android.support:cardview-v7:$android_support_version"
+
+    //DataBinding with Kotlin
+    kapt "com.android.databinding:compiler:$databinding_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    //Retrofit and Adapter and Converters
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation("com.squareup.retrofit2:converter-simplexml:$retrofit_version") {
+        exclude module: 'stax-api'
+        exclude module: 'stax'
+        exclude module: 'xpp3'
+    }
+
+    //RxAndroid
+    implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"
+    implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"
+
+    //Dagger 2
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+
+    //Arch Room
+    implementation "android.arch.persistence.room:runtime:$android_arch_version"
+    kapt "android.arch.persistence.room:compiler:$android_arch_version"
+
+    //    implementation "android.arch.lifecycle:runtime:1.0.3"
+
+    //    implementation "android.arch.lifecycle:extensions:$android_arch_version"
+
+    //    kapt "android.arch.lifecycle:compiler:$android_arch_version"
+
+    //Stetho
+    implementation "com.facebook.stetho:stetho:$stetho_version"
+    implementation "com.facebook.stetho:stetho-okhttp3:$stetho_version"
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+
+    //BaseRecyclerViewAdapterHelper
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.34'
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    implementation "cn.bingoogolapple:bga-qrcode-zxing:$qrcode_version"
+    implementation "cn.bingoogolapple:bga-qrcode-zbar:$qrcode_version"
+}
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
