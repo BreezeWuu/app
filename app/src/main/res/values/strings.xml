@@ -20,11 +20,11 @@
     <string name="package_list_empty">包装列表为空，扫描条形码添加包装</string>
     <string name="error_open_camera">打开相机出错!~</string>
     <string name="action_scanner_info">将条码放入框内，即可自动扫描</string>
-    <string name="jpd_code_format">拣配单号：%1$s</string>
-    <string name="delete_jpd_item_info">确定删除拣配单号： %1$s ？</string>
+    <string name="jpd_code_format">包装单号：%1$s</string>
+    <string name="delete_jpd_item_info">确定删除包装单号： %1$s ？</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="action_input">手动输入</string>
-    <string name="action_input_pda_code">请输入拣配单号</string>
+    <string name="action_input_pda_code">请输入包装/托盘号</string>
     <string name="pda_code">拣配单号</string>
 </resources>
