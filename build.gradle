@@ -49,6 +49,7 @@ buildscript {
     ext.base_adapter_version = '1.0'
 
     ext.qrcode_version = "1.2.0"
+    ext.easypermissions_version='1.0.1'
     repositories {
         google()
         jcenter()

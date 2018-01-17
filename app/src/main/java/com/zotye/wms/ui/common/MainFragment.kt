@@ -14,6 +14,7 @@ import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.api.model.Resource
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemHomeButtonBinding
+import com.zotye.wms.ui.goods.receive.GroupReceiveFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.appcompat.v7.titleResource
@@ -40,6 +41,12 @@ class MainFragment : BaseFragment() {
                 buttonRecyclerView.layoutManager = GridLayoutManager(context, 4)
                 buttonRecyclerView.adapter = HomeButtonAdapter()
                 (buttonRecyclerView.adapter as HomeButtonAdapter).setNewData(it.resources)
+                (buttonRecyclerView.adapter as HomeButtonAdapter).onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+                    if (adapter is HomeButtonAdapter) {
+                        val resource = adapter.getItem(position)
+                        fragmentManager!!.beginTransaction().add(R.id.main_content, GroupReceiveFragment()).addToBackStack(null).commit()
+                    }
+                }
             }
         }
     }

@@ -13,5 +13,18 @@
     <string name="login_name_password_error">密码不能为空～</string>
     <string name="login_register_account">注册账号</string>
     <string name="login_forget_password">忘记密码?</string>
-    <string name="action_scanner">扫一扫</string>
+    <string name="action_scanner">扫描条形码</string>
+    <string name="goods_receive_group">组托收货</string>
+    <string name="code_scanner">条形码扫描</string>
+    <string name="package_list">包装列表</string>
+    <string name="package_list_empty">包装列表为空，扫一扫添加包装</string>
+    <string name="error_open_camera">打开相机出错!~</string>
+    <string name="action_scanner_info">将条码放入框内，即可自动扫描</string>
+    <string name="jpd_code_format">拣配单号：%1$s</string>
+    <string name="delete_jpd_item_info">确定删除拣配单号： %1$s ？</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="action_input">手动输入</string>
+    <string name="action_input_pda_code">请输入拣配单号</string>
+    <string name="pda_code">拣配单号</string>
 </resources>
