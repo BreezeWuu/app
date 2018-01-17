@@ -1,5 +1,6 @@
 package com.zotye.wms.ui.goods.receive
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
+import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.CodeScannerFragment
 import com.zotye.wms.ui.common.ScannerDelegate
@@ -17,11 +19,15 @@ import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import javax.inject.Inject
 
 /**
  * Created by hechuangju on 2018/01/17
  */
-class GroupReceiveFragment : BaseFragment(), ScannerDelegate {
+class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContract.GroupReceiveView {
+
+    @Inject lateinit var presenter: GroupReceiveContract.GroupReceivePresenter
+    private var progressDialog: ProgressDialog? = null
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_goods_receive_group, container, false)
@@ -29,6 +35,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.onAttach(this)
         toolbar_base.visibility = View.VISIBLE
         toolbar_base.titleResource = R.string.goods_receive_group
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
@@ -58,18 +65,38 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate {
         }
     }
 
-    override fun succeed(result: String) {
-        context?.let {
-            val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
-            adapter.addData(result)
-            packageRecyclerView.bringToFront()
+    override fun showProgressDialog(resId: Int) {
+        progressDialog = ProgressDialog.show(context!!, null, getString(resId), true, true) {
+            presenter.cancelQueryPackageInfo()
         }
     }
 
-    class GoodsPackageAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_goods_package) {
+    override fun hideProgressDialog() {
+        progressDialog?.dismiss()
+    }
 
-        override fun convert(helper: BaseViewHolder, item: String) {
-            helper.setText(R.id.jpdCodeTextView, helper.itemView.resources.getString(R.string.jpd_code_format, item))
+    override fun getPackageInfo(packageInfo: PackageInfo?) {
+        packageInfo?.let {
+            val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
+            adapter.addData(packageInfo)
+            if (adapter.itemCount != 0)
+                packageRecyclerView.bringToFront()
+        }
+    }
+
+    override fun succeed(result: String) {
+        presenter.getPackageInfo(result)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        presenter.onDetach()
+    }
+
+    class GoodsPackageAdapter : BaseQuickAdapter<PackageInfo, BaseViewHolder>(R.layout.item_goods_package) {
+
+        override fun convert(helper: BaseViewHolder, item: PackageInfo) {
+            helper.setText(R.id.jpdCodeTextView, helper.itemView.resources.getString(R.string.jpd_code_format, item.code))
             helper.addOnClickListener(R.id.jdpDeleteButton)
         }
     }

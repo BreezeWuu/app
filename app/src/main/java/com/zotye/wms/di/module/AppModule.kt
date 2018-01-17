@@ -20,6 +20,7 @@ import com.zotye.wms.data.prefs.AppPreferencesHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.zotye.wms.BuildConfig
+import com.zotye.wms.data.api.interceptor.ResponseInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -65,7 +66,7 @@ class AppModule {
                 .writeTimeout(TIMEOUT_IN_SEC.toLong(), TimeUnit.SECONDS)
                 .connectTimeout(TIMEOUT_IN_SEC.toLong(), TimeUnit.SECONDS)
                 .addInterceptor(headerInterceptor)
-//                .addInterceptor(ResponseInterceptor())
+                .addInterceptor(ResponseInterceptor())
                 .addInterceptor(httpLoggingInterceptor)
                 .addNetworkInterceptor(StethoInterceptor())
                 .build()

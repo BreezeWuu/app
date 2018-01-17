@@ -2,6 +2,7 @@ package com.zotye.wms.data.api.service
 
 import com.zotye.wms.data.api.model.User
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.PackageInfo
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -19,4 +20,8 @@ interface ApiService {
     @FormUrlEncoded
     @POST("user/info")
     fun getUserInfo(@Field("userId") userId: String): Call<ApiResponse<User>>
+
+    @FormUrlEncoded
+    @POST("package/info")
+    fun getPackageInfo(@Field("userId") userId: String, @Field("packageId") packageId: String): Call<ApiResponse<PackageInfo>>
 }

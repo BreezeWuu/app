@@ -1,6 +1,8 @@
 package com.zotye.wms.data.api
 
+import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.api.service.ApiService
+import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -12,5 +14,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun doLoginCall(email: String, pwd: String) = apiService.doLoginCall(email, pwd)
 
-    override fun getUserInfo(userId: String)= apiService.getUserInfo(userId)
+    override fun getUserInfo(userId: String) = apiService.getUserInfo(userId)
+
+    override fun getPackageInfo(userId: String, packageId: String) = apiService.getPackageInfo(userId, packageId)
 }

@@ -27,4 +27,5 @@
     <string name="action_input">手动输入</string>
     <string name="action_input_pda_code">请输入包装/托盘号</string>
     <string name="pda_code">拣配单号</string>
+    <string name="loading_query_package_info">正在查询包装信息&#8230;</string>
 </resources>

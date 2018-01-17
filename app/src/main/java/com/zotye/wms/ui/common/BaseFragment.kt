@@ -1,6 +1,7 @@
 package com.zotye.wms.ui.common
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -161,9 +162,10 @@ abstract class BaseFragment : Fragment(), MvpView, Injectable {
     private fun showSnackBar(message: String) {
         val rootView = activity?.window?.decorView?.findViewById<View>(android.R.id.content)
         rootView?.let {
-            val snackBar = Snackbar.make(it, message, Snackbar.LENGTH_SHORT)
+            val snackBar = Snackbar.make(it, message, Snackbar.LENGTH_LONG)
             val sbView = snackBar.view
             val textView = sbView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+            sbView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.google))
             textView.setTextColor(ContextCompat.getColor(it.context, android.R.color.white))
             snackBar.show()
         }

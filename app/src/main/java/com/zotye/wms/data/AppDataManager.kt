@@ -6,6 +6,7 @@ import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
 import retrofit2.Call
@@ -23,6 +24,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getUserInfo(userId: String) = apiHelper.getUserInfo(userId)
 
+    override fun getPackageInfo(userId: String, packageId: String) = apiHelper.getPackageInfo(userId, packageId)
+
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 
     override fun getCurrentUserId() = preferencesHelper.getCurrentUserId()
@@ -37,7 +40,7 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getUser(userId: String) = dbHelper.getUser(userId)
 
-    override fun updateUser(user: User)= dbHelper.updateUser(user)
+    override fun updateUser(user: User) = dbHelper.updateUser(user)
 
     override fun getCurrentUser(): User? {
         getCurrentUserId()?.let {
