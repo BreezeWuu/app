@@ -33,3 +33,19 @@ data class Resource(
         @SerializedName("method") var method: String = "", //get
         @SerializedName("leaf") var leaf: Boolean = false //true
 )
+
+enum class ResourceType(val code: String) {
+    ORGMAINTAIN("ORG-MAINTAIN"),//部门信息维护
+    KCWLSH("KCWLSH"),//库存物料收货
+    ROLEMAINTAIN("ROLE-MAINTAIN");//角色信息维护
+
+    companion object {
+        fun fromCode(code: String): ResourceType {
+            ResourceType.values().forEach { resourceType ->
+                if (resourceType.code == code)
+                    return resourceType
+            }
+            return ORGMAINTAIN
+        }
+    }
+}

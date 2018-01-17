@@ -1,9 +1,6 @@
 package com.zotye.wms.data.db.tables
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.OnConflictStrategy
-import android.arch.persistence.room.Query
+import android.arch.persistence.room.*
 import com.zotye.wms.data.api.model.User
 
 /**
@@ -13,6 +10,9 @@ import com.zotye.wms.data.api.model.User
 interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: User): Long
+
+    @Update
+    fun updateUser(user: User): Int
 
     @Query("SELECT * FROM user WHERE userId = :userId")
     fun getUser(userId: String): User?

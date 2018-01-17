@@ -5,8 +5,10 @@ import com.zotye.wms.data.api.model.User
 import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
+import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
+import retrofit2.Call
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -17,7 +19,9 @@ import javax.inject.Singleton
 @Singleton
 class AppDataManager @Inject constructor(@ApplicationContext val context: Context, private val dbHelper: DbHelper, private val preferencesHelper: PreferencesHelper, private val apiHelper: ApiHelper) : DataManager {
 
-    override fun doLoginCall(email: String, pwd: String) = apiHelper.doLoginCall(email, pwd)
+    override fun doLoginCall(userName: String, pwd: String) = apiHelper.doLoginCall(userName, pwd)
+
+    override fun getUserInfo(userId: String) = apiHelper.getUserInfo(userId)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 
@@ -32,6 +36,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun getAllUsers() = dbHelper.getAllUsers()
 
     override fun getUser(userId: String) = dbHelper.getUser(userId)
+
+    override fun updateUser(user: User)= dbHelper.updateUser(user)
 
     override fun getCurrentUser(): User? {
         getCurrentUserId()?.let {

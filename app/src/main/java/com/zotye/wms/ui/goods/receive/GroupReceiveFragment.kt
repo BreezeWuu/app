@@ -1,7 +1,5 @@
 package com.zotye.wms.ui.goods.receive
 
-import android.content.DialogInterface
-import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
@@ -11,12 +9,8 @@ import android.view.ViewGroup
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.Resource
-import com.zotye.wms.data.binding.FragmentDataBindingComponent
-import com.zotye.wms.databinding.ItemHomeButtonBinding
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.CodeScannerFragment
-import com.zotye.wms.ui.common.MainFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_goods_receive_group.*

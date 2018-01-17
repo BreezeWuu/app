@@ -14,5 +14,9 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("user/login")
-    fun doLoginCall(@Field("userName") email: String, @Field("password") pwd: String): Call<ApiResponse<User>>
+    fun doLoginCall(@Field("userName") userName: String, @Field("password") pwd: String): Call<ApiResponse<User>>
+
+    @FormUrlEncoded
+    @POST("user/info")
+    fun getUserInfo(@Field("userId") userId: String): Call<ApiResponse<User>>
 }

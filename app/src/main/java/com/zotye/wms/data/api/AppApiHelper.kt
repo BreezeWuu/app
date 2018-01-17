@@ -12,4 +12,5 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun doLoginCall(email: String, pwd: String) = apiService.doLoginCall(email, pwd)
 
+    override fun getUserInfo(userId: String)= apiService.getUserInfo(userId)
 }

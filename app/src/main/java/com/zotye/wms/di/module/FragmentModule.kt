@@ -1,6 +1,6 @@
 package com.zotye.wms.di.module
 
-import com.zotye.wms.ui.common.MainFragment
+import com.zotye.wms.ui.main.MainFragment
 import com.zotye.wms.ui.user.login.LoginFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector

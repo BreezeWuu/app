@@ -1,5 +1,6 @@
 package com.zotye.wms.di.module
 
+import com.zotye.wms.ui.main.MainContract
 import com.zotye.wms.ui.user.login.LoginContract
 import dagger.Module
 import dagger.Provides
@@ -13,6 +14,8 @@ class PresenterModule {
     @Provides
     fun provideLoginPresenter(presenter: LoginContract.LoginPresenterImpl): LoginContract.LoginMvpPresenter = presenter
 
+    @Provides
+    fun provideMainPresenter(presenter: MainContract.MainPresenterImpl): MainContract.MainMvpPresenter = presenter
 //    @Provides
 //    fun provideHomePresenter(presenter: HomeContract.HomePresenterImpl): HomeContract.HomePresenter = presenter
 //

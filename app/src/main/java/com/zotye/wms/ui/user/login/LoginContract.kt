@@ -11,8 +11,6 @@ import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
 import com.zotye.wms.util.MD5Util
-import okhttp3.ResponseBody
-import org.simpleframework.xml.core.ValueRequiredException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

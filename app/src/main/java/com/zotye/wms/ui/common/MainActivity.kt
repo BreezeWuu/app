@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.zotye.wms.R
 import com.zotye.wms.data.DataManager
+import com.zotye.wms.ui.main.MainFragment
 import com.zotye.wms.ui.user.login.LoginFragment
 import com.zotye.wms.util.Log
 import dagger.android.DispatchingAndroidInjector

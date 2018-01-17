@@ -13,4 +13,6 @@ interface DbHelper {
 
     fun getAllUsers(): List<User>
 
+    fun updateUser(user: User): Int
+
 }

@@ -16,4 +16,5 @@ class AppDbHelper @Inject constructor(private val database: AppDatabase) : DbHel
 
     override fun getUser(userId: String) = database.getUserDao().getUser(userId)
 
+    override fun updateUser(user: User) = database.getUserDao().updateUser(user)
 }
