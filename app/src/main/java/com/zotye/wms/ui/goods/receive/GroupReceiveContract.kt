@@ -30,9 +30,9 @@ object GroupReceiveContract {
     }
 
     class GroupReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<GroupReceiveView>(), GroupReceivePresenter {
-
+        private var packageInfoCall: Call<ApiResponse<PackageInfo>>? = null
         override fun cancelQueryPackageInfo() {
-
+            packageInfoCall?.cancel()
         }
 
         override fun getPackageInfo(packageId: String) {
@@ -40,10 +40,12 @@ object GroupReceiveContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.getPackageInfo(it.userId, packageId).enqueue(object : Callback<ApiResponse<PackageInfo>> {
+                        packageInfoCall = dataManager.getPackageInfo(it.userId, packageId)
+                        packageInfoCall!!.enqueue(object : Callback<ApiResponse<PackageInfo>> {
                             override fun onFailure(call: Call<ApiResponse<PackageInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
-                                t.message?.let { mvpView?.showMessage(it) }
+                                if (!packageInfoCall!!.isCanceled)
+                                    t.message?.let { mvpView?.showMessage(it) }
                             }
 
                             override fun onResponse(call: Call<ApiResponse<PackageInfo>>?, response: Response<ApiResponse<PackageInfo>>) {
