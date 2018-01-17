@@ -44,7 +44,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
         toolbar_base.visibility = View.VISIBLE
         toolbar_base.titleResource = R.string.app_name
         toolbar_base.inflateMenu(R.menu.main_menu)
-        buttonRecyclerView.layoutManager = GridLayoutManager(context, 4)
+        buttonRecyclerView.layoutManager = GridLayoutManager(context, 3)
         buttonRecyclerView.adapter = HomeButtonAdapter()
         (buttonRecyclerView.adapter as HomeButtonAdapter).onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
             if (adapter is HomeButtonAdapter) {
@@ -52,13 +52,25 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                 resource?.let {
                     var fragment: Fragment? = null
                     when (ResourceType.fromCode(resource.code)) {
-                        ResourceType.ORGMAINTAIN -> {
-
-                        }
-                        ResourceType.KCWLSH -> {
+                        ResourceType.ThreePLRECV -> {
                             fragment = GroupReceiveFragment()
                         }
-                        ResourceType.ROLEMAINTAIN -> {
+                        ResourceType.ThreePLDELIVERY -> {
+
+                        }
+                        ResourceType.ThreePLPRCREATE -> {
+
+                        }
+                        ResourceType.ThreePLSOLDOUT -> {
+
+                        }
+                        ResourceType.ANDROID -> {
+
+                        }
+                        ResourceType.ThreePLRECVCONFIRM -> {
+
+                        }
+                        ResourceType.ThreePLADJUST -> {
 
                         }
                     }
@@ -101,7 +113,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
         override fun convert(helper: BaseViewHolder, item: Resource) {
             val itemMicroCourseBinding = DataBindingUtil.bind<ItemHomeButtonBinding>(helper.itemView, fragmentDataBindingComponent)
             itemMicroCourseBinding.buttonItem = item
-            helper.addOnClickListener(R.id.action_icon)
+            helper.addOnClickListener(R.id.buttonLayout)
         }
     }
 }

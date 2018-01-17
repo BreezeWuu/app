@@ -35,9 +35,14 @@ data class Resource(
 )
 
 enum class ResourceType(val code: String) {
-    ORGMAINTAIN("ORG-MAINTAIN"),//部门信息维护
-    KCWLSH("KCWLSH"),//库存物料收货
-    ROLEMAINTAIN("ROLE-MAINTAIN");//角色信息维护
+    ThreePLRECV("3PLRECV"),//收货
+    ThreePLDELIVERY("3PLDELIVERY"),//创建装车单
+    ThreePLPRCREATE("3PLPRCREATE"),//外检不良品生成拣配单
+    ThreePLSOLDOUT("3PLSOLDOUT"),//下架确认
+    ANDROID("ANDROID"),//移动端功能
+    ThreePLRECVCONFIRM("3PLRECVCONFIRM"),//确认收货
+    ThreePLADJUST("3PLADJUST");//库位调整
+
 
     companion object {
         fun fromCode(code: String): ResourceType {
@@ -45,7 +50,7 @@ enum class ResourceType(val code: String) {
                 if (resourceType.code == code)
                     return resourceType
             }
-            return ORGMAINTAIN
+            return ThreePLRECV
         }
     }
 }

@@ -17,13 +17,13 @@
     android:color="@color/light_gray">
     <item>
         <selector>
-            <item android:state_selected="true">
-                <color android:color="@color/light_gray" />
-            </item>
+            <!--<item android:state_selected="true">-->
+                <!--<color android:color="@color/light_gray" />-->
+            <!--</item>-->
 
-            <item android:state_pressed="true">
-                <color android:color="@color/light_gray" />
-            </item>
+            <!--<item android:state_pressed="true">-->
+                <!--<color android:color="@color/light_gray" />-->
+            <!--</item>-->
 
             <item>
                 <color android:color="@color/white" />

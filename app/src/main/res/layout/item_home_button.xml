@@ -12,14 +12,13 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing_small"
-        android:layout_marginLeft="@dimen/spacing_smaller"
-        android:layout_marginRight="@dimen/spacing_smaller"
-        android:layout_marginTop="@dimen/spacing_small"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:background="@drawable/button_bg"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_small">
 
         <ImageView
             android:id="@+id/action_icon"
@@ -33,11 +32,12 @@
 
         <TextView
             android:id="@+id/name"
-            style="@style/TextAppearance.AppCompat.Small"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@{buttonItem.name}"
-            android:textSize="@dimen/sp_12"
+            android:textSize="14dp"
             android:textStyle="bold" />
     </LinearLayout>
 </layout>
