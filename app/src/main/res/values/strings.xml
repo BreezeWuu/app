@@ -17,7 +17,7 @@
     <string name="goods_receive_group">组托收货</string>
     <string name="code_scanner">条形码扫描</string>
     <string name="package_list">包装列表</string>
-    <string name="package_list_empty">包装列表为空，扫一扫添加包装</string>
+    <string name="package_list_empty">包装列表为空，扫描条形码添加包装</string>
     <string name="error_open_camera">打开相机出错!~</string>
     <string name="action_scanner_info">将条码放入框内，即可自动扫描</string>
     <string name="jpd_code_format">拣配单号：%1$s</string>
