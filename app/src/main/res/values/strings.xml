@@ -46,4 +46,5 @@
     <string name="not_match_supplier_info">供应商不一致，不允许组托！</string>
     <string name="not_match_batch_num">批次号不一致，不允许组托！</string>
     <string name="not_match_sl_code">库存地点不一致，不允许组托！</string>
+    <string name="batch_code_format">批次号：</string>
 </resources>

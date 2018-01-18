@@ -72,7 +72,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             when (view.id) {
                 R.id.deleteButton -> {
                     context?.let {
-                        AlertDialog.Builder(it).setMessage(getString(R.string.delete_jpd_item_info, goodsPackageAdapter.getItem(position))).setNegativeButton(R.string.ok) { _, _ ->
+                        AlertDialog.Builder(it).setMessage(getString(R.string.delete_jpd_item_info, goodsPackageAdapter.getItem(position)?.code)).setNegativeButton(R.string.ok) { _, _ ->
                             goodsPackageAdapter.remove(position)
                             if (goodsPackageAdapter.itemCount == 0)
                                 packageEmptyTextView.bringToFront()
