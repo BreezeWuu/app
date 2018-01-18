@@ -1,6 +1,7 @@
 package com.zotye.wms.ui.common
 
 import android.support.annotation.StringRes
+import android.widget.EditText
 
 /**
  * Created by hechuangju on 2017/8/23 上午11:09.
@@ -29,7 +30,7 @@ interface MvpView {
 
     fun isNetworkConnected(): Boolean
 
-    fun hideKeyboard()
+    fun hideKeyboard(editText: EditText)
 
-    fun showKeyboard()
+    fun showKeyboard(editText: EditText)
 }

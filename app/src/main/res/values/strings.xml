@@ -41,4 +41,5 @@
     <string name="supplier_nfo_format">供应商简称：</string>
     <string name="delivery_note_code_format">交货单号：</string>
     <string name="receive_num_format">实收数量：</string>
+    <string name="package_info">包装详情</string>
 </resources>

@@ -35,7 +35,6 @@ object LoginContract {
 
     class LoginPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<LoginMvpView>(), LoginMvpPresenter {
         override fun onLoginClick(userName: String, password: String) {
-            mvpView?.hideKeyboard()
             if (TextUtils.isEmpty(userName)) {
                 mvpView?.showContent()
                 mvpView?.showMessage(R.string.login_name_empty_error)

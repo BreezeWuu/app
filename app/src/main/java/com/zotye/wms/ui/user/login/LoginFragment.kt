@@ -66,6 +66,7 @@ class LoginFragment : BaseFragment(), LoginContract.LoginMvpView {
     override fun getContentView(): View = layout_login_content
 
     private fun login() {
+        hideKeyboard(login_password)
         loginMvpPresenter.onLoginClick(login_username.text.toString(), login_password.text.toString())
     }
 

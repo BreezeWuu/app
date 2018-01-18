@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 import com.zotye.wms.R
 import com.zotye.wms.di.Injectable
@@ -73,7 +74,6 @@ abstract class BaseFragment : Fragment(), MvpView, Injectable {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        hideKeyboard()
         Log.v("{${this.javaClass.simpleName}:0x${Integer.toHexString(this.id)}}", "onDestroyView")
     }
 
@@ -150,21 +150,18 @@ abstract class BaseFragment : Fragment(), MvpView, Injectable {
         return false
     }
 
-    override fun showKeyboard() {
+    override fun showKeyboard(editText: EditText) {
         activity?.let {
+            editText.requestFocus()
             val imm = it.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            it.currentFocus?.let {
-                imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-            }
+            imm?.showSoftInput(editText, 0)
         }
     }
 
-    override fun hideKeyboard() {
+    override fun hideKeyboard(editText: EditText) {
         activity?.let {
             val imm = it.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-            it.currentFocus?.let {
-                imm?.hideSoftInputFromWindow(it.windowToken, 0)
-            }
+            imm?.hideSoftInputFromWindow(editText.windowToken, 0)
         }
     }
 

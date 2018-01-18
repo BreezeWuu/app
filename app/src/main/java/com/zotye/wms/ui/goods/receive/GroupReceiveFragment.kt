@@ -22,6 +22,7 @@ import com.zotye.wms.ui.common.CodeScannerFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
+import kotlinx.android.synthetic.main.layout_item_goods_package.view.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -33,6 +34,7 @@ import javax.inject.Inject
  */
 class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContract.GroupReceiveView {
 
+    private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
     @Inject lateinit var presenter: GroupReceiveContract.GroupReceivePresenter
     private var progressDialog: ProgressDialog? = null
 
@@ -59,9 +61,9 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             val editText = view.findViewById<EditText>(R.id.packageCode)
             AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(view).setNegativeButton(R.string.ok) { _, _ ->
                 presenter.getPackageInfo(editText.text.toString())
-                hideKeyboard()
+                hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
-            showKeyboard()
+            showKeyboard(editText)
         }
         packageRecyclerView.layoutManager = LinearLayoutManager(context)
         val goodsPackageAdapter = GoodsPackageAdapter()
@@ -92,9 +94,9 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                         item.isEditEnable = !item.isEditEnable
                         goodsPackageAdapter.notifyItemChanged(position)
                         if (item.isEditEnable)
-                            showKeyboard()
+                            showKeyboard(editText as EditText)
                         else
-                            hideKeyboard()
+                            hideKeyboard(editText as EditText)
                     }
                 }
             }
@@ -113,10 +115,24 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
 
     override fun getPackageInfo(packageInfo: PackageInfo?) {
         packageInfo?.let {
-            val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
-            adapter.addData(packageInfo)
-            if (adapter.itemCount != 0)
-                packageRecyclerView.bringToFront()
+            val infoView = LayoutInflater.from(context).inflate(R.layout.item_goods_package, null)
+            infoView.actionLayout.visibility = View.GONE
+            val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(infoView, fragmentDataBindingComponent)
+            val editText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
+            it.isEditEnable = true
+            dataBind.info = packageInfo
+            AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).setNegativeButton(R.string.ok) { _, _ ->
+                val numberText = editText.text.toString()
+                packageInfo.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "0" else numberText)
+                packageInfo.isEditEnable = false
+                val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
+                adapter.addData(packageInfo)
+                if (adapter.itemCount != 0)
+                    packageRecyclerView.bringToFront()
+                hideKeyboard(editText)
+            }.setPositiveButton(R.string.cancel) { _, _ ->
+                hideKeyboard(editText)
+            }.show()
         }
     }
 
