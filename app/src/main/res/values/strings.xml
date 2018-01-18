@@ -42,4 +42,8 @@
     <string name="delivery_note_code_format">交货单号：</string>
     <string name="receive_num_format">实收数量：</string>
     <string name="package_info">包装详情</string>
+    <string name="not_match_material_id">物料号不一致，不允许组托！</string>
+    <string name="not_match_supplier_info">供应商不一致，不允许组托！</string>
+    <string name="not_match_batch_num">批次号不一致，不允许组托！</string>
+    <string name="not_match_sl_code">库存地点不一致，不允许组托！</string>
 </resources>

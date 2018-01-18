@@ -63,6 +63,10 @@ class PackageInfo {
      * 交货单号
      */
     var deliveryNoteCode: String? = null
+    /**
+     * 库存地点
+     */
+    var slCode: String? = null
 
     var isEditEnable = false
     override fun equals(other: Any?): Boolean {

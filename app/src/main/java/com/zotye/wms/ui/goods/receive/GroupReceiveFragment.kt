@@ -115,6 +115,34 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
 
     override fun getPackageInfo(packageInfo: PackageInfo?) {
         packageInfo?.let {
+            if (packageRecyclerView.adapter.itemCount == 0) {
+                insertPackageInfo(packageInfo)
+            } else {
+                val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
+                val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
+                if (lastPackage.materialId != packageInfo.materialId) {
+                    showMessage(R.string.not_match_material_id)
+                    return
+                }
+                if (lastPackage.supplierInfo != packageInfo.supplierInfo) {
+                    showMessage(R.string.not_match_supplier_info)
+                    return
+                }
+                if (lastPackage.slCode != packageInfo.slCode) {
+                    showMessage(R.string.not_match_sl_code)
+                    return
+                }
+                if (lastPackage.batchNum != packageInfo.batchNum) {
+                    showMessage(R.string.not_match_batch_num)
+                    return
+                }
+                insertPackageInfo(packageInfo)
+            }
+        }
+    }
+
+    private fun insertPackageInfo(packageInfo: PackageInfo?) {
+        packageInfo?.let {
             val infoView = LayoutInflater.from(context).inflate(R.layout.item_goods_package, null)
             infoView.actionLayout.visibility = View.GONE
             val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(infoView, fragmentDataBindingComponent)
