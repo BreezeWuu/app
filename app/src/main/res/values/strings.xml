@@ -20,12 +20,25 @@
     <string name="package_list_empty">包装列表为空，扫描条形码添加包装</string>
     <string name="error_open_camera">打开相机出错!~</string>
     <string name="action_scanner_info">将条码放入框内，即可自动扫描</string>
-    <string name="jpd_code_format">包装单号：%1$s</string>
     <string name="delete_jpd_item_info">确定删除包装单号： %1$s ？</string>
     <string name="ok">确定</string>
+    <string name="delete">删除</string>
+    <string name="edit">修改</string>
     <string name="cancel">取消</string>
+    <string name="save">保存</string>
     <string name="action_input">手动输入</string>
-    <string name="action_input_pda_code">请输入包装/托盘号</string>
-    <string name="pda_code">拣配单号</string>
+    <string name="action_input_package_code">请输入包装单号/托盘号</string>
+    <string name="package_code">包装单号/托盘号</string>
     <string name="loading_query_package_info">正在查询包装信息&#8230;</string>
+    <string name="repeat_package_code_warn">该包装单号已存在！</string>
+    <!--包装详情-->
+    <string name="package_code_format">包装单号：</string>
+    <string name="material_id_format">物料号：</string>
+    <string name="material_wrkst_format">料码：</string>
+    <string name="material_desc_format">物料描述：</string>
+    <string name="delivery_num_format">发货数量：</string>
+    <string name="delivery_unit_format">单位：</string>
+    <string name="supplier_nfo_format">供应商简称：</string>
+    <string name="delivery_note_code_format">交货单号：</string>
+    <string name="receive_num_format">实收数量：</string>
 </resources>

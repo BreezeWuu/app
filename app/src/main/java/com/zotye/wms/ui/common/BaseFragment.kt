@@ -150,6 +150,15 @@ abstract class BaseFragment : Fragment(), MvpView, Injectable {
         return false
     }
 
+    override fun showKeyboard() {
+        activity?.let {
+            val imm = it.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            it.currentFocus?.let {
+                imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            }
+        }
+    }
+
     override fun hideKeyboard() {
         activity?.let {
             val imm = it.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?

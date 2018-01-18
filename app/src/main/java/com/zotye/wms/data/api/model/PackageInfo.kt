@@ -1,45 +1,78 @@
 package com.zotye.wms.data.api.model
 
+import android.text.TextUtils
 import java.math.BigDecimal
 
 /**
  * Created by hechuangju on 2018/01/17
  */
-class PackageInfo{
+class PackageInfo {
+    constructor(code: String?) {
+        this.code = code
+    }
+
     /**
      * 包装标签号
      */
-     val code: String? = null
+    var code: String? = null
     /**
      * 物料号
      */
-     val materialId: String? = null
+    var materialId: String? = null
     /**
      * 料码
      */
-     val materialWRKST: String? = null
+    var materialWRKST: String? = null
     /**
      * 物料描述
      */
-     val materialDescription: String? = null
+    var materialDescription: String? = null
     /**
      * 发货数量
      */
-     val deliveryNum: BigDecimal? = null
+    var deliveryNum: BigDecimal? = BigDecimal.valueOf(0)
+        set(value) {
+            field = value ?: BigDecimal.valueOf(0)
+        }
+        get() {
+            return if (field == null) BigDecimal.valueOf(0) else field
+        }
+    /**
+     * 发货数量
+     */
+    var receiveNum: BigDecimal? = BigDecimal.valueOf(0)
+        set(value) {
+            field = value ?: BigDecimal.valueOf(0)
+        }
+        get() {
+            return if (field == null) BigDecimal.valueOf(0) else field
+        }
     /**
      * 发货单位
      */
-     val deliveryUnit: String? = null
+    var deliveryUnit: String? = null
     /**
      * 供应商简称
      */
-     val supplierInfo: String? = null
+    var supplierInfo: String? = null
     /**
      * 批次号
      */
-     val batchNum: String? = null
+    var batchNum: String? = null
     /**
      * 交货单号
      */
-     val deliveryNoteCode: String? = null
+    var deliveryNoteCode: String? = null
+
+    var isEditEnable = false
+    override fun equals(other: Any?): Boolean {
+        return if (other !is PackageInfo)
+            false
+        else {
+            if (TextUtils.isEmpty(this.code))
+                false
+            else
+                this.code == other.code
+        }
+    }
 }

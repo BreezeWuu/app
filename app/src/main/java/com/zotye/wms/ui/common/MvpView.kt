@@ -30,4 +30,6 @@ interface MvpView {
     fun isNetworkConnected(): Boolean
 
     fun hideKeyboard()
+
+    fun showKeyboard()
 }

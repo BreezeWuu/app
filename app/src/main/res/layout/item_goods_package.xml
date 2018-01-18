@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spacing_smaller">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
+    <data>
+
+        <import type="com.zotye.wms.R" />
+
+        <variable
+            name="info"
+            type="com.zotye.wms.data.api.model.PackageInfo" />
+    </data>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="@dimen/spacing_normal">
+        android:layout_margin="@dimen/spacing_smaller">
 
-        <TextView
-            android:id="@+id/jpdCodeTextView"
-            style="@style/Toolbar.TitleText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textColor="@color/black" />
+        <include
+            layout="@layout/layout_item_goods_package"
+            bind:info="@{info}" />
 
-        <android.support.v7.widget.AppCompatImageButton
-            android:id="@+id/jdpDeleteButton"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="@color/transparent"
-            android:src="@drawable/ic_delete_black" />
-    </LinearLayout>
-
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</layout>

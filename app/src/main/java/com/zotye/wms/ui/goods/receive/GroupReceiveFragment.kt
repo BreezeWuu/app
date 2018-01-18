@@ -1,16 +1,22 @@
 package com.zotye.wms.ui.goods.receive
 
 import android.app.ProgressDialog
+import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.PackageInfo
+import com.zotye.wms.data.binding.FragmentDataBindingComponent
+import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.CodeScannerFragment
 import com.zotye.wms.ui.common.ScannerDelegate
@@ -19,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import java.math.BigDecimal
 import javax.inject.Inject
 
 /**
@@ -48,19 +55,48 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
         packageInput.onClick {
-            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_pda_code).setView(R.layout.dialog_pda_code_input).setNegativeButton(R.string.ok) { _, _ ->
+            val view = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
+            val editText = view.findViewById<EditText>(R.id.packageCode)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(view).setNegativeButton(R.string.ok) { _, _ ->
+                presenter.getPackageInfo(editText.text.toString())
+                hideKeyboard()
             }.setPositiveButton(R.string.cancel, null).show()
+            showKeyboard()
         }
         packageRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = GoodsPackageAdapter()
-        packageRecyclerView.adapter = adapter
-        adapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, _, position ->
-            context?.let {
-                AlertDialog.Builder(it).setMessage(getString(R.string.delete_jpd_item_info, adapter.getItem(position))).setNegativeButton(R.string.ok) { _, _ ->
-                    adapter.remove(position)
-                    if (adapter.itemCount == 0)
-                        packageEmptyTextView.bringToFront()
-                }.setPositiveButton(R.string.cancel, null).show()
+        val goodsPackageAdapter = GoodsPackageAdapter()
+        goodsPackageAdapter.bindToRecyclerView(packageRecyclerView)
+        goodsPackageAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { _, view, position ->
+            when (view.id) {
+                R.id.deleteButton -> {
+                    context?.let {
+                        AlertDialog.Builder(it).setMessage(getString(R.string.delete_jpd_item_info, goodsPackageAdapter.getItem(position))).setNegativeButton(R.string.ok) { _, _ ->
+                            goodsPackageAdapter.remove(position)
+                            if (goodsPackageAdapter.itemCount == 0)
+                                packageEmptyTextView.bringToFront()
+                        }.setPositiveButton(R.string.cancel, null).show()
+                    }
+                }
+                R.id.editButton -> {
+                    val item = goodsPackageAdapter.getItem(position)
+                    item?.let {
+                        val editText = goodsPackageAdapter.getViewByPosition(position, R.id.receiveNumberText)
+                        if (editText is TextInputEditText) {
+                            if (item.isEditEnable) {
+                                val numberText = editText.text.toString()
+                                item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "0" else numberText)
+                            } else {
+                                editText.requestFocus()
+                            }
+                        }
+                        item.isEditEnable = !item.isEditEnable
+                        goodsPackageAdapter.notifyItemChanged(position)
+                        if (item.isEditEnable)
+                            showKeyboard()
+                        else
+                            hideKeyboard()
+                    }
+                }
             }
         }
     }
@@ -85,7 +121,10 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
     }
 
     override fun succeed(result: String) {
-        presenter.getPackageInfo(result)
+        if ((packageRecyclerView.adapter as GoodsPackageAdapter).data.contains(PackageInfo(result))) {
+            showMessage(R.string.repeat_package_code_warn)
+        } else
+            presenter.getPackageInfo(result)
     }
 
     override fun onDestroyView() {
@@ -94,10 +133,12 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
     }
 
     class GoodsPackageAdapter : BaseQuickAdapter<PackageInfo, BaseViewHolder>(R.layout.item_goods_package) {
-
+        private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: PackageInfo) {
-            helper.setText(R.id.jpdCodeTextView, helper.itemView.resources.getString(R.string.jpd_code_format, item.code))
-            helper.addOnClickListener(R.id.jdpDeleteButton)
+            val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(helper.itemView, fragmentDataBindingComponent)
+            dataBind.info = item
+            helper.addOnClickListener(R.id.deleteButton)
+            helper.addOnClickListener(R.id.editButton)
         }
     }
 }

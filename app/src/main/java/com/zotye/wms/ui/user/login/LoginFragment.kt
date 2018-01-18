@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import com.zotye.wms.R
 import com.zotye.wms.ui.common.BaseFragment
+import com.zotye.wms.ui.main.MainFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.layout_progress.view.*
@@ -74,7 +75,7 @@ class LoginFragment : BaseFragment(), LoginContract.LoginMvpView {
     }
 
     override fun openMainFragment() {
-        
+        fragmentManager?.beginTransaction()?.remove(this)?.replace(R.id.main_content, MainFragment())?.commit()
     }
 
 }
