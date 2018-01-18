@@ -22,7 +22,6 @@ import com.zotye.wms.ui.common.CodeScannerFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
-import kotlinx.android.synthetic.main.layout_item_goods_package.view.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -115,52 +114,65 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
 
     override fun getPackageInfo(packageInfo: PackageInfo?) {
         packageInfo?.let {
-            if (packageRecyclerView.adapter.itemCount == 0) {
-                insertPackageInfo(packageInfo)
-            } else {
-                val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
-                val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
-                if (lastPackage.materialId != packageInfo.materialId) {
-                    showMessage(R.string.not_match_material_id)
-                    return
-                }
-                if (lastPackage.supplierInfo != packageInfo.supplierInfo) {
-                    showMessage(R.string.not_match_supplier_info)
-                    return
-                }
-                if (lastPackage.slCode != packageInfo.slCode) {
-                    showMessage(R.string.not_match_sl_code)
-                    return
-                }
-                if (lastPackage.batchNum != packageInfo.batchNum) {
-                    showMessage(R.string.not_match_batch_num)
-                    return
-                }
-                insertPackageInfo(packageInfo)
-            }
-        }
-    }
-
-    private fun insertPackageInfo(packageInfo: PackageInfo?) {
-        packageInfo?.let {
+            packageInfo.isEditEnable = true
             val infoView = LayoutInflater.from(context).inflate(R.layout.item_goods_package, null)
-            infoView.actionLayout.visibility = View.GONE
             val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(infoView, fragmentDataBindingComponent)
-            val editText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
-            it.isEditEnable = true
+            val receiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
+            val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
+            infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
+            batchNumberEditText.isEnabled = packageInfo.isBatchMaterialEditable()
+            packageInfo.receiveNum = packageInfo.deliveryNum
             dataBind.info = packageInfo
-            AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).setNegativeButton(R.string.ok) { _, _ ->
-                val numberText = editText.text.toString()
-                packageInfo.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
+            val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
+            infoView.findViewById<View>(R.id.okButton).onClick {
+                if (packageInfo.isBatchMaterialEditable()) {
+                    if (batchNumberEditText.text.isNullOrBlank()) {
+                        batchNumberEditText.error = getString(R.string.batch_number_empty_error)
+                        return@onClick
+                    }
+                }
+                val numberText = receiveNumberEditText.text.toString()
+                val receiveNumber = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
+                if (!packageInfo.isThirdPart()) {
+                    if (receiveNumber > packageInfo.deliveryNum) {
+                        receiveNumberEditText.error = getString(R.string.not_match_third_part_receive_num)
+                        return@onClick
+                    }
+                }
+                packageInfo.receiveNum = receiveNumber
+                packageInfo.batchNum = batchNumberEditText.text.toString()
+                if (packageRecyclerView.adapter.itemCount != 0) {
+                    val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
+                    val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
+                    if (lastPackage.materialNum != packageInfo.materialNum) {
+                        showSnackBar(infoView, getString(R.string.not_match_material_id))
+                        return@onClick
+                    }
+                    if (lastPackage.supplierCode != packageInfo.supplierCode) {
+                        showSnackBar(infoView, getString(R.string.not_match_supplier_info))
+                        return@onClick
+                    }
+                    if (lastPackage.slCode != packageInfo.slCode) {
+                        showSnackBar(infoView, getString(R.string.not_match_sl_code))
+                        return@onClick
+                    }
+                    if (lastPackage.batchNum != packageInfo.batchNum) {
+                        batchNumberEditText.error = getString(R.string.not_match_batch_num)
+                        return@onClick
+                    }
+                }
                 packageInfo.isEditEnable = false
                 val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
                 adapter.addData(packageInfo)
                 if (adapter.itemCount != 0)
                     packageRecyclerView.bringToFront()
-                hideKeyboard(editText)
-            }.setPositiveButton(R.string.cancel) { _, _ ->
-                hideKeyboard(editText)
-            }.show()
+                hideKeyboard(receiveNumberEditText)
+                dialog.dismiss()
+            }
+            infoView.findViewById<View>(R.id.cancleButton).onClick {
+                dialog.dismiss()
+            }
+            dialog.show()
         }
     }
 
@@ -181,6 +193,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         override fun convert(helper: BaseViewHolder, item: PackageInfo) {
             val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind.info = item
+            helper.itemView.findViewById<View>(R.id.actionLayout).visibility = View.VISIBLE
             helper.addOnClickListener(R.id.deleteButton)
             helper.addOnClickListener(R.id.editButton)
         }

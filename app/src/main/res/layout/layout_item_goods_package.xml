@@ -65,7 +65,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="7"
                 android:gravity="center_vertical"
-                android:text="@{info.materialId}"
+                android:text="@{info.materialNum}"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -230,6 +230,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <android.support.v7.widget.AppCompatTextView
@@ -241,12 +242,14 @@
                 android:text="@string/batch_code_format"
                 android:textColor="@color/black" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/batchNumber"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="7"
+                android:enabled="false"
                 android:gravity="center_vertical"
                 android:singleLine="true"
                 android:text="@{info.batchNum}"
@@ -285,29 +288,64 @@
 
         <LinearLayout
             android:id="@+id/actionLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_marginTop="@dimen/spacing_smaller"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/editButton"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
                 android:layout_height="56dp"
+                android:layout_weight="1"
                 android:text="@{info.isEditEnable?@string/save:@string/edit}"
                 android:textColor="@color/fb"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/font_large" />
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/deleteButton"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
                 android:layout_height="56dp"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_weight="1"
                 android:text="@string/delete"
                 android:textColor="@color/google"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/font_large" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dialogActionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/spacing_smaller"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/okButton"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:text="@string/add"
+                android:textColor="@color/fb"
+                android:textSize="@dimen/font_large" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/cancleButton"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textColor="@color/google"
+                android:textSize="@dimen/font_large" />
         </LinearLayout>
     </LinearLayout>
 </layout>

@@ -165,8 +165,19 @@ abstract class BaseFragment : Fragment(), MvpView, Injectable {
         }
     }
 
-    private fun showSnackBar(message: String) {
+     fun showSnackBar(message: String) {
         val rootView = activity?.window?.decorView?.findViewById<View>(android.R.id.content)
+        rootView?.let {
+            val snackBar = Snackbar.make(it, message, Snackbar.LENGTH_LONG)
+            val sbView = snackBar.view
+            val textView = sbView.findViewById<TextView>(android.support.design.R.id.snackbar_text)
+            sbView.setBackgroundColor(ContextCompat.getColor(context!!, R.color.google))
+            textView.setTextColor(ContextCompat.getColor(it.context, android.R.color.white))
+            snackBar.show()
+        }
+    }
+
+    public fun showSnackBar(rootView: View?, message: String) {
         rootView?.let {
             val snackBar = Snackbar.make(it, message, Snackbar.LENGTH_LONG)
             val sbView = snackBar.view

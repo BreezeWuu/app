@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="@dimen/spacing_normal"
-    android:paddingTop="@dimen/spacing_normal"
     android:paddingRight="@dimen/spacing_normal">
 
     <FrameLayout
@@ -16,7 +15,9 @@
             android:id="@+id/packageRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white" />
+            android:background="@color/white"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/spacing_normal" />
 
         <android.support.v7.widget.AppCompatTextView
             android:id="@+id/packageEmptyTextView"

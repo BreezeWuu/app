@@ -17,7 +17,7 @@
     <string name="goods_receive_group">组托收货</string>
     <string name="code_scanner">条形码扫描</string>
     <string name="package_list">包装列表</string>
-    <string name="package_list_empty">包装列表为空，扫描条形码添加包装</string>
+    <string name="package_list_empty">包装列表为空，请添加包装</string>
     <string name="error_open_camera">打开相机出错!~</string>
     <string name="action_scanner_info">将条码放入框内，即可自动扫描</string>
     <string name="delete_jpd_item_info">确定删除包装单号： %1$s ？</string>
@@ -47,4 +47,7 @@
     <string name="not_match_batch_num">批次号不一致，不允许组托！</string>
     <string name="not_match_sl_code">库存地点不一致，不允许组托！</string>
     <string name="batch_code_format">批次号：</string>
+    <string name="batch_number_empty_error">批次号不能为空</string>
+    <string name="add">添加</string>
+    <string name="not_match_third_part_receive_num">非三方物流实收数量不允许大于包装数量!</string>
 </resources>

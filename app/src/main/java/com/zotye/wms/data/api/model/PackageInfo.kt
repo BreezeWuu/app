@@ -18,7 +18,7 @@ class PackageInfo {
     /**
      * 物料号
      */
-    var materialId: String? = null
+    var materialNum: String? = null
     /**
      * 料码
      */
@@ -27,6 +27,10 @@ class PackageInfo {
      * 物料描述
      */
     var materialDescription: String? = null
+    /**
+     * 批次管理标识("X":批次管理；"":非批次管理)
+     */
+    var materialBatchFlag: String? = null
     /**
      * 发货数量
      */
@@ -62,6 +66,10 @@ class PackageInfo {
      */
     var supplierInfo: String? = null
     /**
+     * 供应商代码
+     */
+    var supplierCode: String? = null
+    /**
      * 批次号
      */
     var batchNum: String? = null
@@ -73,6 +81,10 @@ class PackageInfo {
      * 库存地点
      */
     var slCode: String? = null
+    /**
+     * 工厂代码
+     */
+    var factoryCode: String? = null
 
     var isEditEnable = false
     override fun equals(other: Any?): Boolean {
@@ -84,5 +96,13 @@ class PackageInfo {
             else
                 this.code == other.code
         }
+    }
+
+    fun isBatchMaterialEditable(): Boolean {
+        return "X" == materialBatchFlag
+    }
+
+    fun isThirdPart(): Boolean {
+        return "9999" == factoryCode
     }
 }
