@@ -30,22 +30,28 @@ class PackageInfo {
     /**
      * 发货数量
      */
-    var deliveryNum: BigDecimal? = BigDecimal.valueOf(0)
+    var deliveryNum: BigDecimal? = BigDecimal.valueOf(1)
         set(value) {
-            field = value ?: BigDecimal.valueOf(0)
+            field = if (value == null || value.toInt() < 1) {
+                BigDecimal.valueOf(1)
+            } else
+                value
         }
         get() {
-            return if (field == null) BigDecimal.valueOf(0) else field
+            return if (field == null) BigDecimal.valueOf(1) else field
         }
     /**
      * 发货数量
      */
-    var receiveNum: BigDecimal? = BigDecimal.valueOf(0)
+    var receiveNum: BigDecimal? = BigDecimal.valueOf(1)
         set(value) {
-            field = value ?: BigDecimal.valueOf(0)
+            field = if (value == null || value.toInt() < 1) {
+                BigDecimal.valueOf(1)
+            } else
+                value
         }
         get() {
-            return if (field == null) BigDecimal.valueOf(0) else field
+            return if (field == null) BigDecimal.valueOf(1) else field
         }
     /**
      * 发货单位

@@ -86,7 +86,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                         if (editText is TextInputEditText) {
                             if (item.isEditEnable) {
                                 val numberText = editText.text.toString()
-                                item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "0" else numberText)
+                                item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
                             } else {
                                 editText.requestFocus()
                             }
@@ -151,7 +151,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             dataBind.info = packageInfo
             AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).setNegativeButton(R.string.ok) { _, _ ->
                 val numberText = editText.text.toString()
-                packageInfo.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "0" else numberText)
+                packageInfo.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
                 packageInfo.isEditEnable = false
                 val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
                 adapter.addData(packageInfo)
