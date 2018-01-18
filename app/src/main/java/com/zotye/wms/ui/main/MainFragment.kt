@@ -1,5 +1,7 @@
 package com.zotye.wms.ui.main
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -13,14 +15,17 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.AppDataManager
 import com.zotye.wms.data.AppExecutors
+import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.model.Resource
 import com.zotye.wms.data.api.model.ResourceType
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemHomeButtonBinding
 import com.zotye.wms.ui.common.BaseFragment
+import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.receive.GroupReceiveFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import org.jetbrains.anko.appcompat.v7.coroutines.onMenuItemClick
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.support.v4.onRefresh
 import javax.inject.Inject
@@ -30,7 +35,7 @@ import javax.inject.Inject
  */
 class MainFragment : BaseFragment(), MainContract.MainMvpView {
 
-    @Inject lateinit var appDataManager: AppDataManager
+    @Inject lateinit var appDataManager: DataManager
     @Inject lateinit var appExecutors: AppExecutors
     @Inject lateinit var presenter: MainContract.MainMvpPresenter
 
@@ -44,6 +49,18 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
         toolbar_base.visibility = View.VISIBLE
         toolbar_base.titleResource = R.string.app_name
         toolbar_base.inflateMenu(R.menu.main_menu)
+        toolbar_base.onMenuItemClick { item ->
+            when (item?.itemId) {
+                R.id.action_logout -> {
+                    AlertDialog.Builder(getContext()).setMessage(R.string.info_logout).setNegativeButton(R.string.ok) { _, _ ->
+                        appDataManager.setCurrentUserId(null)
+                        if (activity is MainActivity) {
+                            (activity as MainActivity).handlerIntent(Intent(), null)
+                        }
+                    }.setPositiveButton(R.string.cancel, null).show()
+                }
+            }
+        }
         buttonRecyclerView.layoutManager = GridLayoutManager(context, 3)
         buttonRecyclerView.adapter = HomeButtonAdapter()
         (buttonRecyclerView.adapter as HomeButtonAdapter).onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
@@ -82,7 +99,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
         }
         appExecutors.diskIO().execute {
             appDataManager.getCurrentUser()?.let {
-                getUserResources(it.resources)
+                appExecutors.mainThread().execute {
+                    getUserResources(it.resources)
+                }
             }
         }
         swipeRefreshLayout.onRefresh {

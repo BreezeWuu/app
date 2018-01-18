@@ -50,4 +50,6 @@
     <string name="batch_number_empty_error">批次号不能为空</string>
     <string name="add">添加</string>
     <string name="not_match_third_part_receive_num">非三方物流实收数量不允许大于包装数量!</string>
+    <string name="action_logout">注销账号</string>
+    <string name="info_logout">是否确认注销账号？！</string>
 </resources>

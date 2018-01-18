@@ -29,7 +29,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
         handlerIntent(intent, null)
     }
 
-    private fun handlerIntent(newIntent: Intent, savedInstanceState: Bundle?) {
+    public fun handlerIntent(newIntent: Intent, savedInstanceState: Bundle?) {
         Log.i("handlerIntent-->newIntent:$newIntent savedInstanceState:$savedInstanceState")
         if (dataManager.getCurrentUserId() == null) {
             val loginFragment: Fragment = supportFragmentManager.findFragmentByTag(LoginFragment.TAG) ?: LoginFragment()
