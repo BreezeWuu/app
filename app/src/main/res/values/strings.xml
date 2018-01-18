@@ -29,7 +29,7 @@
     <string name="action_input">手动输入</string>
     <string name="action_input_package_code">请输入包装单号/托盘号</string>
     <string name="package_code">包装单号/托盘号</string>
-    <string name="loading_query_package_info">正在查询包装信息&#8230;</string>
+    <string name="loading_query_bar_code_info">正在查询条形码信息&#8230;</string>
     <string name="repeat_package_code_warn">该包装单号已存在！</string>
     <!--包装详情-->
     <string name="package_code_format">包装单号：</string>

@@ -5,7 +5,7 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.PackageInfo
+import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -21,7 +21,7 @@ object GroupReceiveContract {
     interface GroupReceiveView : MvpView {
         fun showProgressDialog(@StringRes resId: Int)
         fun hideProgressDialog()
-        fun getPackageInfo(packageInfo: PackageInfo?)
+        fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
     }
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
@@ -30,29 +30,29 @@ object GroupReceiveContract {
     }
 
     class GroupReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<GroupReceiveView>(), GroupReceivePresenter {
-        private var packageInfoCall: Call<ApiResponse<PackageInfo>>? = null
+        private var barcodeInfoCall: Call<ApiResponse<BarcodeInfo>>? = null
         override fun cancelQueryPackageInfo() {
-            packageInfoCall?.cancel()
+            barcodeInfoCall?.cancel()
         }
 
         override fun getPackageInfo(packageId: String) {
-            mvpView?.showProgressDialog(R.string.loading_query_package_info)
+            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        packageInfoCall = dataManager.getPackageInfo(it.userId, packageId)
-                        packageInfoCall!!.enqueue(object : Callback<ApiResponse<PackageInfo>> {
-                            override fun onFailure(call: Call<ApiResponse<PackageInfo>>?, t: Throwable) {
+                        barcodeInfoCall = dataManager.getPackageInfo(it.userId, packageId)
+                        barcodeInfoCall!!.enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
-                                if (!packageInfoCall!!.isCanceled)
+                                if (!barcodeInfoCall!!.isCanceled)
                                     t.message?.let { mvpView?.showMessage(it) }
                             }
 
-                            override fun onResponse(call: Call<ApiResponse<PackageInfo>>?, response: Response<ApiResponse<PackageInfo>>) {
+                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.getPackageInfo(it.data)
+                                        mvpView?.getBarCodeInfo(it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

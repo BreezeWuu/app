@@ -5,11 +5,8 @@ import com.zotye.wms.data.api.model.User
 import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
-import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
-import retrofit2.Call
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -4,17 +4,16 @@ import android.text.TextUtils
 import java.math.BigDecimal
 
 /**
- * Created by hechuangju on 2018/01/17
+ * Created by hechuangju on 2018/01/18
  */
-class PackageInfo {
-    constructor(code: String?) {
-        this.code = code
-    }
+class PackageInfo(
+        /*** 包装标签号*/
+        var code: String = "") {
 
     /**
-     * 包装标签号
+     * 是否是托盘
      */
-    var code: String? = null
+    var isPallet: Boolean = false
     /**
      * 物料号
      */

@@ -13,8 +13,12 @@ import android.view.ViewGroup
 import android.widget.EditText
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.google.gson.Gson
 import com.zotye.wms.R
+import com.zotye.wms.data.api.model.BarCodeType
+import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PackageInfo
+import com.zotye.wms.data.api.model.PalletInfo
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BaseFragment
@@ -34,7 +38,8 @@ import javax.inject.Inject
 class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContract.GroupReceiveView {
 
     private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
-    @Inject lateinit var presenter: GroupReceiveContract.GroupReceivePresenter
+    @Inject
+    lateinit var presenter: GroupReceiveContract.GroupReceivePresenter
     private var progressDialog: ProgressDialog? = null
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
@@ -112,68 +117,85 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         progressDialog?.dismiss()
     }
 
-    override fun getPackageInfo(packageInfo: PackageInfo?) {
-        packageInfo?.let {
-            packageInfo.isEditEnable = true
-            val infoView = LayoutInflater.from(context).inflate(R.layout.item_goods_package, null)
-            val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(infoView, fragmentDataBindingComponent)
-            val receiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
-            val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
-            infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
-            batchNumberEditText.isEnabled = packageInfo.isBatchMaterialEditable()
-            packageInfo.receiveNum = packageInfo.deliveryNum
-            dataBind.info = packageInfo
-            val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
-            infoView.findViewById<View>(R.id.okButton).onClick {
-                if (packageInfo.isBatchMaterialEditable()) {
-                    if (batchNumberEditText.text.isNullOrBlank()) {
-                        batchNumberEditText.error = getString(R.string.batch_number_empty_error)
-                        return@onClick
+    override fun getBarCodeInfo(barcodeInfo: BarcodeInfo?) {
+        barcodeInfo?.let { info ->
+            val barcodeType = BarCodeType.fromCodeType(info.barCodeType)
+            barcodeType?.let {
+                when (it) {
+                    BarCodeType.Package -> {
+                        getPackageInfo(Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java))
+                    }
+                    BarCodeType.Pallet -> {
+                        getPalletInfo(Gson().fromJson<PalletInfo>(info.barCodeInfo, PalletInfo::class.java))
                     }
                 }
-                val numberText = receiveNumberEditText.text.toString()
-                val receiveNumber = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
-                if (!packageInfo.isThirdPart()) {
-                    if (receiveNumber > packageInfo.deliveryNum) {
-                        receiveNumberEditText.error = getString(R.string.not_match_third_part_receive_num)
-                        return@onClick
-                    }
-                }
-                packageInfo.receiveNum = receiveNumber
-                packageInfo.batchNum = batchNumberEditText.text.toString()
-                if (packageRecyclerView.adapter.itemCount != 0) {
-                    val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
-                    val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
-                    if (lastPackage.materialNum != packageInfo.materialNum) {
-                        showSnackBar(infoView, getString(R.string.not_match_material_id))
-                        return@onClick
-                    }
-                    if (lastPackage.supplierCode != packageInfo.supplierCode) {
-                        showSnackBar(infoView, getString(R.string.not_match_supplier_info))
-                        return@onClick
-                    }
-                    if (lastPackage.slCode != packageInfo.slCode) {
-                        showSnackBar(infoView, getString(R.string.not_match_sl_code))
-                        return@onClick
-                    }
-                    if (lastPackage.batchNum != packageInfo.batchNum) {
-                        batchNumberEditText.error = getString(R.string.not_match_batch_num)
-                        return@onClick
-                    }
-                }
-                packageInfo.isEditEnable = false
-                val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
-                adapter.addData(packageInfo)
-                if (adapter.itemCount != 0)
-                    packageRecyclerView.bringToFront()
-                hideKeyboard(receiveNumberEditText)
-                dialog.dismiss()
             }
-            infoView.findViewById<View>(R.id.cancleButton).onClick {
-                dialog.dismiss()
-            }
-            dialog.show()
         }
+    }
+
+    private fun getPalletInfo(palletInfo: PalletInfo?) {
+
+    }
+
+    private fun getPackageInfo(barcodeInfo: PackageInfo) {
+        barcodeInfo.isEditEnable = true
+        val infoView = LayoutInflater.from(context).inflate(R.layout.item_goods_package, null)
+        val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(infoView, fragmentDataBindingComponent)
+        val receiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
+        val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
+        infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
+        barcodeInfo.receiveNum = barcodeInfo.deliveryNum
+        dataBind.info = barcodeInfo
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
+        infoView.findViewById<View>(R.id.okButton).onClick {
+            if (barcodeInfo.isBatchMaterialEditable()) {
+                if (batchNumberEditText.text.isNullOrBlank()) {
+                    batchNumberEditText.error = getString(R.string.batch_number_empty_error)
+                    return@onClick
+                }
+            }
+            val numberText = receiveNumberEditText.text.toString()
+            val receiveNumber = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
+            if (!barcodeInfo.isThirdPart()) {
+                if (receiveNumber > barcodeInfo.deliveryNum) {
+                    receiveNumberEditText.error = getString(R.string.not_match_third_part_receive_num)
+                    return@onClick
+                }
+            }
+            barcodeInfo.receiveNum = receiveNumber
+            barcodeInfo.batchNum = batchNumberEditText.text.toString()
+            if (packageRecyclerView.adapter.itemCount != 0) {
+                val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
+                val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
+                if (lastPackage.materialNum != barcodeInfo.materialNum) {
+                    showSnackBar(infoView, getString(R.string.not_match_material_id))
+                    return@onClick
+                }
+                if (lastPackage.supplierCode != barcodeInfo.supplierCode) {
+                    showSnackBar(infoView, getString(R.string.not_match_supplier_info))
+                    return@onClick
+                }
+                if (lastPackage.slCode != barcodeInfo.slCode) {
+                    showSnackBar(infoView, getString(R.string.not_match_sl_code))
+                    return@onClick
+                }
+                if (lastPackage.batchNum != barcodeInfo.batchNum) {
+                    batchNumberEditText.error = getString(R.string.not_match_batch_num)
+                    return@onClick
+                }
+            }
+            barcodeInfo.isEditEnable = false
+            val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
+            adapter.addData(barcodeInfo)
+            if (adapter.itemCount != 0)
+                packageRecyclerView.bringToFront()
+            hideKeyboard(receiveNumberEditText)
+            dialog.dismiss()
+        }
+        infoView.findViewById<View>(R.id.cancleButton).onClick {
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     override fun succeed(result: String) {

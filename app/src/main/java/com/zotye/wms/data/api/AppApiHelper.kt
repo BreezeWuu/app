@@ -1,8 +1,6 @@
 package com.zotye.wms.data.api
 
-import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.api.service.ApiService
-import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
