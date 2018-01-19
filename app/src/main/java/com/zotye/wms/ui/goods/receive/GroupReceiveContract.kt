@@ -7,6 +7,7 @@ import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
+import com.zotye.wms.data.api.model.LogisticsReceiveInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -27,6 +28,7 @@ object GroupReceiveContract {
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
         fun getPackageInfo(packageId: String)
+        fun submitReceiveInfo(logisticsReceiveInfo: LogisticsReceiveInfo)
         fun cancelQueryPackageInfo()
     }
 
@@ -34,6 +36,17 @@ object GroupReceiveContract {
         private var barcodeInfoCall: Call<ApiResponse<BarcodeInfo>>? = null
         override fun cancelQueryPackageInfo() {
             barcodeInfoCall?.cancel()
+        }
+
+        override fun submitReceiveInfo(logisticsReceiveInfo: LogisticsReceiveInfo) {
+            mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+
+                    }
+                }
+            }
         }
 
         override fun getPackageInfo(packageId: String) {

@@ -53,4 +53,5 @@
     <string name="action_logout">注销账号</string>
     <string name="info_logout">是否确认注销账号？！</string>
     <string name="error_package_list_empty">包装为空，不能放入托盘！</string>
+    <string name="loading_submit_receive_info">正在上传收货信息&#8230;</string>
 </resources>

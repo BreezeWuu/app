@@ -15,10 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.Gson
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.BarCodeType
-import com.zotye.wms.data.api.model.BarcodeInfo
-import com.zotye.wms.data.api.model.PackageInfo
-import com.zotye.wms.data.api.model.PalletInfo
+import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BaseFragment
@@ -28,7 +25,9 @@ import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.support.v4.onUiThread
 import java.math.BigDecimal
 import javax.inject.Inject
 
@@ -139,7 +138,25 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             if (adapter.itemCount == 0) {
                 showMessage(R.string.error_package_list_empty)
             } else {
-
+                doAsync {
+                    val logisticsReceiveInfo = LogisticsReceiveInfo()
+                    var receiveCount = BigDecimal.valueOf(0)
+                    logisticsReceiveInfo.code = palletInfo.code
+                    logisticsReceiveInfo.eType = "${BarCodeType.Pallet.type}"
+                    logisticsReceiveInfo.children = arrayListOf()
+                    adapter.data.forEach {
+                        receiveCount += it.receiveNum!!
+                        val childPackageInfo = LogisticsReceiveInfo()
+                        childPackageInfo.code = it.code
+                        childPackageInfo.eType = "${BarCodeType.Package}"
+                        childPackageInfo.receiveNum = it.receiveNum
+                        logisticsReceiveInfo.children!!.add(childPackageInfo)
+                    }
+                    logisticsReceiveInfo.receiveNum = receiveCount
+                    onUiThread {
+                        presenter.submitReceiveInfo(logisticsReceiveInfo)
+                    }
+                }
             }
         }
     }

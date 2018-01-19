@@ -24,4 +24,6 @@ interface ApiService {
     @FormUrlEncoded
     @POST("bar_code/info")
     fun getPackageInfo(@Field("userId") userId: String, @Field("packageId") packageId: String): Call<ApiResponse<BarcodeInfo>>
+
+
 }
