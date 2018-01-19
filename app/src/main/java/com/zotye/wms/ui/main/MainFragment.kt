@@ -73,7 +73,10 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                     var fragment: Fragment? = null
                     when (ResourceType.fromCode(resource.code)) {
                         ResourceType.PALLETRECV -> {
-                            fragment = GroupReceiveFragment()
+                            fragment = GroupReceiveFragment.newInstance(true, it.name)
+                        }
+                        ResourceType.PACKAGERECV -> {
+                            fragment = GroupReceiveFragment.newInstance(false, it.name)
                         }
                         ResourceType.ThreePLDELIVERY -> {
 

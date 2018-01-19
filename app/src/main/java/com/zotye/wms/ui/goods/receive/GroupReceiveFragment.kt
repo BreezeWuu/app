@@ -36,7 +36,7 @@ import javax.inject.Inject
  * Created by hechuangju on 2018/01/17
  */
 class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContract.GroupReceiveView {
-
+    private var isGroupReceive = true
     private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
     @Inject
     lateinit var presenter: GroupReceiveContract.GroupReceivePresenter
@@ -44,15 +44,27 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
     lateinit var dataManager: DataManager
     private var progressDialog: ProgressDialog? = null
 
+    companion object {
+        fun newInstance(isGroupReceive: Boolean, title: String): GroupReceiveFragment {
+            val fragment = GroupReceiveFragment()
+            val bundle = Bundle()
+            bundle.putBoolean("isGroupReceive", isGroupReceive)
+            bundle.putString("title", title)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_goods_receive_group, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        isGroupReceive = arguments?.getBoolean("isGroupReceive") ?: true
         presenter.onAttach(this)
         toolbar_base.visibility = View.VISIBLE
-        toolbar_base.titleResource = R.string.goods_receive_group
+        toolbar_base.title = arguments?.getString("title") ?: ""
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
         toolbar_base.setNavigationOnClickListener {
             activity?.onBackPressed()
@@ -110,9 +122,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
     }
 
     override fun showProgressDialog(resId: Int) {
-        progressDialog = ProgressDialog.show(context!!, null, getString(resId), true, true) {
-            presenter.cancelQueryPackageInfo()
-        }
+        progressDialog = ProgressDialog.show(context!!, null, getString(resId), true, false)
     }
 
     override fun hideProgressDialog() {
@@ -193,33 +203,48 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                     return@onClick
                 }
             }
-            barcodeInfo.receiveNum = receiveNumber
-            barcodeInfo.batchNum = batchNumberEditText.text.toString()
-            if (packageRecyclerView.adapter.itemCount != 0) {
-                val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
-                val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
-                if (lastPackage.materialNum != barcodeInfo.materialNum) {
-                    showSnackBar(infoView, getString(R.string.not_match_material_id))
-                    return@onClick
+            if (isGroupReceive) {
+                barcodeInfo.receiveNum = receiveNumber
+                barcodeInfo.batchNum = batchNumberEditText.text.toString()
+                if (packageRecyclerView.adapter.itemCount != 0) {
+                    val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
+                    val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
+                    if (lastPackage.materialNum != barcodeInfo.materialNum) {
+                        showSnackBar(infoView, getString(R.string.not_match_material_id))
+                        return@onClick
+                    }
+                    if (lastPackage.supplierCode != barcodeInfo.supplierCode) {
+                        showSnackBar(infoView, getString(R.string.not_match_supplier_info))
+                        return@onClick
+                    }
+                    if (lastPackage.slCode != barcodeInfo.slCode) {
+                        showSnackBar(infoView, getString(R.string.not_match_sl_code))
+                        return@onClick
+                    }
+                    if (lastPackage.batchNum != barcodeInfo.batchNum) {
+                        batchNumberEditText.error = getString(R.string.not_match_batch_num)
+                        return@onClick
+                    }
                 }
-                if (lastPackage.supplierCode != barcodeInfo.supplierCode) {
-                    showSnackBar(infoView, getString(R.string.not_match_supplier_info))
-                    return@onClick
-                }
-                if (lastPackage.slCode != barcodeInfo.slCode) {
-                    showSnackBar(infoView, getString(R.string.not_match_sl_code))
-                    return@onClick
-                }
-                if (lastPackage.batchNum != barcodeInfo.batchNum) {
-                    batchNumberEditText.error = getString(R.string.not_match_batch_num)
-                    return@onClick
+                barcodeInfo.isEditEnable = false
+                val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
+                adapter.addData(barcodeInfo)
+                if (adapter.itemCount != 0)
+                    packageRecyclerView.bringToFront()
+            } else {
+                doAsync {
+                    dataManager.getCurrentUser()?.let { user ->
+                        val childPackageInfo = LogisticsReceiveInfo()
+                        childPackageInfo.userId = user.userId
+                        childPackageInfo.code = barcodeInfo.code
+                        childPackageInfo.eType = "${BarCodeType.Package.type}"
+                        childPackageInfo.receiveNum = receiveNumber
+                        onUiThread {
+                            presenter.submitReceiveInfo(childPackageInfo)
+                        }
+                    }
                 }
             }
-            barcodeInfo.isEditEnable = false
-            val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
-            adapter.addData(barcodeInfo)
-            if (adapter.itemCount != 0)
-                packageRecyclerView.bringToFront()
             hideKeyboard(receiveNumberEditText)
             dialog.dismiss()
         }
@@ -237,7 +262,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
     }
 
     override fun submitReceiveInfoSucceed() {
-        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.submit_receive_info_succeed).setPositiveButton(R.string.ok, null).show()
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(if (isGroupReceive)R.string.submit_group_receive_info_succeed else R.string.submit_receive_info_succeed).setPositiveButton(R.string.ok, null).show()
         (packageRecyclerView.adapter as GoodsPackageAdapter).setNewData(null)
     }
 

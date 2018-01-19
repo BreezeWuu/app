@@ -21,7 +21,8 @@
     <string name="error_open_camera">打开相机出错!~</string>
     <string name="action_scanner_info">将条码放入框内，即可自动扫描</string>
     <string name="delete_jpd_item_info">确定删除包装单号： %1$s ？</string>
-    <string name="submit_receive_info_succeed">组托收货成功！</string>
+    <string name="submit_receive_info_succeed">包装收货成功！</string>
+    <string name="submit_group_receive_info_succeed">组托收货成功！</string>
     <string name="ok">确定</string>
     <string name="delete">删除</string>
     <string name="edit">修改</string>

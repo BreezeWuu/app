@@ -36,6 +36,7 @@ data class Resource(
 
 enum class ResourceType(val code: String) {
     PALLETRECV("PALLETRECV"),//组托收货
+    PACKAGERECV("PACKAGERECV"),//包装收货
     ThreePLDELIVERY("3PLDELIVERY"),//创建装车单
     ThreePLPRCREATE("3PLPRCREATE"),//外检不良品生成拣配单
     ThreePLSOLDOUT("3PLSOLDOUT"),//下架确认

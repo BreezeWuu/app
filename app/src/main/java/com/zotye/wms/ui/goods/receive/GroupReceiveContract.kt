@@ -32,14 +32,9 @@ object GroupReceiveContract {
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
         fun getPackageInfo(packageId: String)
         fun submitReceiveInfo(logisticsReceiveInfo: LogisticsReceiveInfo)
-        fun cancelQueryPackageInfo()
     }
 
     class GroupReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<GroupReceiveView>(), GroupReceivePresenter {
-        private var barcodeInfoCall: Call<ApiResponse<BarcodeInfo>>? = null
-        override fun cancelQueryPackageInfo() {
-            barcodeInfoCall?.cancel()
-        }
 
         override fun submitReceiveInfo(logisticsReceiveInfo: LogisticsReceiveInfo) {
             mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
@@ -73,12 +68,10 @@ object GroupReceiveContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        barcodeInfoCall = dataManager.getPackageInfo(it.userId, packageId)
-                        barcodeInfoCall!!.enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                        dataManager.getPackageInfo(it.userId, packageId).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
                             override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
-                                if (!barcodeInfoCall!!.isCanceled)
-                                    t.message?.let { mvpView?.showMessage(it) }
+                                t.message?.let { mvpView?.showMessage(it) }
                             }
 
                             override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
