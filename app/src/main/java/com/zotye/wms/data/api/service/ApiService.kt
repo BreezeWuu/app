@@ -22,6 +22,6 @@ interface ApiService {
     fun getUserInfo(@Field("userId") userId: String): Call<ApiResponse<User>>
 
     @FormUrlEncoded
-    @POST("package/info")
-    fun getPackageInfo(@Field("userId") userId: String, @Field("packageId") packageId: String): Call<ApiResponse<BarcodeInfo>>
+    @POST("bar_code/info")
+    fun getPackageInfo(@Field("userId") userId: String, @Field("barCodeType") barCodeType: String, @Field("packageId") packageId: String): Call<ApiResponse<BarcodeInfo>>
 }

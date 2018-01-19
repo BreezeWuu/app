@@ -5,6 +5,7 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
@@ -25,7 +26,7 @@ object GroupReceiveContract {
     }
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
-        fun getPackageInfo(packageId: String)
+        fun getPackageInfo(barCodeType: BarCodeType, packageId: String)
         fun cancelQueryPackageInfo()
     }
 
@@ -35,12 +36,12 @@ object GroupReceiveContract {
             barcodeInfoCall?.cancel()
         }
 
-        override fun getPackageInfo(packageId: String) {
+        override fun getPackageInfo(barCodeType: BarCodeType, packageId: String) {
             mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        barcodeInfoCall = dataManager.getPackageInfo(it.userId, packageId)
+                        barcodeInfoCall = dataManager.getPackageInfo(it.userId, "${barCodeType.type}", packageId)
                         barcodeInfoCall!!.enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
                             override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()

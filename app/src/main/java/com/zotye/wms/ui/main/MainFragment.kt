@@ -35,9 +35,12 @@ import javax.inject.Inject
  */
 class MainFragment : BaseFragment(), MainContract.MainMvpView {
 
-    @Inject lateinit var appDataManager: DataManager
-    @Inject lateinit var appExecutors: AppExecutors
-    @Inject lateinit var presenter: MainContract.MainMvpPresenter
+    @Inject
+    lateinit var appDataManager: DataManager
+    @Inject
+    lateinit var appExecutors: AppExecutors
+    @Inject
+    lateinit var presenter: MainContract.MainMvpPresenter
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -69,7 +72,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                 resource?.let {
                     var fragment: Fragment? = null
                     when (ResourceType.fromCode(resource.code)) {
-                        ResourceType.ThreePLRECV -> {
+                        ResourceType.PALLETRECV -> {
                             fragment = GroupReceiveFragment()
                         }
                         ResourceType.ThreePLDELIVERY -> {
