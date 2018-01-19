@@ -22,7 +22,7 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getUserInfo(userId: String) = apiHelper.getUserInfo(userId)
 
-    override fun getPackageInfo(userId: String, packageId: String) = apiHelper.getPackageInfo(userId, packageId)
+    override fun getPackageInfo(userId: String,isGroupReceive: Boolean, packageId: String) = apiHelper.getPackageInfo(userId,isGroupReceive, packageId)
 
     override fun logisticsReceive(logisticsReceiveJsonString: String) = apiHelper.logisticsReceive(logisticsReceiveJsonString)
 

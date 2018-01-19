@@ -78,7 +78,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
             AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
-                presenter.getPackageInfo(editText.text.toString())
+                presenter.getPackageInfo(isGroupReceive, editText.text.toString())
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
@@ -258,11 +258,11 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         if ((packageRecyclerView.adapter as GoodsPackageAdapter).data.contains(PackageInfo(result))) {
             showMessage(R.string.repeat_package_code_warn)
         } else
-            presenter.getPackageInfo(result)
+            presenter.getPackageInfo(isGroupReceive, result)
     }
 
     override fun submitReceiveInfoSucceed() {
-        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(if (isGroupReceive)R.string.submit_group_receive_info_succeed else R.string.submit_receive_info_succeed).setPositiveButton(R.string.ok, null).show()
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(if (isGroupReceive) R.string.submit_group_receive_info_succeed else R.string.submit_receive_info_succeed).setPositiveButton(R.string.ok, null).show()
         (packageRecyclerView.adapter as GoodsPackageAdapter).setNewData(null)
     }
 

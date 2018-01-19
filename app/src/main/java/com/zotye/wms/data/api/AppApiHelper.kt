@@ -14,7 +14,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun getUserInfo(userId: String) = apiService.getUserInfo(userId)
 
-    override fun getPackageInfo(userId: String, packageId: String) = apiService.getPackageInfo(userId, packageId)
+    override fun getPackageInfo(userId: String, isGroupReceive: Boolean, packageId: String) = apiService.getPackageInfo(userId, isGroupReceive, packageId)
 
-    override fun logisticsReceive(logisticsReceiveJsonString: String)= apiService.logisticsReceive(logisticsReceiveJsonString)
+    override fun logisticsReceive(logisticsReceiveJsonString: String) = apiService.logisticsReceive(logisticsReceiveJsonString)
 }
