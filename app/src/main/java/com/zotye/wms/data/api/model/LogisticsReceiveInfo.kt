@@ -6,6 +6,8 @@ import java.math.BigDecimal
  * Created by hechuangju on 2018/01/18
  */
 class LogisticsReceiveInfo {
+    var userId: String? = null
+
     var code: String? = null// 组托收货的时候传入托盘编码 非组托收货的时候传入包装编码
 
     var eType: String? = null// 托盘  包装

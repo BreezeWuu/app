@@ -1,9 +1,11 @@
 package com.zotye.wms.data.api.service
 
-import com.zotye.wms.data.api.model.User
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarcodeInfo
+import com.zotye.wms.data.api.model.LogisticsReceiveInfo
+import com.zotye.wms.data.api.model.User
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -25,5 +27,7 @@ interface ApiService {
     @POST("bar_code/info")
     fun getPackageInfo(@Field("userId") userId: String, @Field("packageId") packageId: String): Call<ApiResponse<BarcodeInfo>>
 
-
+    @FormUrlEncoded
+    @POST("bar_code/logisticsReceive")
+    fun logisticsReceive(@Field("jsonString") logisticsReceiveJsonString: String): Call<ApiResponse<String>>
 }

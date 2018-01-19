@@ -5,6 +5,7 @@ import com.zotye.wms.data.api.model.User
 import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
+import com.zotye.wms.data.api.model.LogisticsReceiveInfo
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
 import java.io.File
@@ -22,6 +23,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun getUserInfo(userId: String) = apiHelper.getUserInfo(userId)
 
     override fun getPackageInfo(userId: String, packageId: String) = apiHelper.getPackageInfo(userId, packageId)
+
+    override fun logisticsReceive(logisticsReceiveJsonString: String) = apiHelper.logisticsReceive(logisticsReceiveJsonString)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 

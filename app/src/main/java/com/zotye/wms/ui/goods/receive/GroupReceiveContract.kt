@@ -1,6 +1,7 @@
 package com.zotye.wms.ui.goods.receive
 
 import android.support.annotation.StringRes
+import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
@@ -11,6 +12,7 @@ import com.zotye.wms.data.api.model.LogisticsReceiveInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,6 +26,7 @@ object GroupReceiveContract {
         fun showProgressDialog(@StringRes resId: Int)
         fun hideProgressDialog()
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
+        fun submitReceiveInfoSucceed()
     }
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
@@ -43,7 +46,23 @@ object GroupReceiveContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
+                        dataManager.logisticsReceive(Gson().toJson(logisticsReceiveInfo)).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
 
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.submitReceiveInfoSucceed()
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
                     }
                 }
             }

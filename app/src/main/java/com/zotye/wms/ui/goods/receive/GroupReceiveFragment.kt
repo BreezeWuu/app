@@ -15,6 +15,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.Gson
 import com.zotye.wms.R
+import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
@@ -39,6 +40,8 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
     private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
     @Inject
     lateinit var presenter: GroupReceiveContract.GroupReceivePresenter
+    @Inject
+    lateinit var dataManager: DataManager
     private var progressDialog: ProgressDialog? = null
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
@@ -139,22 +142,26 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                 showMessage(R.string.error_package_list_empty)
             } else {
                 doAsync {
-                    val logisticsReceiveInfo = LogisticsReceiveInfo()
-                    var receiveCount = BigDecimal.valueOf(0)
-                    logisticsReceiveInfo.code = palletInfo.code
-                    logisticsReceiveInfo.eType = "${BarCodeType.Pallet.type}"
-                    logisticsReceiveInfo.children = arrayListOf()
-                    adapter.data.forEach {
-                        receiveCount += it.receiveNum!!
-                        val childPackageInfo = LogisticsReceiveInfo()
-                        childPackageInfo.code = it.code
-                        childPackageInfo.eType = "${BarCodeType.Package}"
-                        childPackageInfo.receiveNum = it.receiveNum
-                        logisticsReceiveInfo.children!!.add(childPackageInfo)
-                    }
-                    logisticsReceiveInfo.receiveNum = receiveCount
-                    onUiThread {
-                        presenter.submitReceiveInfo(logisticsReceiveInfo)
+                    dataManager.getCurrentUser()?.let { user ->
+                        val logisticsReceiveInfo = LogisticsReceiveInfo()
+                        var receiveCount = BigDecimal.valueOf(0)
+                        logisticsReceiveInfo.userId = user.userId
+                        logisticsReceiveInfo.code = palletInfo.code
+                        logisticsReceiveInfo.eType = "${BarCodeType.Pallet.type}"
+                        logisticsReceiveInfo.children = arrayListOf()
+                        adapter.data.forEach {
+                            receiveCount += it.receiveNum!!
+                            val childPackageInfo = LogisticsReceiveInfo()
+                            childPackageInfo.userId = user.userId
+                            childPackageInfo.code = it.code
+                            childPackageInfo.eType = "${BarCodeType.Package.type}"
+                            childPackageInfo.receiveNum = it.receiveNum
+                            logisticsReceiveInfo.children!!.add(childPackageInfo)
+                        }
+                        logisticsReceiveInfo.receiveNum = receiveCount
+                        onUiThread {
+                            presenter.submitReceiveInfo(logisticsReceiveInfo)
+                        }
                     }
                 }
             }
@@ -227,6 +234,11 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             showMessage(R.string.repeat_package_code_warn)
         } else
             presenter.getPackageInfo(result)
+    }
+
+    override fun submitReceiveInfoSucceed() {
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.submit_receive_info_succeed).setPositiveButton(R.string.ok, null).show()
+        (packageRecyclerView.adapter as GoodsPackageAdapter).setNewData(null)
     }
 
     override fun onDestroyView() {
