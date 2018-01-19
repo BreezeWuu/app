@@ -61,9 +61,9 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
         packageInput.onClick {
-            val view = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
-            val editText = view.findViewById<EditText>(R.id.packageCode)
-            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(view).setNegativeButton(R.string.ok) { _, _ ->
+            val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
+            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 presenter.getPackageInfo(editText.text.toString())
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
@@ -72,7 +72,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         packageRecyclerView.layoutManager = LinearLayoutManager(context)
         val goodsPackageAdapter = GoodsPackageAdapter()
         goodsPackageAdapter.bindToRecyclerView(packageRecyclerView)
-        goodsPackageAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { _, view, position ->
+        goodsPackageAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { _, _, position ->
             when (view.id) {
                 R.id.deleteButton -> {
                     context?.let {
