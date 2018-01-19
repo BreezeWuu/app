@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onUiThread
+import org.jetbrains.anko.textResource
 import java.math.BigDecimal
 import javax.inject.Inject
 
@@ -86,7 +88,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         packageRecyclerView.layoutManager = LinearLayoutManager(context)
         val goodsPackageAdapter = GoodsPackageAdapter()
         goodsPackageAdapter.bindToRecyclerView(packageRecyclerView)
-        goodsPackageAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { _, _, position ->
+        goodsPackageAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { _, view, position ->
             when (view.id) {
                 R.id.deleteButton -> {
                     context?.let {
@@ -151,29 +153,34 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             if (adapter.itemCount == 0) {
                 showMessage(R.string.error_package_list_empty)
             } else {
-                doAsync {
-                    dataManager.getCurrentUser()?.let { user ->
-                        val logisticsReceiveInfo = LogisticsReceiveInfo()
-                        var receiveCount = BigDecimal.valueOf(0)
-                        logisticsReceiveInfo.userId = user.userId
-                        logisticsReceiveInfo.code = palletInfo.code
-                        logisticsReceiveInfo.eType = "${BarCodeType.Pallet.type}"
-                        logisticsReceiveInfo.children = arrayListOf()
-                        adapter.data.forEach {
-                            receiveCount += it.receiveNum!!
-                            val childPackageInfo = LogisticsReceiveInfo()
-                            childPackageInfo.userId = user.userId
-                            childPackageInfo.code = it.code
-                            childPackageInfo.eType = "${BarCodeType.Package.type}"
-                            childPackageInfo.receiveNum = it.receiveNum
-                            logisticsReceiveInfo.children!!.add(childPackageInfo)
+                val dialog = AlertDialog.Builder(context!!).setMessage(R.string.submit_receive_info).setNegativeButton(R.string.ok) { _, _ ->
+                    doAsync {
+                        dataManager.getCurrentUser()?.let { user ->
+                            val logisticsReceiveInfo = LogisticsReceiveInfo()
+                            var receiveCount = BigDecimal.valueOf(0)
+                            logisticsReceiveInfo.userId = user.userId
+                            logisticsReceiveInfo.code = palletInfo.code
+                            logisticsReceiveInfo.eType = "${BarCodeType.Pallet.type}"
+                            logisticsReceiveInfo.children = arrayListOf()
+                            adapter.data.forEach {
+                                receiveCount += it.receiveNum!!
+                                val childPackageInfo = LogisticsReceiveInfo()
+                                childPackageInfo.userId = user.userId
+                                childPackageInfo.code = it.code
+                                childPackageInfo.eType = "${BarCodeType.Package.type}"
+                                childPackageInfo.receiveNum = it.receiveNum
+                                logisticsReceiveInfo.children!!.add(childPackageInfo)
+                            }
+                            logisticsReceiveInfo.receiveNum = receiveCount
+                            onUiThread {
+                                presenter.submitReceiveInfo(logisticsReceiveInfo)
+                            }
                         }
-                        logisticsReceiveInfo.receiveNum = receiveCount
-                        onUiThread {
-                            presenter.submitReceiveInfo(logisticsReceiveInfo)
-                        }
+
                     }
-                }
+                }.setPositiveButton(R.string.cancel, null).create()
+                dialog.setCanceledOnTouchOutside(false)
+                dialog.show()
             }
         }
     }
@@ -188,6 +195,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         barcodeInfo.receiveNum = barcodeInfo.deliveryNum
         dataBind.info = barcodeInfo
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
+        infoView.findViewById<AppCompatButton>(R.id.okButton).textResource = if (isGroupReceive) R.string.add else R.string.goods_receive
         infoView.findViewById<View>(R.id.okButton).onClick {
             if (barcodeInfo.isBatchMaterialEditable()) {
                 if (batchNumberEditText.text.isNullOrBlank()) {
@@ -251,6 +259,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         infoView.findViewById<View>(R.id.cancleButton).onClick {
             dialog.dismiss()
         }
+        dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
 

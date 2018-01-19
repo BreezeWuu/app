@@ -57,4 +57,6 @@
     <string name="error_package_list_empty">包装为空，不能放入托盘！</string>
     <string name="loading_submit_receive_info">正在上传收货信息&#8230;</string>
     <string name="info">提示</string>
+    <string name="goods_receive">收货</string>
+    <string name="submit_receive_info">该托盘有效，确定收货？！</string>
 </resources>
