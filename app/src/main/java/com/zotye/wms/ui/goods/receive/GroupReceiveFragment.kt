@@ -56,12 +56,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             activity?.onBackPressed()
         }
         packageScanner.onClick {
-            val fragment = CodeScannerFragment.newInstance(BarCodeType.Package)
-            fragment.setScannerDelegate(this@GroupReceiveFragment)
-            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
-        }
-        tuoScanner.onClick {
-            val fragment = CodeScannerFragment.newInstance(BarCodeType.Pallet)
+            val fragment = CodeScannerFragment()
             fragment.setScannerDelegate(this@GroupReceiveFragment)
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
@@ -69,7 +64,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             val view = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
             val editText = view.findViewById<EditText>(R.id.packageCode)
             AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(view).setNegativeButton(R.string.ok) { _, _ ->
-                presenter.getPackageInfo(BarCodeType.Package, editText.text.toString())
+                presenter.getPackageInfo(editText.text.toString())
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
@@ -210,11 +205,11 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         dialog.show()
     }
 
-    override fun succeed(barCodeType: BarCodeType, result: String) {
-        if (barCodeType == BarCodeType.Package && (packageRecyclerView.adapter as GoodsPackageAdapter).data.contains(PackageInfo(result))) {
+    override fun succeed(result: String) {
+        if ((packageRecyclerView.adapter as GoodsPackageAdapter).data.contains(PackageInfo(result))) {
             showMessage(R.string.repeat_package_code_warn)
         } else
-            presenter.getPackageInfo(barCodeType, result)
+            presenter.getPackageInfo(result)
     }
 
     override fun onDestroyView() {

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import android.widget.Toast
 import com.zotye.wms.R
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.main.MainFragment
@@ -35,7 +34,6 @@ class LoginFragment : BaseFragment(), LoginContract.LoginMvpView {
         super.onViewCreated(view, savedInstanceState)
         toolbar_base.visibility = View.VISIBLE
         toolbar_base.title = getString(R.string.login)
-//        toolbar_base.navigationIconResource = R.drawable.ic_action_back
         toolbar_base?.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
@@ -51,12 +49,6 @@ class LoginFragment : BaseFragment(), LoginContract.LoginMvpView {
             }
         }
         login_submit.setOnClickListener { login() }
-//        registerAccount.onClick {
-//            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_content, WebFragment.newInstance("http://www.upenglish.cn/Center/Register", getString(R.string.login_register_account), true))?.addToBackStack(null)?.commit()
-//        }
-//        forgotPassword.onClick {
-//            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_content, WebFragment.newInstance("http://www.upenglish.cn/Center/ForgetPassword", getString(R.string.login_forget_password), true))?.addToBackStack(null)?.commit()
-//        }
     }
 
     override fun getLoadView(): View = layout_login_loading

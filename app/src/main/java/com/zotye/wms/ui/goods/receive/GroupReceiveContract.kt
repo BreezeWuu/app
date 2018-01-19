@@ -26,7 +26,7 @@ object GroupReceiveContract {
     }
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
-        fun getPackageInfo(barCodeType: BarCodeType, packageId: String)
+        fun getPackageInfo(packageId: String)
         fun cancelQueryPackageInfo()
     }
 
@@ -36,12 +36,12 @@ object GroupReceiveContract {
             barcodeInfoCall?.cancel()
         }
 
-        override fun getPackageInfo(barCodeType: BarCodeType, packageId: String) {
+        override fun getPackageInfo(packageId: String) {
             mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        barcodeInfoCall = dataManager.getPackageInfo(it.userId, "${barCodeType.type}", packageId)
+                        barcodeInfoCall = dataManager.getPackageInfo(it.userId, packageId)
                         barcodeInfoCall!!.enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
                             override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()

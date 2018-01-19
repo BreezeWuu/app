@@ -26,19 +26,9 @@ const val REQUEST_CODE_QRCODE_PERMISSIONS = 1
 
 class CodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, QRCodeView.Delegate {
     private var scannerDelegate: ScannerDelegate? = null
-    private var barCodeType: BarCodeType = BarCodeType.Package
+
     fun setScannerDelegate(scannerDelegate: ScannerDelegate) {
         this.scannerDelegate = scannerDelegate
-    }
-
-    companion object {
-        fun newInstance(barCodeType: BarCodeType): CodeScannerFragment {
-            val codeScannerFragment = CodeScannerFragment()
-            val bundle = Bundle()
-            bundle.putSerializable("barCodeType", barCodeType)
-            codeScannerFragment.arguments = bundle
-            return codeScannerFragment
-        }
     }
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
@@ -47,9 +37,6 @@ class CodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let {
-            barCodeType = it.getSerializable("barCodeType") as BarCodeType
-        }
         toolbar_base.visibility = View.VISIBLE
         toolbar_base.titleResource = R.string.code_scanner
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
@@ -88,7 +75,7 @@ class CodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbacks,
         vibrate()
         zbarview.stopSpot()
         scannerDelegate?.let {
-            it.succeed(barCodeType, result)
+            it.succeed(result)
         }
         activity?.onBackPressed()
     }

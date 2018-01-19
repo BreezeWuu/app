@@ -14,5 +14,5 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun getUserInfo(userId: String) = apiService.getUserInfo(userId)
 
-    override fun getPackageInfo(userId: String, barCodeType: String, packageId: String) = apiService.getPackageInfo(userId, barCodeType, packageId)
+    override fun getPackageInfo(userId: String, packageId: String) = apiService.getPackageInfo(userId, packageId)
 }
