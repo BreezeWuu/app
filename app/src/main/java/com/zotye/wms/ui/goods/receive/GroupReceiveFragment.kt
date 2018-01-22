@@ -21,12 +21,11 @@ import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BaseFragment
-import com.zotye.wms.ui.common.CodeScannerFragment
+import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
-import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onUiThread
@@ -72,7 +71,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             activity?.onBackPressed()
         }
         packageScanner.onClick {
-            val fragment = CodeScannerFragment()
+            val fragment = BarCodeScannerFragment()
             fragment.setScannerDelegate(this@GroupReceiveFragment)
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }

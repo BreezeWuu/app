@@ -2,6 +2,7 @@ package com.zotye.wms.di.module
 
 import com.zotye.wms.ui.goods.receive.GroupReceiveContract
 import com.zotye.wms.ui.main.MainContract
+import com.zotye.wms.ui.storageunit.modify.StorageUnitModifyContract
 import com.zotye.wms.ui.user.login.LoginContract
 import dagger.Module
 import dagger.Provides
@@ -20,9 +21,9 @@ class PresenterModule {
 
     @Provides
     fun provideGroupReceivePresenter(presenter: GroupReceiveContract.GroupReceivePresenterImpl): GroupReceiveContract.GroupReceivePresenter = presenter
-//
-//    @Provides
-//    fun provideSortPresenter(presenter: SortContract.SortPresenterImpl): SortContract.SortPresenter = presenter
+
+    @Provides
+    fun provideStorageUnitModifyPresenter(presenter: StorageUnitModifyContract.StorageUnitModifyPresenterImpl): StorageUnitModifyContract.StorageUnitModifyPresenter = presenter
 //
 //    @Provides
 //    fun provideUserInfoPresenter(presenter: UserProfileContract.UserProfilePresenterImpl): UserProfileContract.UserProfilePresenter = presenter

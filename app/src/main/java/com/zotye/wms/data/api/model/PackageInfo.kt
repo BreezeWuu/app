@@ -85,6 +85,23 @@ class PackageInfo(
      */
     var factoryCode: String? = null
 
+    /**
+     * 库位代码
+     */
+    var storagePositionCode: String? = null
+    /**
+     * 库位名称
+     */
+    var storagePositionName: String? = null
+    /**
+     * 库存区域代码
+     */
+    var storageAreaInfoCode: String? = null
+    /**
+     * 库存区域名称
+     */
+    var storageAreaInfoName: String? = null
+
     var isEditEnable = false
     override fun equals(other: Any?): Boolean {
         return if (other !is PackageInfo)

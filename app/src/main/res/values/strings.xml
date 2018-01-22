@@ -43,12 +43,14 @@
     <string name="supplier_nfo_format">供应商简称：</string>
     <string name="delivery_note_code_format">交货单号：</string>
     <string name="receive_num_format">实收数量：</string>
-    <string name="package_info">包装详情</string>
+    <string name="package_info">包装明细</string>
     <string name="not_match_material_id">物料号不一致，不允许组托！</string>
     <string name="not_match_supplier_info">供应商不一致，不允许组托！</string>
     <string name="not_match_batch_num">批次号不一致，不允许组托！</string>
     <string name="not_match_sl_code">库存地点不一致，不允许组托！</string>
     <string name="batch_code_format">批次号：</string>
+    <string name="storage_unit_position_format">库位：</string>
+    <string name="storage_unit_area_format">库存区域：</string>
     <string name="batch_number_empty_error">批次号不能为空</string>
     <string name="add">添加</string>
     <string name="not_match_third_part_receive_num">非三方物流实收数量不允许大于包装数量!</string>
@@ -58,5 +60,11 @@
     <string name="loading_submit_receive_info">正在上传收货信息&#8230;</string>
     <string name="info">提示</string>
     <string name="goods_receive">收货</string>
+    <string name="tuo_pan_code">托盘码</string>
+    <string name="tuo_pan_code_format" >托盘码：</string>
     <string name="submit_receive_info">该托盘有效，确定收货？！</string>
+    <string name="title_storage_unit_modify">库位调整</string>
+    <string name="qr_code_scanner">二维码扫描</string>
+    <string name="storage_unit_position_avlid_modify">新库位有效，点击确定调整库位！</string>
+    <string name="loading_modiy_storage_unit_position">库位调整&#8230;</string>
 </resources>

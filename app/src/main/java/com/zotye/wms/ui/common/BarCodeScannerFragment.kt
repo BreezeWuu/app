@@ -24,7 +24,7 @@ import pub.devrel.easypermissions.EasyPermissions
 
 const val REQUEST_CODE_QRCODE_PERMISSIONS = 1
 
-class CodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, QRCodeView.Delegate {
+class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, QRCodeView.Delegate {
     private var scannerDelegate: ScannerDelegate? = null
 
     fun setScannerDelegate(scannerDelegate: ScannerDelegate) {

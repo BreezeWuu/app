@@ -5,9 +5,12 @@ import com.zotye.wms.data.api.model.User
 import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
+import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.LogisticsReceiveInfo
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
+import retrofit2.Call
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -22,7 +25,11 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getUserInfo(userId: String) = apiHelper.getUserInfo(userId)
 
-    override fun getPackageInfo(userId: String,isGroupReceive: Boolean, packageId: String) = apiHelper.getPackageInfo(userId,isGroupReceive, packageId)
+    override fun getPackageInfo(userId: String, isGroupReceive: Boolean, packageId: String) = apiHelper.getPackageInfo(userId, isGroupReceive, packageId)
+
+    override fun getStorageUnitInfoByBarcode(userId: String, barCode: String) = apiHelper.getStorageUnitInfoByBarcode(userId, barCode)
+
+    override fun authStorageUnitNewPositionByQRCode(userId: String, qrCode: String)=apiHelper.authStorageUnitNewPositionByQRCode(userId, qrCode)
 
     override fun logisticsReceive(logisticsReceiveJsonString: String) = apiHelper.logisticsReceive(logisticsReceiveJsonString)
 
