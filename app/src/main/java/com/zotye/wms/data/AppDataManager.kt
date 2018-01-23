@@ -31,6 +31,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun authStorageUnitNewPositionByQRCode(userId: String, qrCode: String)=apiHelper.authStorageUnitNewPositionByQRCode(userId, qrCode)
 
+    override fun storageUnitModify(userId: String, oldStoragePositionCode: String, newStoragePositionCode: String)=apiHelper.storageUnitModify(userId, oldStoragePositionCode, newStoragePositionCode)
+
     override fun logisticsReceive(logisticsReceiveJsonString: String) = apiHelper.logisticsReceive(logisticsReceiveJsonString)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)

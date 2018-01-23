@@ -22,12 +22,14 @@ object StorageUnitModifyContract {
         fun showProgressDialog(@StringRes resId: Int)
         fun hideProgressDialog()
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
-        fun getNewStorageUnitPosition(info:BarcodeInfo,qrCode: String)
+        fun getNewStorageUnitPosition(info: BarcodeInfo, qrCode: String)
+        fun storageUnitModifySucceed(message: String)
     }
 
     interface StorageUnitModifyPresenter : MvpPresenter<StorageUnitModifyView> {
         fun getStorageUnitInfoByCode(barCode: String)
-        fun authStorageUnitNewPositionByQRCode(info:BarcodeInfo,qrCode: String)
+        fun authStorageUnitNewPositionByQRCode(info: BarcodeInfo, qrCode: String)
+        fun storageUnitModify(oldStoragePositionCode: String, newStoragePositionCode: String)
     }
 
     class StorageUnitModifyPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<StorageUnitModifyView>(), StorageUnitModifyPresenter {
@@ -59,8 +61,8 @@ object StorageUnitModifyContract {
             }
         }
 
-        override fun authStorageUnitNewPositionByQRCode(info:BarcodeInfo,qrCode: String) {
-            mvpView?.showProgressDialog(R.string.loading_modiy_storage_unit_position)
+        override fun authStorageUnitNewPositionByQRCode(info: BarcodeInfo, qrCode: String) {
+            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
@@ -74,7 +76,34 @@ object StorageUnitModifyContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.getNewStorageUnitPosition(info,qrCode)
+                                        mvpView?.getNewStorageUnitPosition(info, qrCode)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun storageUnitModify(oldStoragePositionCode: String, newStoragePositionCode: String) {
+            mvpView?.showProgressDialog(R.string.loading_modiy_storage_unit_position)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.storageUnitModify(it.userId, oldStoragePositionCode, newStoragePositionCode).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.storageUnitModifySucceed(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

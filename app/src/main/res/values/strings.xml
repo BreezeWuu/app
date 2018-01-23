@@ -67,4 +67,5 @@
     <string name="qr_code_scanner">二维码扫描</string>
     <string name="storage_unit_position_avlid_modify">新库位有效，点击确定调整库位！</string>
     <string name="loading_modiy_storage_unit_position">库位调整&#8230;</string>
+    <string name="storage_unit_position_modify_succeed">库位调整成功！～</string>
 </resources>

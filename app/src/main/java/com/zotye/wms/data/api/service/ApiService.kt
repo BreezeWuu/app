@@ -35,5 +35,9 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/authStorageUnitNewPositionByQRCode")
-    fun authStorageUnitNewPositionByQRCode(@Field("userId") userId: String,@Field("qrCode") qrCode: String): Call<ApiResponse<String>>
+    fun authStorageUnitNewPositionByQRCode(@Field("userId") userId: String, @Field("qrCode") qrCode: String): Call<ApiResponse<String>>
+
+    @FormUrlEncoded
+    @POST("bar_code/storageUnitModify")
+    fun storageUnitModify(@Field("userId") userId: String, @Field("oldStoragePositionCode") oldStoragePositionCode: String, @Field("newStoragePositionCode") newStoragePositionCode: String): Call<ApiResponse<String>>
 }

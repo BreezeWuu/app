@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.BarCodeType
@@ -144,8 +143,31 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
 
     override fun getNewStorageUnitPosition(info: BarcodeInfo, qrCode: String) {
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.storage_unit_position_avlid_modify).setNegativeButton(R.string.ok) { _, _ ->
-
+            val barcodeType = BarCodeType.fromCodeType(info.barCodeType)
+            barcodeType?.let {
+                when (it) {
+                    BarCodeType.Package -> {
+                        val packageInfo: PackageInfo = Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java)
+                        packageInfo.storagePositionCode?.let {
+                            presenter.storageUnitModify(it, qrCode)
+                        }
+                    }
+                    BarCodeType.Pallet -> {
+                        val palletInfo = Gson().fromJson<PalletInfo>(info.barCodeInfo, PalletInfo::class.java)
+                        palletInfo.storageAreaInfoCode?.let {
+                            presenter.storageUnitModify(it, qrCode)
+                        }
+                    }
+                }
+            }
         }.setPositiveButton(R.string.cancel, null).create()
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
+
+    override fun storageUnitModifySucceed(message: String) {
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok, null).create()
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()

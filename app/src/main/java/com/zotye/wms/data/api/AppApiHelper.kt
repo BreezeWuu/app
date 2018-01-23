@@ -22,4 +22,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun logisticsReceive(logisticsReceiveJsonString: String) = apiService.logisticsReceive(logisticsReceiveJsonString)
 
     override fun authStorageUnitNewPositionByQRCode(userId: String, qrCode: String)=apiService.authStorageUnitNewPositionByQRCode(userId, qrCode)
+
+    override fun storageUnitModify(userId: String, oldStoragePositionCode: String, newStoragePositionCode: String)=apiService.storageUnitModify(userId, oldStoragePositionCode, newStoragePositionCode)
 }
