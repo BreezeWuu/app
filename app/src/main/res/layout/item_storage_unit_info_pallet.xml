@@ -40,15 +40,35 @@
                 android:textColor="@color/black" />
         </LinearLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/storageUnitModifyButton"
-            style="@style/Button.Primary"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height_normal"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/spacing_normal"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:text="@string/title_storage_unit_modify"
-            android:textSize="22dp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/storageUnitModifyButton"
+                style="@style/Button.Primary"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_weight="1"
+                android:text="@string/title_storage_unit_modify"
+                android:textSize="22dp" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/cancelButton"
+                style="@style/Button.Primary"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textSize="22dp" />
+        </LinearLayout>
     </LinearLayout>
 </layout>

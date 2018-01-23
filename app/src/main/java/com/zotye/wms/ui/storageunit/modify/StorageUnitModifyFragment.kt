@@ -87,51 +87,68 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
             barcodeType?.let {
                 when (it) {
                     BarCodeType.Package -> {
-                        getStorageUnitPackage(Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java))
+                        getStorageUnitPackage(info)
                     }
                     BarCodeType.Pallet -> {
-                        getStorageUnitPallet(Gson().fromJson<PalletInfo>(info.barCodeInfo, PalletInfo::class.java))
+                        getStorageUnitPallet(info)
                     }
                 }
             }
         }
     }
 
-    private fun getStorageUnitPallet(palletInfo: PalletInfo?) {
+    private fun getStorageUnitPallet(info: BarcodeInfo) {
+        val palletInfo = Gson().fromJson<PalletInfo>(info.barCodeInfo, PalletInfo::class.java)
         val infoView = LayoutInflater.from(context).inflate(R.layout.item_storage_unit_info_pallet, null)
+        val dialog = AlertDialog.Builder(context!!).setView(infoView).create()
         infoView.find<Button>(R.id.storageUnitModifyButton).onClick {
+            dialog.dismiss()
             val fragment = QRCodeScannerFragment()
             fragment.setScannerDelegate(object : ScannerDelegate {
                 override fun succeed(result: String) {
-                    presenter.authStorageUnitNewPositionByQRCode(result)
+                    presenter.authStorageUnitNewPositionByQRCode(info, result)
                 }
             })
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
+        infoView.find<Button>(R.id.cancelButton).onClick {
+            dialog.dismiss()
+        }
         val dataBind = DataBindingUtil.bind<ItemStorageUnitInfoPalletBinding>(infoView, fragmentDataBindingComponent)
         dataBind.info = palletInfo
-        AlertDialog.Builder(context!!).setView(infoView).show()
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
-    private fun getStorageUnitPackage(packageInfo: PackageInfo) {
+    private fun getStorageUnitPackage(info: BarcodeInfo) {
+        val packageInfo: PackageInfo = Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java)
         val infoView = LayoutInflater.from(context).inflate(R.layout.item_storage_unit_info_package, null)
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
         infoView.find<Button>(R.id.storageUnitModifyButton).onClick {
+            dialog.dismiss()
             val fragment = QRCodeScannerFragment()
             fragment.setScannerDelegate(object : ScannerDelegate {
                 override fun succeed(result: String) {
-                    presenter.authStorageUnitNewPositionByQRCode(result)
+                    presenter.authStorageUnitNewPositionByQRCode(info, result)
                 }
             })
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
         val dataBind = DataBindingUtil.bind<ItemStorageUnitInfoPackageBinding>(infoView, fragmentDataBindingComponent)
         dataBind.info = packageInfo
-        AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).show()
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
-    override fun getNewStorageUnitPosition(qrCode: String) {
-        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.storage_unit_position_avlid_modify).setNegativeButton(R.string.ok) { _, _ ->
-        }.setPositiveButton(R.string.cancel, null).show()
+    override fun getNewStorageUnitPosition(info: BarcodeInfo, qrCode: String) {
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.storage_unit_position_avlid_modify).setNegativeButton(R.string.ok) { _, _ ->
+
+        }.setPositiveButton(R.string.cancel, null).create()
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
 
     override fun onDestroyView() {
