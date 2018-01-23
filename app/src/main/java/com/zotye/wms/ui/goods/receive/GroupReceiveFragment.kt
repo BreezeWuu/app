@@ -243,14 +243,14 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             } else {
                 doAsync {
                     dataManager.getCurrentUser()?.let { user ->
-                        val childPackageInfo = LogisticsReceiveInfo()
-                        childPackageInfo.userId = user.userId
-                        childPackageInfo.code = packageInfo.code
-                        childPackageInfo.eType = "${BarCodeType.Package.type}"
-                        childPackageInfo.receiveNum = receiveNumber
-                        childPackageInfo.batchNum = batchNumberEditText.text.toString()
+                        val logisticsReceiveInfo = LogisticsReceiveInfo()
+                        logisticsReceiveInfo.userId = user.userId
+                        logisticsReceiveInfo.code = packageInfo.code
+                        logisticsReceiveInfo.eType = "${BarCodeType.Package.type}"
+                        logisticsReceiveInfo.receiveNum = receiveNumber
+                        logisticsReceiveInfo.batchNum = batchNumberEditText.text.toString()
                         onUiThread {
-                            presenter.submitReceiveInfo(childPackageInfo)
+                            presenter.submitReceiveInfo(logisticsReceiveInfo)
                         }
                     }
                 }
