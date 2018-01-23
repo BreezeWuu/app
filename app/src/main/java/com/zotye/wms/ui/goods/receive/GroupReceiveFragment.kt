@@ -168,6 +168,8 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                                 childPackageInfo.code = it.code
                                 childPackageInfo.eType = "${BarCodeType.Package.type}"
                                 childPackageInfo.receiveNum = it.receiveNum
+                                childPackageInfo.batchNum = it.batchNum
+                                logisticsReceiveInfo.batchNum = it.batchNum
                                 logisticsReceiveInfo.children!!.add(childPackageInfo)
                             }
                             logisticsReceiveInfo.receiveNum = receiveCount
@@ -184,19 +186,19 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         }
     }
 
-    private fun getPackageInfo(barcodeInfo: PackageInfo) {
-        barcodeInfo.isEditEnable = true
+    private fun getPackageInfo(packageInfo: PackageInfo) {
+        packageInfo.isEditEnable = true
         val infoView = LayoutInflater.from(context).inflate(R.layout.item_goods_package, null)
         val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(infoView, fragmentDataBindingComponent)
         val receiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
         val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
         infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
-        barcodeInfo.receiveNum = barcodeInfo.deliveryNum
-        dataBind.info = barcodeInfo
+        packageInfo.receiveNum = packageInfo.deliveryNum
+        dataBind.info = packageInfo
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
         infoView.findViewById<AppCompatButton>(R.id.okButton).textResource = if (isGroupReceive) R.string.add else R.string.goods_receive
         infoView.findViewById<View>(R.id.okButton).onClick {
-            if (barcodeInfo.isBatchMaterialEditable()) {
+            if (packageInfo.isBatchMaterialEditable()) {
                 if (batchNumberEditText.text.isNullOrBlank()) {
                     batchNumberEditText.error = getString(R.string.batch_number_empty_error)
                     return@onClick
@@ -204,38 +206,38 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             }
             val numberText = receiveNumberEditText.text.toString()
             val receiveNumber = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
-            if (!barcodeInfo.isThirdPart()) {
-                if (receiveNumber > barcodeInfo.deliveryNum) {
+            if (!packageInfo.isThirdPart()) {
+                if (receiveNumber > packageInfo.deliveryNum) {
                     receiveNumberEditText.error = getString(R.string.not_match_third_part_receive_num)
                     return@onClick
                 }
             }
             if (isGroupReceive) {
-                barcodeInfo.receiveNum = receiveNumber
-                barcodeInfo.batchNum = batchNumberEditText.text.toString()
+                packageInfo.receiveNum = receiveNumber
+                packageInfo.batchNum = batchNumberEditText.text.toString()
                 if (packageRecyclerView.adapter.itemCount != 0) {
                     val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
                     val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
-                    if (lastPackage.materialNum != barcodeInfo.materialNum) {
+                    if (lastPackage.materialNum != packageInfo.materialNum) {
                         showSnackBar(infoView, getString(R.string.not_match_material_id))
                         return@onClick
                     }
-                    if (lastPackage.supplierCode != barcodeInfo.supplierCode) {
+                    if (lastPackage.supplierCode != packageInfo.supplierCode) {
                         showSnackBar(infoView, getString(R.string.not_match_supplier_info))
                         return@onClick
                     }
-                    if (lastPackage.slCode != barcodeInfo.slCode) {
+                    if (lastPackage.slCode != packageInfo.slCode) {
                         showSnackBar(infoView, getString(R.string.not_match_sl_code))
                         return@onClick
                     }
-                    if (lastPackage.batchNum != barcodeInfo.batchNum) {
+                    if (lastPackage.batchNum != packageInfo.batchNum) {
                         batchNumberEditText.error = getString(R.string.not_match_batch_num)
                         return@onClick
                     }
                 }
-                barcodeInfo.isEditEnable = false
+                packageInfo.isEditEnable = false
                 val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
-                adapter.addData(barcodeInfo)
+                adapter.addData(packageInfo)
                 if (adapter.itemCount != 0)
                     packageRecyclerView.bringToFront()
             } else {
@@ -243,9 +245,10 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                     dataManager.getCurrentUser()?.let { user ->
                         val childPackageInfo = LogisticsReceiveInfo()
                         childPackageInfo.userId = user.userId
-                        childPackageInfo.code = barcodeInfo.code
+                        childPackageInfo.code = packageInfo.code
                         childPackageInfo.eType = "${BarCodeType.Package.type}"
                         childPackageInfo.receiveNum = receiveNumber
+                        childPackageInfo.batchNum = batchNumberEditText.text.toString()
                         onUiThread {
                             presenter.submitReceiveInfo(childPackageInfo)
                         }

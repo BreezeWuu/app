@@ -14,6 +14,8 @@ class LogisticsReceiveInfo {
 
     var receiveNum: BigDecimal? = null//收货数量  组托收货时 为托盘中所有包装的实收数合计 非组托收货时未该包装的收货数量
 
+    var batchNum: String? = null
+
     var children: ArrayList<LogisticsReceiveInfo>? = null// 组托收货时 传入包装 非组托收货时为空集合
 
 }
