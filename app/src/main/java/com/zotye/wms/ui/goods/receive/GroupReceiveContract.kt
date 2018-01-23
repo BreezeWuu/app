@@ -6,13 +6,11 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.LogisticsReceiveInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +24,7 @@ object GroupReceiveContract {
         fun showProgressDialog(@StringRes resId: Int)
         fun hideProgressDialog()
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
-        fun submitReceiveInfoSucceed()
+        fun submitReceiveInfoSucceed(message: String)
     }
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
@@ -51,7 +49,7 @@ object GroupReceiveContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.submitReceiveInfoSucceed()
+                                        mvpView?.submitReceiveInfoSucceed(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

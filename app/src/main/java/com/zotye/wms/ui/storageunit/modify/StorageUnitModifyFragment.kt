@@ -148,15 +148,11 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
                 when (it) {
                     BarCodeType.Package -> {
                         val packageInfo: PackageInfo = Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java)
-                        packageInfo.storagePositionCode?.let {
-                            presenter.storageUnitModify(it, qrCode)
-                        }
+                        presenter.storageUnitModify("${packageInfo.storageAreaInfoCode}-${packageInfo.storagePositionCode}", qrCode)
                     }
                     BarCodeType.Pallet -> {
                         val palletInfo = Gson().fromJson<PalletInfo>(info.barCodeInfo, PalletInfo::class.java)
-                        palletInfo.storageAreaInfoCode?.let {
-                            presenter.storageUnitModify(it, qrCode)
-                        }
+                        presenter.storageUnitModify("${palletInfo.storageAreaInfoCode}-${palletInfo.storagePositionCode}", qrCode)
                     }
                 }
             }
