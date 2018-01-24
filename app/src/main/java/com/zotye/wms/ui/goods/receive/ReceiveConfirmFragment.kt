@@ -97,6 +97,7 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
 
     override fun packageReceiveSucceed(message: String) {
         viewSwitcher.showPrevious()
+        toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_receive_confirm)
         AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok, null).show()
     }
 
