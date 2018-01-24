@@ -23,6 +23,8 @@ import com.zotye.wms.databinding.ItemHomeButtonBinding
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.receive.GroupReceiveFragment
+import com.zotye.wms.ui.goods.receive.ReceiveConfirmFragment
+import com.zotye.wms.ui.storageunit.modify.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.modify.StorageUnitModifyFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -79,6 +81,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         ResourceType.PACKAGERECV -> {
                             fragment = GroupReceiveFragment.newInstance(false, it.name)
                         }
+                        ResourceType.STQUERY->{
+                            fragment = StorageUnitInfoFragment.newInstance(it.name)
+                        }
                         ResourceType.ThreePLDELIVERY -> {
 
                         }
@@ -92,7 +97,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
 
                         }
                         ResourceType.ThreePLRECVCONFIRM -> {
-
+                            fragment = ReceiveConfirmFragment.newInstance(it.name)
                         }
                         ResourceType.ThreePLADJUST -> {
                             fragment = StorageUnitModifyFragment()

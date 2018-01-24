@@ -21,8 +21,6 @@ import javax.inject.Inject
  */
 object GroupReceiveContract {
     interface GroupReceiveView : MvpView {
-        fun showProgressDialog(@StringRes resId: Int)
-        fun hideProgressDialog()
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
         fun submitReceiveInfoSucceed(message: String)
     }

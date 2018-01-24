@@ -43,6 +43,7 @@ enum class ResourceType(val code: String) {
     ANDROID("ANDROID"),//移动端功能
     ThreePLRECVCONFIRM("3PLRECVCONFIRM"),//确认收货
     ThreePLADJUST("3PLADJUST"),//库位调整
+    STQUERY("STQUERY"),//包装查询
     Unknown("");
 
 

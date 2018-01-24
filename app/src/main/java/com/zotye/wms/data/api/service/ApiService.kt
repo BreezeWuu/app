@@ -2,6 +2,8 @@ package com.zotye.wms.data.api.service
 
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarcodeInfo
+import com.zotye.wms.data.api.model.PackageInfo
+import com.zotye.wms.data.api.model.StorageUnitInfo
 import com.zotye.wms.data.api.model.User
 import retrofit2.Call
 import retrofit2.http.Field
@@ -30,6 +32,10 @@ interface ApiService {
     fun getStorageUnitInfoByBarcode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<BarcodeInfo>>
 
     @FormUrlEncoded
+    @POST("bar_code/storageUnitDetailInfoByCode")
+    fun getStorageUnitDetailInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<StorageUnitInfo>>
+
+    @FormUrlEncoded
     @POST("bar_code/logisticsReceive")
     fun logisticsReceive(@Field("jsonString") logisticsReceiveJsonString: String): Call<ApiResponse<String>>
 
@@ -40,4 +46,14 @@ interface ApiService {
     @FormUrlEncoded
     @POST("bar_code/storageUnitModify")
     fun storageUnitModify(@Field("userId") userId: String, @Field("oldStoragePositionCode") oldStoragePositionCode: String, @Field("newStoragePositionCode") newStoragePositionCode: String): Call<ApiResponse<String>>
+
+
+    @FormUrlEncoded
+    @POST("bar_code/logisticsReceiveConfirmInfoByCode")
+    fun logisticsReceiveConfirmInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<List<PackageInfo>>>
+
+    @FormUrlEncoded
+    @POST("bar_code/logisticsReceiveConfirm")
+    fun logisticsReceiveConfirm(@Field("userId") userId: String, @Field("noteId") noteId: String): Call<ApiResponse<String>>
+
 }

@@ -8,6 +8,7 @@ import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.LogisticsReceiveInfo
+import com.zotye.wms.data.api.model.StorageUnitInfo
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
 import retrofit2.Call
@@ -29,11 +30,17 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getStorageUnitInfoByBarcode(userId: String, barCode: String) = apiHelper.getStorageUnitInfoByBarcode(userId, barCode)
 
-    override fun authStorageUnitNewPositionByQRCode(userId: String, qrCode: String)=apiHelper.authStorageUnitNewPositionByQRCode(userId, qrCode)
+    override fun getStorageUnitDetailInfoByCode(userId: String, barCode: String) = apiHelper.getStorageUnitDetailInfoByCode(userId, barCode)
 
-    override fun storageUnitModify(userId: String, oldStoragePositionCode: String, newStoragePositionCode: String)=apiHelper.storageUnitModify(userId, oldStoragePositionCode, newStoragePositionCode)
+    override fun authStorageUnitNewPositionByQRCode(userId: String, qrCode: String) = apiHelper.authStorageUnitNewPositionByQRCode(userId, qrCode)
+
+    override fun storageUnitModify(userId: String, oldStoragePositionCode: String, newStoragePositionCode: String) = apiHelper.storageUnitModify(userId, oldStoragePositionCode, newStoragePositionCode)
 
     override fun logisticsReceive(logisticsReceiveJsonString: String) = apiHelper.logisticsReceive(logisticsReceiveJsonString)
+
+    override fun logisticsReceiveConfirmInfoByCode(userId: String, barCode: String) = apiHelper.logisticsReceiveConfirmInfoByCode(userId, barCode)
+
+    override fun logisticsReceiveConfirm(userId: String, noteId: String) = apiHelper.logisticsReceiveConfirm(userId, noteId)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 

@@ -1,7 +1,9 @@
 package com.zotye.wms.di.module
 
 import com.zotye.wms.ui.goods.receive.GroupReceiveFragment
+import com.zotye.wms.ui.goods.receive.ReceiveConfirmFragment
 import com.zotye.wms.ui.main.MainFragment
+import com.zotye.wms.ui.storageunit.modify.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.modify.StorageUnitModifyFragment
 import com.zotye.wms.ui.user.login.LoginFragment
 import dagger.Module
@@ -24,5 +26,11 @@ abstract class FragmentModule {
     abstract fun contributeGroupReceiveFragment(): GroupReceiveFragment
 
     @ContributesAndroidInjector
+    abstract fun contributeReceiveConfirmFragment(): ReceiveConfirmFragment
+
+    @ContributesAndroidInjector
     abstract fun contributeStorageUnitModifyFragment(): StorageUnitModifyFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeStorageUnitInfoFragment(): StorageUnitInfoFragment
 }

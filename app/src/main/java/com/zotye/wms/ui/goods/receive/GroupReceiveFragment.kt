@@ -1,6 +1,5 @@
 package com.zotye.wms.ui.goods.receive
 
-import android.app.ProgressDialog
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
@@ -20,8 +19,8 @@ import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
-import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.BarCodeScannerFragment
+import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
@@ -43,7 +42,6 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
     lateinit var presenter: GroupReceiveContract.GroupReceivePresenter
     @Inject
     lateinit var dataManager: DataManager
-    private var progressDialog: ProgressDialog? = null
 
     companion object {
         fun newInstance(isGroupReceive: Boolean, title: String): GroupReceiveFragment {
@@ -120,14 +118,6 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                 }
             }
         }
-    }
-
-    override fun showProgressDialog(resId: Int) {
-        progressDialog = ProgressDialog.show(context!!, null, getString(resId), true, false)
-    }
-
-    override fun hideProgressDialog() {
-        progressDialog?.dismiss()
     }
 
     override fun getBarCodeInfo(barcodeInfo: BarcodeInfo?) {

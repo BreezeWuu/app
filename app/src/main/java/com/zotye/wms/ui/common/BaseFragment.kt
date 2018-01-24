@@ -1,5 +1,6 @@
 package com.zotye.wms.ui.common
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -25,6 +26,8 @@ import kotlinx.android.synthetic.main.layout_progress.view.*
  * Created by hechuangju on 2017/6/30.
  */
 abstract class BaseFragment : Fragment(), MvpView, Injectable {
+
+    private var progressDialog: ProgressDialog? = null
 
     open fun canBackPressed(): Boolean {
         return true
@@ -96,6 +99,16 @@ abstract class BaseFragment : Fragment(), MvpView, Injectable {
 
     override fun showLoading(resId: Int) {
         showLoading(getString(resId))
+    }
+
+
+
+    override fun showProgressDialog(resId: Int) {
+        progressDialog = ProgressDialog.show(context!!, null, getString(resId), true, false)
+    }
+
+    override fun hideProgressDialog() {
+        progressDialog?.dismiss()
     }
 
     override fun showLoading(message: String?) {

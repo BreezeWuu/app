@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewSwitcher"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <include layout="@layout/layout_code_scanner" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_normal">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/finishButton"
+                style="@style/Button.Primary"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_weight="1"
+                android:text="@string/action_finish"
+                android:textSize="22dp" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/confirmButton"
+                style="@style/Button.Primary"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_weight="1"
+                android:text="@string/action_receive_confirm"
+                android:textSize="22dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ViewSwitcher>

@@ -81,6 +81,10 @@ class PackageInfo(
      */
     var slCode: String? = null
     /**
+     * 库存地点名称
+     */
+    val slName: String? = null
+    /**
      * 工厂代码
      */
     var factoryCode: String? = null

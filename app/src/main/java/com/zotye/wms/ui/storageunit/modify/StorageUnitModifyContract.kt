@@ -1,6 +1,5 @@
 package com.zotye.wms.ui.storageunit.modify
 
-import android.support.annotation.StringRes
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
@@ -19,8 +18,6 @@ import javax.inject.Inject
  */
 object StorageUnitModifyContract {
     interface StorageUnitModifyView : MvpView {
-        fun showProgressDialog(@StringRes resId: Int)
-        fun hideProgressDialog()
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
         fun getNewStorageUnitPosition(info: BarcodeInfo, qrCode: String)
         fun storageUnitModifySucceed(message: String)

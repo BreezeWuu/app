@@ -33,4 +33,8 @@ interface MvpView {
     fun hideKeyboard(editText: EditText)
 
     fun showKeyboard(editText: EditText)
+
+    fun showProgressDialog(@StringRes resId: Int)
+
+    fun hideProgressDialog()
 }

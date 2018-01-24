@@ -13,6 +13,9 @@
     <string name="login_name_password_error">密码不能为空～</string>
     <string name="login_register_account">注册账号</string>
     <string name="login_forget_password">忘记密码?</string>
+    <string name="action_logout">注销账号</string>
+    <string name="info_logout">是否确认注销账号？！</string>
+
     <string name="action_scanner">扫描条形码</string>
     <string name="goods_receive_group">组托收货</string>
     <string name="code_scanner">条形码扫描</string>
@@ -28,13 +31,17 @@
     <string name="edit">修改</string>
     <string name="cancel">取消</string>
     <string name="save">保存</string>
+    <string name="add">添加</string>
+    <string name="info">提示</string>
     <string name="action_input">手动输入</string>
     <string name="action_input_package_code">请输入包装单号/托盘号</string>
     <string name="package_code">包装单号/托盘号</string>
     <string name="loading_query_bar_code_info">正在查询条形码信息&#8230;</string>
     <string name="repeat_package_code_warn">该包装单号已存在！</string>
     <!--包装详情-->
+    <string name="package_info">包装明细</string>
     <string name="package_code_format">包装单号：</string>
+    <string name="tup_pan_code_format">托盘号：</string>
     <string name="material_id_format">物料号：</string>
     <string name="material_wrkst_format">料码：</string>
     <string name="material_desc_format">物料描述：</string>
@@ -43,30 +50,33 @@
     <string name="supplier_nfo_format">供应商简称：</string>
     <string name="delivery_note_code_format">交货单号：</string>
     <string name="receive_num_format">实收数量：</string>
-    <string name="package_info">包装明细</string>
+    <string name="batch_code_format">批次号：</string>
+    <string name="storage_unit_position_format">库位：</string>
+    <string name="storage_unit_area_format">库存区域：</string>
+    <!--包装详情-->
     <string name="not_match_material_id">物料号不一致，不允许组托！</string>
     <string name="not_match_supplier_info">供应商不一致，不允许组托！</string>
     <string name="not_match_batch_num">批次号不一致，不允许组托！</string>
     <string name="not_match_sl_code">库存地点不一致，不允许组托！</string>
-    <string name="batch_code_format">批次号：</string>
-    <string name="storage_unit_position_format">库位：</string>
-    <string name="storage_unit_area_format">库存区域：</string>
+    <string name="not_match_delivery_note_code">交货单号不一致，不允许组托！</string>
     <string name="batch_number_empty_error">批次号不能为空</string>
-    <string name="add">添加</string>
     <string name="not_match_third_part_receive_num">非三方物流实收数量不允许大于包装数量!</string>
-    <string name="action_logout">注销账号</string>
-    <string name="info_logout">是否确认注销账号？！</string>
     <string name="error_package_list_empty">包装为空，不能放入托盘！</string>
     <string name="loading_submit_receive_info">正在上传收货信息&#8230;</string>
-    <string name="info">提示</string>
     <string name="goods_receive">收货</string>
     <string name="tuo_pan_code">托盘码</string>
-    <string name="tuo_pan_code_format" >托盘码：</string>
+    <string name="tuo_pan_code_format">托盘码：</string>
     <string name="submit_receive_info">该托盘有效，确定收货？！</string>
     <string name="title_storage_unit_modify">库位调整</string>
     <string name="qr_code_scanner">二维码扫描</string>
     <string name="storage_unit_position_avlid_modify">新库位有效，点击确定调整库位！</string>
     <string name="loading_modiy_storage_unit_position">库位调整&#8230;</string>
     <string name="storage_unit_position_modify_succeed">库位调整成功！～</string>
-    <string name="not_match_delivery_note_code">交货单号不一致，不允许组托！</string>
+    <string name="title_receive_confirm">确认收货</string>
+    <string name="action_finish">退出</string>
+    <string name="action_receive_confirm">结束收货</string>
+    <string name="un_receive_package_list">未收货包装列表</string>
+    <string name="receive_sl_code">收货库存地点：</string>
+    <string name="action_receive_confirm_info">结束收货，未收货的项目实收数量将置为0</string>
+    <string name="package_receive_confirm_succeed">结束收货成功</string>
 </resources>
