@@ -234,6 +234,10 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                         batchNumberEditText.error = getString(R.string.not_match_batch_num)
                         return@onClick
                     }
+                    if (lastPackage.deliveryNoteCode != packageInfo.deliveryNoteCode) {
+                        batchNumberEditText.error = getString(R.string.not_match_delivery_note_code)
+                        return@onClick
+                    }
                 }
                 packageInfo.isEditEnable = false
                 val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
