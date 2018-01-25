@@ -22,6 +22,7 @@ import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.GroupReceiveFragment
 import com.zotye.wms.ui.goods.ReceiveConfirmFragment
+import com.zotye.wms.ui.picklist.UnderShelfFragment
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.StorageUnitModifyFragment
 import kotlinx.android.synthetic.main.fragment_base.*
@@ -79,7 +80,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         ResourceType.PACKAGERECV -> {
                             fragment = GroupReceiveFragment.newInstance(false, it.name)
                         }
-                        ResourceType.STQUERY->{
+                        ResourceType.STQUERY -> {
                             fragment = StorageUnitInfoFragment.newInstance(it.name)
                         }
                         ResourceType.ThreePLDELIVERY -> {
@@ -89,7 +90,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
 
                         }
                         ResourceType.ThreePLSOLDOUT -> {
-
+                            fragment = UnderShelfFragment.newInstance(it.name)
                         }
                         ResourceType.ANDROID -> {
 

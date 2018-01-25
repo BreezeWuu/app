@@ -26,7 +26,7 @@ object StorageUnitModifyContract {
     interface StorageUnitModifyPresenter : MvpPresenter<StorageUnitModifyView> {
         fun getStorageUnitInfoByCode(barCode: String)
         fun authStorageUnitNewPositionByQRCode(info: BarcodeInfo, qrCode: String)
-        fun storageUnitModify(oldStoragePositionCode: String, newStoragePositionCode: String)
+        fun storageUnitModify(code: String, newStoragePositionCode: String)
     }
 
     class StorageUnitModifyPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<StorageUnitModifyView>(), StorageUnitModifyPresenter {
@@ -85,12 +85,12 @@ object StorageUnitModifyContract {
             }
         }
 
-        override fun storageUnitModify(oldStoragePositionCode: String, newStoragePositionCode: String) {
+        override fun storageUnitModify(code: String, newStoragePositionCode: String) {
             mvpView?.showProgressDialog(R.string.loading_modiy_storage_unit_position)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.storageUnitModify(it.userId, oldStoragePositionCode, newStoragePositionCode).enqueue(object : Callback<ApiResponse<String>> {
+                        dataManager.storageUnitModify(it.userId, code, newStoragePositionCode).enqueue(object : Callback<ApiResponse<String>> {
                             override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }

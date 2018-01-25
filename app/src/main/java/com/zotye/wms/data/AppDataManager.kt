@@ -39,7 +39,7 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun logisticsReceiveConfirm(userId: String, noteId: String) = apiHelper.logisticsReceiveConfirm(userId, noteId)
 
-    override fun getPickListInfoByCode(userId: String, barCode: String) = apiHelper.getPickListInfoByCode(userId, barCode)
+    override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiHelper.getPickListInfoByCode(userId, OpterationType, barCode)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 

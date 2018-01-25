@@ -1,7 +1,6 @@
 package com.zotye.wms.data.api
 
 import com.zotye.wms.data.api.service.ApiService
-import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class AppApiHelper @Inject constructor(private val apiService: ApiService) : ApiHelper {
 
-    override fun doLoginCall(email: String, pwd: String) = apiService.doLoginCall(email, pwd)
+    override fun doLoginCall(userName: String, pwd: String) = apiService.doLoginCall(userName, pwd)
 
     override fun getUserInfo(userId: String) = apiService.getUserInfo(userId)
 
@@ -31,5 +30,5 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun logisticsReceiveConfirm(userId: String, noteId: String) = apiService.logisticsReceiveConfirm(userId, noteId)
 
-    override fun getPickListInfoByCode(userId: String, barCode: String) = apiService.getPickListInfoByCode(userId, barCode)
+    override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiService.getPickListInfoByCode(userId,OpterationType, barCode)
 }

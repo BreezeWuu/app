@@ -45,7 +45,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/storageUnitModify")
-    fun storageUnitModify(@Field("userId") userId: String, @Field("oldStoragePositionCode") oldStoragePositionCode: String, @Field("newStoragePositionCode") newStoragePositionCode: String): Call<ApiResponse<String>>
+    fun storageUnitModify(@Field("userId") userId: String, @Field("code") code: String, @Field("newStoragePositionCode") newStoragePositionCode: String): Call<ApiResponse<String>>
 
 
     @FormUrlEncoded
@@ -58,6 +58,6 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/pickListInfoByCode")
-    fun getPickListInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<String>>
+    fun getPickListInfoByCode(@Field("userId") userId: String, @Field("OpterationType") OpterationType: String, @Field("barCode") barCode: String): Call<ApiResponse<String>>
 
 }
