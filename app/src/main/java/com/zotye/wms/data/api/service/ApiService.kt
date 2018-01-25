@@ -1,10 +1,7 @@
 package com.zotye.wms.data.api.service
 
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.BarcodeInfo
-import com.zotye.wms.data.api.model.PackageInfo
-import com.zotye.wms.data.api.model.StorageUnitPackageInfo
-import com.zotye.wms.data.api.model.User
+import com.zotye.wms.data.api.model.*
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -58,6 +55,6 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/pickListInfoByCode")
-    fun getPickListInfoByCode(@Field("userId") userId: String, @Field("OpterationType") OpterationType: String, @Field("barCode") barCode: String): Call<ApiResponse<String>>
+    fun getPickListInfoByCode(@Field("userId") userId: String, @Field("OpterationType") OpterationType: String, @Field("barCode") barCode: String): Call<ApiResponse<PickListInfo>>
 
 }

@@ -67,7 +67,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         presenter.getPickListInfoByCode(result)
     }
 
-    override fun getPickListInfo() {
+    override fun getPickListInfo(data: String) {
 
     }
 
