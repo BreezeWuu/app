@@ -84,4 +84,5 @@
     <string name="title_under_shelf">下架确认</string>
     <string name="action_input_picklist_code">请输入拣配单号</string>
     <string name="picklist_code">拣配单号</string>
+    <string name="title_check_bad_product">外检不良品生成拣配单</string>
 </resources>

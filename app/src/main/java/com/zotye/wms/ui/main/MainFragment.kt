@@ -22,6 +22,7 @@ import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.GroupReceiveFragment
 import com.zotye.wms.ui.goods.ReceiveConfirmFragment
+import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.UnderShelfFragment
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.StorageUnitModifyFragment
@@ -87,7 +88,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
 
                         }
                         ResourceType.ThreePLPRCREATE -> {
-
+                            fragment = CheckBadProductFragment.newInstance(it.name)
                         }
                         ResourceType.ThreePLSOLDOUT -> {
                             fragment = UnderShelfFragment.newInstance(it.name)

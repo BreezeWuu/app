@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import com.zotye.wms.R
+import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
@@ -67,7 +68,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         presenter.getPickListInfoByCode(result)
     }
 
-    override fun getPickListInfo(data: String) {
+    override fun getPickListInfo(pickListInfo: PickListInfo) {
 
     }
 
