@@ -124,7 +124,6 @@ class StorageUnitInfoFragment : BaseFragment(), StorageUnitInfoContract.StorageU
 
     override fun canBackPressed(): Boolean {
         return if (viewSwitcher.displayedChild != 0) {
-//            viewSwitcher.showPrevious()
             viewSwitcher.removeViewAt(1)
             toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_storage_unit_info)
             false
