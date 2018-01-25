@@ -1,19 +1,25 @@
 package com.zotye.wms.ui.picklist
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.PickListInfo
+import com.zotye.wms.databinding.LayoutPickListInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
+import kotlinx.android.synthetic.main.fragment_pick_list.*
 import kotlinx.android.synthetic.main.layout_code_scanner.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
 
@@ -69,7 +75,17 @@ class CheckBadProductFragment  : BaseFragment(), UnderShelfContract.UnderShelfVi
     }
 
     override fun getPickListInfo(pickListInfo: PickListInfo) {
-
+        val pickListInfoView = LayoutInflater.from(context).inflate(R.layout.layout_pick_list_info, viewFlipper, false)
+        val dataBind = DataBindingUtil.bind<LayoutPickListInfoBinding>(pickListInfoView)
+        dataBind.info = pickListInfo
+        val pickListRecyclerView = pickListInfoView.findViewById<RecyclerView>(R.id.pickListRecyclerView)
+        pickListRecyclerView.layoutManager = LinearLayoutManager(context)
+        val adapter = UnderShelfFragment.PickListMaterialAdapter()
+        pickListRecyclerView.adapter = adapter
+        adapter.setNewData(pickListInfo.materialInfoList)
+        viewFlipper.addView(pickListInfoView)
+        viewFlipper.showNext()
+        toolbar_base.titleResource = R.string.title_pick_list_info
     }
 
     override fun onDestroyView() {
