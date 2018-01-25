@@ -87,4 +87,9 @@
     <string name="title_check_bad_product">外检不良品生成拣配单</string>
     <string name="picklist_code_format">拣配单号：</string>
     <string name="title_pick_list_info">拣配单明细</string>
+    <string name="action_add_package_or_tuopan">添加包装或托盘</string>
+    <string name="title_pick_list_add_package">添加包装或托盘</string>
+    <string name="title_loading_create">创建装车单</string>
+    <string name="count_format">数量：</string>
+    <string name="pick_list_empty">拣配单列表为空</string>
 </resources>

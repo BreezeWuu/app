@@ -8,28 +8,26 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
+import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.google.gson.Gson
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.PickListInfo
-import com.zotye.wms.data.api.model.PickListMaterialInfo
-import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
+import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemPickListMaterialInfoBinding
-import com.zotye.wms.databinding.ItemStorageUnitPackageMaterialInfoBinding
-import com.zotye.wms.databinding.ItemStorageUnitPalletInfoBinding
 import com.zotye.wms.databinding.LayoutPickListInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
-import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_pick_list.*
-import kotlinx.android.synthetic.main.fragment_storage_unit_info.*
 import kotlinx.android.synthetic.main.layout_code_scanner.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
+import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
 
@@ -93,24 +91,101 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         val adapter = PickListMaterialAdapter()
         pickListRecyclerView.adapter = adapter
         adapter.setNewData(pickListInfo.materialInfoList)
+        pickListInfoView.find<Button>(R.id.addPackageButton).onClick {
+            viewFlipper.showNext()
+            updateTitle()
+        }
         viewFlipper.addView(pickListInfoView)
+        val pickListInfoAddPackageView = LayoutInflater.from(context).inflate(R.layout.layout_pick_list_add_package, viewFlipper, false)
+        viewFlipper.addView(pickListInfoAddPackageView)
+        pickListInfoAddPackageView.find<Button>(R.id.packageCodeInput).onClick {
+            val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
+            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                presenter.getStorageUnitInfoByCode(editText.text.toString())
+                hideKeyboard(editText)
+            }.setPositiveButton(R.string.cancel, null).show()
+            showKeyboard(editText)
+        }
+        pickListInfoAddPackageView.find<Button>(R.id.packageCodeScanner).onClick {
+            val fragment = BarCodeScannerFragment()
+            fragment.setScannerDelegate(object : ScannerDelegate {
+                override fun succeed(result: String) {
+                    presenter.getStorageUnitInfoByCode(result)
+                }
+            })
+            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+        }
+        val pickListInfoPackageListView = LayoutInflater.from(context).inflate(R.layout.layout_pick_list_package_list, viewFlipper, false)
+        viewFlipper.addView(pickListInfoPackageListView)
         viewFlipper.showNext()
-        toolbar_base.titleResource = R.string.title_pick_list_info
+        updateTitle()
     }
+
+    override fun getBarCodeInfo(barCodeInfo: BarcodeInfo?) {
+        barCodeInfo?.let { info ->
+            val barcodeType = BarCodeType.fromCodeType(info.barCodeType)
+            barcodeType?.let {
+                when (it) {
+                    BarCodeType.Package -> {
+                        getStorageUnitPackage(Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java))
+                    }
+                    BarCodeType.Pallet -> {
+                        getStorageUnitPallet(Gson().fromJson<PalletInfo>(info.barCodeInfo, PalletInfo::class.java))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getStorageUnitPackage(packageInfo: PackageInfo) {
+        viewFlipper.showNext()
+        updateTitle()
+    }
+
+    private fun getStorageUnitPallet(palletInfo: PalletInfo) {
+        viewFlipper.showNext()
+        updateTitle()
+    }
+
 
     override fun onDestroyView() {
         presenter.onDetach()
         super.onDestroyView()
     }
 
-//    override fun canBackPressed(): Boolean {
-//        return if (viewSwitcher.displayedChild != 0) {
-//            viewSwitcher.removeViewAt(1)
-//            toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_storage_unit_info)
-//            false
-//        } else
-//            true
-//    }
+    private fun updateTitle() {
+        when (viewFlipper.displayedChild) {
+            0 -> {
+                toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_storage_unit_info)
+            }
+            1 -> {
+                toolbar_base.titleResource = R.string.title_pick_list_info
+            }
+            2 -> {
+                toolbar_base.titleResource = R.string.title_pick_list_add_package
+            }
+            3 -> {
+                toolbar_base.titleResource = R.string.package_list
+            }
+        }
+    }
+
+    override fun canBackPressed(): Boolean {
+        return if (viewFlipper.displayedChild != 0) {
+            viewFlipper.showPrevious()
+            updateTitle()
+            if (viewFlipper.displayedChild == 0) {
+                if (viewFlipper.childCount == 4) {
+                    viewFlipper.removeViewAt(3)
+                    viewFlipper.removeViewAt(2)
+                }
+                viewFlipper.removeViewAt(1)
+            }
+            false
+        } else
+            true
+    }
 
     class PickListMaterialAdapter : BaseQuickAdapter<PickListMaterialInfo, BaseViewHolder>(R.layout.item_pick_list_material_info) {
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()

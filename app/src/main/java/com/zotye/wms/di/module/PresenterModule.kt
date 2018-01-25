@@ -4,6 +4,7 @@ import com.zotye.wms.ui.goods.GroupReceiveContract
 import com.zotye.wms.ui.goods.ReceiveConfirmContract
 import com.zotye.wms.ui.main.MainContract
 import com.zotye.wms.ui.picklist.CheckBadProductContract
+import com.zotye.wms.ui.picklist.LoadingCreateContract
 import com.zotye.wms.ui.picklist.UnderShelfContract
 import com.zotye.wms.ui.storageunit.StorageUnitInfoContract
 import com.zotye.wms.ui.storageunit.StorageUnitModifyContract
@@ -40,5 +41,8 @@ class PresenterModule {
 
     @Provides
     fun provideCheckBadProductPresenter(presenter: CheckBadProductContract.CheckBadProductPresenterImpl): CheckBadProductContract.CheckBadProductPresenter = presenter
+
+    @Provides
+    fun provideCheckLoadingCreatePresenter(presenter: LoadingCreateContract.LoadingCreatePresenterImpl): LoadingCreateContract.LoadingCreatePresenter = presenter
 
 }

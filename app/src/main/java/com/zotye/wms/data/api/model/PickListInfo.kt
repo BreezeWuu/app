@@ -3,11 +3,14 @@ package com.zotye.wms.data.api.model
 /**
  * Created by hechuangju on 2018/01/25
  */
-class PickListInfo{
+class PickListInfo {
+    var code: String? = null
+
+    var quantity: Long = 0
     /**
      * 供应商代码
      */
-     var supplierCode: String? = null
+    var supplierCode: String? = null
     /**
      * 供应商名
      */

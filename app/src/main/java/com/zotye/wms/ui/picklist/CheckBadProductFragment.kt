@@ -9,8 +9,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.google.gson.Gson
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.PickListInfo
+import com.zotye.wms.data.api.model.*
 import com.zotye.wms.databinding.LayoutPickListInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
@@ -26,7 +27,7 @@ import javax.inject.Inject
 /**
  * Created by hechuangju on 2018/01/25
  */
-class CheckBadProductFragment  : BaseFragment(), UnderShelfContract.UnderShelfView, ScannerDelegate {
+class CheckBadProductFragment : BaseFragment(), UnderShelfContract.UnderShelfView, ScannerDelegate {
     companion object {
         fun newInstance(title: String): CheckBadProductFragment {
             val fragment = CheckBadProductFragment()
@@ -37,6 +38,7 @@ class CheckBadProductFragment  : BaseFragment(), UnderShelfContract.UnderShelfVi
         }
     }
 
+    private var pickListInfo: PickListInfo? = null
     @Inject
     lateinit var presenter: UnderShelfContract.UnderShelfPresenter
 
@@ -75,6 +77,7 @@ class CheckBadProductFragment  : BaseFragment(), UnderShelfContract.UnderShelfVi
     }
 
     override fun getPickListInfo(pickListInfo: PickListInfo) {
+        this.pickListInfo = pickListInfo
         val pickListInfoView = LayoutInflater.from(context).inflate(R.layout.layout_pick_list_info, viewFlipper, false)
         val dataBind = DataBindingUtil.bind<LayoutPickListInfoBinding>(pickListInfoView)
         dataBind.info = pickListInfo
@@ -85,7 +88,58 @@ class CheckBadProductFragment  : BaseFragment(), UnderShelfContract.UnderShelfVi
         adapter.setNewData(pickListInfo.materialInfoList)
         viewFlipper.addView(pickListInfoView)
         viewFlipper.showNext()
-        toolbar_base.titleResource = R.string.title_pick_list_info
+        updateTitle()
+    }
+
+    override fun getBarCodeInfo(barCodeInfo: BarcodeInfo?) {
+        barCodeInfo?.let { info ->
+            val barcodeType = BarCodeType.fromCodeType(info.barCodeType)
+            barcodeType?.let {
+                when (it) {
+                    BarCodeType.Package -> {
+                        getStorageUnitPackage(Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java))
+                    }
+                    BarCodeType.Pallet -> {
+                        getStorageUnitPallet(Gson().fromJson<PalletInfo>(info.barCodeInfo, PalletInfo::class.java))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getStorageUnitPackage(packageInfo: PackageInfo) {
+
+    }
+
+    private fun getStorageUnitPallet(palletInfo: PalletInfo) {
+
+    }
+
+    private fun updateTitle() {
+        when (viewFlipper.displayedChild) {
+            0 -> {
+                toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_check_bad_product)
+            }
+            1 -> {
+                toolbar_base.titleResource = R.string.title_pick_list_info
+            }
+        }
+    }
+
+    override fun canBackPressed(): Boolean {
+        return if (viewFlipper.displayedChild != 0) {
+            viewFlipper.showPrevious()
+            updateTitle()
+            if (viewFlipper.displayedChild == 0) {
+                if (viewFlipper.childCount == 4) {
+                    viewFlipper.removeViewAt(3)
+                    viewFlipper.removeViewAt(2)
+                }
+                viewFlipper.removeViewAt(1)
+            }
+            false
+        } else
+            true
     }
 
     override fun onDestroyView() {
