@@ -4,7 +4,7 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.StorageUnitInfo
+import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -19,7 +19,7 @@ import javax.inject.Inject
 object StorageUnitInfoContract {
 
     interface StorageUnitInfoView : MvpView {
-        fun getStorageUnitInfo(data: StorageUnitInfo)
+        fun getStorageUnitInfo(barCodeInfo: BarcodeInfo)
     }
 
     interface StorageUnitInfoPresenter : MvpPresenter<StorageUnitInfoView> {
@@ -32,13 +32,13 @@ object StorageUnitInfoContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.getStorageUnitDetailInfoByCode(it.userId, barCode).enqueue(object : Callback<ApiResponse<StorageUnitInfo>> {
-                            override fun onFailure(call: Call<ApiResponse<StorageUnitInfo>>?, t: Throwable) {
+                        dataManager.getStorageUnitDetailInfoByCode(it.userId, barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
                             }
 
-                            override fun onResponse(call: Call<ApiResponse<StorageUnitInfo>>?, response: Response<ApiResponse<StorageUnitInfo>>) {
+                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed() && it.data != null) {

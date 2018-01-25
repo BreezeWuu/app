@@ -3,11 +3,7 @@ package com.zotye.wms.data.api.model
 /**
  * Created by hechuangju on 2018/01/24
  */
-class StorageUnitInfo {
-    /**
-     * 是否为包装
-     */
-    var isPackage: Boolean = false
+class StorageUnitPackageInfo {
     /**
      * 包装标签号
      */

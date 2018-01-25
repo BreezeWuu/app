@@ -3,18 +3,29 @@ package com.zotye.wms.ui.storageunit.modify
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
+import com.google.gson.Gson
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.StorageUnitInfo
+import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
-import com.zotye.wms.databinding.ItemStorageUnitDetailInfoBinding
+import com.zotye.wms.databinding.ItemStorageUnitPackageInfoBinding
+import com.zotye.wms.databinding.ItemStorageUnitPackageMaterialInfoBinding
+import com.zotye.wms.databinding.ItemStorageUnitPalletInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
+import kotlinx.android.synthetic.main.fragment_base.*
+import kotlinx.android.synthetic.main.fragment_storage_unit_info.*
 import kotlinx.android.synthetic.main.layout_code_scanner.*
+import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
 
@@ -44,6 +55,12 @@ class StorageUnitInfoFragment : BaseFragment(), StorageUnitInfoContract.StorageU
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.onAttach(this)
+        toolbar_base.visibility = View.VISIBLE
+        toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_storage_unit_info)
+        toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
+        toolbar_base.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
         codeScanner.onClick {
             val fragment = BarCodeScannerFragment()
             fragment.setScannerDelegate(this@StorageUnitInfoFragment)
@@ -64,18 +81,67 @@ class StorageUnitInfoFragment : BaseFragment(), StorageUnitInfoContract.StorageU
         presenter.getStorageUnitDetailInfoByCode(result)
     }
 
-    override fun getStorageUnitInfo(storageUnitInfo: StorageUnitInfo) {
-        val infoView = LayoutInflater.from(context).inflate(R.layout.item_storage_unit_detail_info, null)
-        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
-        val dataBind = DataBindingUtil.bind<ItemStorageUnitDetailInfoBinding>(infoView, fragmentDataBindingComponent)
-        dataBind.info = storageUnitInfo
-        dialog.setCancelable(false)
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
+    override fun getStorageUnitInfo(barcodeInfo: BarcodeInfo) {
+        val barcodeType = BarCodeType.fromCodeType(barcodeInfo.barCodeType)
+        barcodeType?.let {
+            when (it) {
+                BarCodeType.Package -> {
+                    getStorageUnitPackageInfo(Gson().fromJson<StorageUnitPackageInfo>(barcodeInfo.barCodeInfo, StorageUnitPackageInfo::class.java))
+                }
+                BarCodeType.Pallet -> {
+                    getStorageUnitPalletInfo(Gson().fromJson<StorageUnitPalletInfo>(barcodeInfo.barCodeInfo, StorageUnitPalletInfo::class.java))
+                }
+            }
+        }
+    }
+
+    private fun getStorageUnitPalletInfo(storageUnitPalletInfo: StorageUnitPalletInfo?) {
+        storageUnitPalletInfo?.let {
+            val infoView = LayoutInflater.from(context).inflate(R.layout.item_storage_unit_pallet_info, viewSwitcher, false)
+            val dataBind = DataBindingUtil.bind<ItemStorageUnitPalletInfoBinding>(infoView, fragmentDataBindingComponent)
+            dataBind.info = it
+            val adapter = PackageMaterialAdapter()
+            val palletRecyclerView = infoView.findViewById<RecyclerView>(R.id.palletRecyclerView)
+            palletRecyclerView.layoutManager = LinearLayoutManager(context)
+            palletRecyclerView.adapter = adapter
+            adapter.setNewData(it.packageMaterialInfoList)
+            viewSwitcher.addView(infoView)
+            viewSwitcher.showNext()
+            toolbar_base.titleResource = R.string.pallet_info
+        }
+    }
+
+    private fun getStorageUnitPackageInfo(storageUnitPackageInfo: StorageUnitPackageInfo?) {
+        storageUnitPackageInfo.let {
+            val infoView = LayoutInflater.from(context).inflate(R.layout.item_storage_unit_package_info, viewSwitcher, false)
+            val dataBind = DataBindingUtil.bind<ItemStorageUnitPackageInfoBinding>(infoView, fragmentDataBindingComponent)
+            dataBind.info = it
+            viewSwitcher.addView(infoView)
+            viewSwitcher.showNext()
+            toolbar_base.titleResource = R.string.package_info
+        }
+    }
+
+    override fun canBackPressed(): Boolean {
+        return if (viewSwitcher.displayedChild != 0) {
+//            viewSwitcher.showPrevious()
+            viewSwitcher.removeViewAt(1)
+            toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_storage_unit_info)
+            false
+        } else
+            true
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.onDetach()
+    }
+
+    class PackageMaterialAdapter : BaseQuickAdapter<StoragePackageMaterialInfo, BaseViewHolder>(R.layout.item_storage_unit_package_material_info) {
+        private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
+        override fun convert(helper: BaseViewHolder, item: StoragePackageMaterialInfo) {
+            val dataBind = DataBindingUtil.bind<ItemStorageUnitPackageMaterialInfoBinding>(helper.itemView, fragmentDataBindingComponent)
+            dataBind.info = item
+        }
     }
 }
