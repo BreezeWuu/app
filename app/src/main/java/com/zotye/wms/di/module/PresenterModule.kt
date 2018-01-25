@@ -1,11 +1,12 @@
 package com.zotye.wms.di.module
 
-import com.zotye.wms.ui.goods.receive.GroupReceiveContract
-import com.zotye.wms.ui.goods.receive.ReceiveConfirmContract
+import com.zotye.wms.ui.goods.GroupReceiveContract
+import com.zotye.wms.ui.goods.ReceiveConfirmContract
 import com.zotye.wms.ui.main.MainContract
-import com.zotye.wms.ui.storageunit.modify.StorageUnitInfoContract
-import com.zotye.wms.ui.storageunit.modify.StorageUnitModifyContract
-import com.zotye.wms.ui.user.login.LoginContract
+import com.zotye.wms.ui.picklist.UnderShelfContract
+import com.zotye.wms.ui.storageunit.StorageUnitInfoContract
+import com.zotye.wms.ui.storageunit.StorageUnitModifyContract
+import com.zotye.wms.ui.user.LoginContract
 import dagger.Module
 import dagger.Provides
 
@@ -32,5 +33,8 @@ class PresenterModule {
 
     @Provides
     fun provideReceiveConfirmPresenter(presenter: ReceiveConfirmContract.ReceiveConfirmPresenterImpl): ReceiveConfirmContract.ReceiveConfirmPresenter = presenter
+
+    @Provides
+    fun provideUnderShelfPresenter(presenter: UnderShelfContract.UnderShelfPresenterImpl): UnderShelfContract.UnderShelfPresenter = presenter
 
 }

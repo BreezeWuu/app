@@ -1,6 +1,5 @@
-package com.zotye.wms.ui.goods.receive
+package com.zotye.wms.ui.goods
 
-import android.support.annotation.StringRes
 import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors

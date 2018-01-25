@@ -1,6 +1,7 @@
 package com.zotye.wms.data.api
 
 import com.zotye.wms.data.api.service.ApiService
+import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -18,7 +19,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun getStorageUnitInfoByBarcode(userId: String, barCode: String) = apiService.getStorageUnitInfoByBarcode(userId, barCode)
 
-    override fun getStorageUnitDetailInfoByCode(userId: String, barCode: String)=apiService.getStorageUnitDetailInfoByCode(userId, barCode)
+    override fun getStorageUnitDetailInfoByCode(userId: String, barCode: String) = apiService.getStorageUnitDetailInfoByCode(userId, barCode)
 
     override fun logisticsReceive(logisticsReceiveJsonString: String) = apiService.logisticsReceive(logisticsReceiveJsonString)
 
@@ -28,5 +29,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun logisticsReceiveConfirmInfoByCode(userId: String, barCode: String) = apiService.logisticsReceiveConfirmInfoByCode(userId, barCode)
 
-    override fun logisticsReceiveConfirm(userId: String, noteId: String)=apiService.logisticsReceiveConfirm(userId, noteId)
+    override fun logisticsReceiveConfirm(userId: String, noteId: String) = apiService.logisticsReceiveConfirm(userId, noteId)
+
+    override fun getPickListInfoByCode(userId: String, barCode: String) = apiService.getPickListInfoByCode(userId, barCode)
 }

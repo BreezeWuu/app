@@ -1,4 +1,4 @@
-package com.zotye.wms.ui.goods.receive
+package com.zotye.wms.ui.goods
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle

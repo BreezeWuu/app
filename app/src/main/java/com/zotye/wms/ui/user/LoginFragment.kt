@@ -1,4 +1,4 @@
-package com.zotye.wms.ui.user.login
+package com.zotye.wms.ui.user
 
 import android.os.Bundle
 import android.view.LayoutInflater

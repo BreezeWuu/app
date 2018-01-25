@@ -1,4 +1,4 @@
-package com.zotye.wms.ui.storageunit.modify
+package com.zotye.wms.ui.storageunit
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle

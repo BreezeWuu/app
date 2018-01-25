@@ -1,6 +1,5 @@
-package com.zotye.wms.ui.storageunit.modify
+package com.zotye.wms.ui.storageunit
 
-import android.app.ProgressDialog
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog

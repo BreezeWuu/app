@@ -1,4 +1,4 @@
-package com.zotye.wms.ui.storageunit.modify
+package com.zotye.wms.ui.storageunit
 
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors

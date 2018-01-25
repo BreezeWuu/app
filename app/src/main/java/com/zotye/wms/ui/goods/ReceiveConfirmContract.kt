@@ -1,4 +1,4 @@
-package com.zotye.wms.ui.goods.receive
+package com.zotye.wms.ui.goods
 
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
