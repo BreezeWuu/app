@@ -102,4 +102,6 @@
     <string name="picklist_create_empty_error">没有拣配单，不允许装车！</string>
     <string name="loading_submit_pick_list_create">正在创建装车单&#8230;</string>
     <string name="picklist_create_car_number" >车辆信息：%1$s，点击确定生成装车单！</string>
+    <string name="action_input_picklist">输入拣配单</string>
+    <string name="action_scanner_pick_list_code">扫描拣配单</string>
 </resources>
