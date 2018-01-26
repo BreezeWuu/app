@@ -13,10 +13,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.BarcodeInfo
-import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.api.model.PickListPullOffShelf
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
-import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.databinding.ItemPickListInfoUnderShelfBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
