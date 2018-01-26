@@ -130,6 +130,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             })
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
+
         viewFlipper.addView(pickListInfoAddPackageView)
     }
 
@@ -156,7 +157,6 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
     private fun getStorageUnitPallet(palletInfo: StorageUnitPalletInfo) {
 
     }
-
     class PickListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {
 
         init {

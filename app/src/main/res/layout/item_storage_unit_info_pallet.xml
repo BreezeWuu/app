@@ -24,19 +24,73 @@
 
             <android.support.v7.widget.AppCompatTextView
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="4"
                 android:gravity="center_vertical|right"
                 android:text="@string/tuo_pan_code_format"
                 android:textColor="@color/black" />
 
             <android.support.v7.widget.AppCompatTextView
                 style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="7"
                 android:gravity="center_vertical"
                 android:text="@{info.code}"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center_vertical|right"
+                android:text="@string/storage_unit_position_format"
+                android:textColor="@color/black" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="7"
+                android:gravity="center_vertical"
+                android:text="@{info.storagePositionName}"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center_vertical|right"
+                android:text="@string/storage_unit_area_format"
+                android:textColor="@color/black" />
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="7"
+                android:gravity="center_vertical"
+                android:text="@{info.storageAreaInfoName}"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -63,8 +117,8 @@
                 android:layout_width="0dp"
                 android:layout_height="@dimen/button_height_normal"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/spacing_normal"
                 android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:text="@string/cancel"
