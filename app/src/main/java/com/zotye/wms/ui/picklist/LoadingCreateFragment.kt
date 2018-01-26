@@ -76,12 +76,6 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
         }
-        adapter = PickListAdapter(null)
-        val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
-        emptyView.find<TextView>(R.id.text_error).text = getString(R.string.pick_list_empty)
-        adapter.emptyView = emptyView
-        pickListRecyclerView.layoutManager = LinearLayoutManager(context)
-        pickListRecyclerView.adapter = adapter
         carInput.onClick {
             if (adapter.data.size == 0) {
                 showMessage(R.string.picklist_create_empty_error)
@@ -109,6 +103,12 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
                 fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
             }
         }
+        adapter = PickListAdapter(null)
+        val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
+        emptyView.find<TextView>(R.id.text_error).text = getString(R.string.pick_list_empty)
+        adapter.emptyView = emptyView
+        pickListRecyclerView.layoutManager = LinearLayoutManager(context)
+        pickListRecyclerView.adapter = adapter
     }
 
     private fun pickListCreate(carNumber: String) {
@@ -150,17 +150,15 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
     }
 
     class PickListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {
-        private val TYPE_PICK_LIST = 0
-        private val TYPE_PICK_LIST_MATERIAL_INFO = 1
 
         init {
-            addItemType(TYPE_PICK_LIST, R.layout.item_pick_list_info)
-            addItemType(TYPE_PICK_LIST_MATERIAL_INFO, R.layout.item_pick_list_material_info);
+            addItemType(PickListInfo.TYPE_PICK_LIST, R.layout.item_pick_list_info)
+            addItemType(PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO, R.layout.item_pick_list_material_info);
         }
 
         override fun convert(helper: BaseViewHolder, item: MultiItemEntity) {
             when (helper.itemViewType) {
-                TYPE_PICK_LIST -> {
+                PickListInfo.TYPE_PICK_LIST -> {
                     val dataBind = DataBindingUtil.bind<ItemPickListInfoBinding>(helper.itemView)
                     dataBind.info = item as PickListInfo
                     helper.getView<Button>(R.id.expandButton).onClick { view ->
@@ -177,7 +175,7 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
                     }
                     helper.getView<Button>(R.id.expandButton).setText(if (item.isExpanded) R.string.picklist_material_collapse else R.string.picklist_material_expand)
                 }
-                TYPE_PICK_LIST_MATERIAL_INFO -> {
+                PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO -> {
                     val dataBind = DataBindingUtil.bind<ItemPickListMaterialInfoBinding>(helper.itemView)
                     dataBind.info = item as PickListMaterialInfo
                 }

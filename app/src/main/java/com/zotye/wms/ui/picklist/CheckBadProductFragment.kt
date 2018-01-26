@@ -78,16 +78,6 @@ class CheckBadProductFragment : BaseFragment(), UnderShelfContract.UnderShelfVie
 
     override fun getPickListInfo(pickListInfo: PickListInfo) {
         this.pickListInfo = pickListInfo
-        val pickListInfoView = LayoutInflater.from(context).inflate(R.layout.layout_pick_list_info, viewFlipper, false)
-        val dataBind = DataBindingUtil.bind<LayoutPickListInfoBinding>(pickListInfoView)
-        dataBind.info = pickListInfo
-        val pickListRecyclerView = pickListInfoView.findViewById<RecyclerView>(R.id.pickListRecyclerView)
-        pickListRecyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = UnderShelfFragment.PickListMaterialAdapter()
-        pickListRecyclerView.adapter = adapter
-        adapter.setNewData(pickListInfo.materialInfoList)
-        viewFlipper.addView(pickListInfoView)
-        viewFlipper.showNext()
         updateTitle()
     }
 

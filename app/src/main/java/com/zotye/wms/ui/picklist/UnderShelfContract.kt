@@ -25,7 +25,7 @@ object UnderShelfContract {
 
     interface UnderShelfPresenter : MvpPresenter<UnderShelfView> {
         fun getPickListInfoByCode(barCode: String)
-        fun getStorageUnitInfoByCode(barCode: String)
+        fun getStorageUnitDetailInfoByCode(barCode: String)
     }
 
     class UnderShelfPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<UnderShelfView>(), UnderShelfPresenter {
@@ -56,12 +56,12 @@ object UnderShelfContract {
             }
         }
 
-        override fun getStorageUnitInfoByCode(barCode: String) {
+        override fun getStorageUnitDetailInfoByCode(barCode: String) {
             mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.getStorageUnitInfoByBarcode(it.userId, barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                        dataManager.getStorageUnitDetailInfoByCode(it.userId, barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
                             override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }

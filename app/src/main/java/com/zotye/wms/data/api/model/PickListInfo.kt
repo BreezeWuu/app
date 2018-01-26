@@ -8,6 +8,9 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
  * Created by hechuangju on 2018/01/25
  */
 class PickListInfo(var code: String? = null) : AbstractExpandableItem<PickListMaterialInfo>(), MultiItemEntity {
+    companion object {
+        val TYPE_PICK_LIST = 0
+    }
 
     var id: String = ""
 
@@ -20,6 +23,23 @@ class PickListInfo(var code: String? = null) : AbstractExpandableItem<PickListMa
      * 供应商名
      */
     var supplierName: String? = null
+
+    /**
+     * 库位代码
+     */
+    var storagePositionCode: String? = null
+    /**
+     * 库位名称
+     */
+    var storagePositionName: String? = null
+    /**
+     * 库存区域代码
+     */
+    var storageAreaInfoCode: String? = null
+    /**
+     * 库位名称
+     */
+    var storageAreaInfoName: String? = null
 
     var materialInfoList: List<PickListMaterialInfo>? = null
 
