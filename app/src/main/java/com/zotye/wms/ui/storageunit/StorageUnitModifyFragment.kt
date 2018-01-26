@@ -124,6 +124,9 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
             })
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
+        infoView.find<Button>(R.id.cancelButton).onClick {
+            dialog.dismiss()
+        }
         val dataBind = DataBindingUtil.bind<ItemStorageUnitInfoPackageBinding>(infoView, fragmentDataBindingComponent)
         dataBind.info = packageInfo
         dialog.setCancelable(false)
