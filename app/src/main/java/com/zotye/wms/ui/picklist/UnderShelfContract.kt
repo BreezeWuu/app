@@ -34,17 +34,17 @@ object UnderShelfContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.getPickListInfoByCode(it.userId, "10", barCode).enqueue(object : Callback<ApiResponse<PickListInfo>> {
-                            override fun onFailure(call: Call<ApiResponse<PickListInfo>>?, t: Throwable) {
+                        dataManager.getPickListInfoByCode(it.userId, "10", barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
                             }
 
-                            override fun onResponse(call: Call<ApiResponse<PickListInfo>>?, response: Response<ApiResponse<PickListInfo>>) {
+                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed() && it.data != null) {
-                                        mvpView?.getPickListInfo(it.data!!)
+//                                        mvpView?.getPickListInfo(it.data!!)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

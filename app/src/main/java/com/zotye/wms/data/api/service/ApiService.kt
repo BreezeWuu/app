@@ -55,7 +55,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/pickListInfoByCode")
-    fun getPickListInfoByCode(@Field("userId") userId: String, @Field("OpterationType") OpterationType: String, @Field("barCode") barCode: String): Call<ApiResponse<PickListInfo>>
+    fun getPickListInfoByCode(@Field("userId") userId: String, @Field("OpterationType") OpterationType: String, @Field("barCode") barCode: String): Call<ApiResponse<BarcodeInfo>>
 
     @FormUrlEncoded
     @POST("bar_code/createLoadingList")

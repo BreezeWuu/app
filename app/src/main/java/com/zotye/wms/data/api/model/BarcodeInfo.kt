@@ -14,16 +14,18 @@ class BarcodeInfo {
     val barCodeInfo: String? = ""
 }
 
-enum class BarCodeType(public val type: Int) {
+enum class BarCodeType(val type: Int) {
     Package(1),
-    Pallet(2);
+    Pallet(2),
+    PickList(3),
+    Unknown(0);
 
     companion object {
         fun fromCodeType(type: Int): BarCodeType? {
             BarCodeType.values().forEach { barCodeType ->
                 if (barCodeType.type == type) return barCodeType
             }
-            return null
+            return Unknown
         }
     }
 }

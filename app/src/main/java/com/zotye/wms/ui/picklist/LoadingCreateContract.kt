@@ -10,6 +10,7 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.ui.common.BasePresenter
@@ -41,17 +42,20 @@ object LoadingCreateContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.getPickListInfoByCode(it.userId, "40", barCode).enqueue(object : Callback<ApiResponse<PickListInfo>> {
-                            override fun onFailure(call: Call<ApiResponse<PickListInfo>>?, t: Throwable) {
+                        dataManager.getPickListInfoByCode(it.userId, "40", barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
                             }
 
-                            override fun onResponse(call: Call<ApiResponse<PickListInfo>>?, response: Response<ApiResponse<PickListInfo>>) {
+                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed() && it.data != null) {
-                                        mvpView?.getPickListInfo(it.data!!)
+                                        if (it.data!!.barCodeType == BarCodeType.PickList.type)
+                                            mvpView?.getPickListInfo(Gson().fromJson<PickListInfo>(it.data!!.barCodeInfo, PickListInfo::class.java))
+                                        else
+                                            mvpView?.showMessage(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }
