@@ -23,7 +23,8 @@
     <string name="package_list_empty">包装列表为空，请添加包装</string>
     <string name="error_open_camera">打开相机出错!~</string>
     <string name="action_scanner_info">将条码放入框内，即可自动扫描</string>
-    <string name="delete_jpd_item_info">确定删除包装单号： %1$s ？</string>
+    <string name="delete_package_item_info">确定删除包装单号： %1$s ？</string>
+    <string name="delete_pic_item_info">确定删除拣配单号： %1$s ？</string>
     <string name="submit_receive_info_succeed">包装收货成功！</string>
     <string name="submit_group_receive_info_succeed">组托收货成功！</string>
     <string name="ok">确定</string>
@@ -49,6 +50,7 @@
     <string name="delivery_num_format">发货数量：</string>
     <string name="delivery_unit_format">单位：</string>
     <string name="supplier_nfo_format">供应商简称：</string>
+    <string name="supplier_full_name_format">供应商：</string>
     <string name="delivery_note_code_format">交货单号：</string>
     <string name="receive_num_format">实收数量：</string>
     <string name="batch_code_format">批次号：</string>
@@ -92,4 +94,12 @@
     <string name="title_loading_create">创建装车单</string>
     <string name="count_format">数量：</string>
     <string name="pick_list_empty">拣配单列表为空</string>
+    <string name="picklist_material_expand">展开物料详情</string>
+    <string name="picklist_material_collapse">收起物料详情</string>
+    <string name="same_pick_list_error">拣配单已存在，不允许重复添加！</string>
+    <string name="action_input_car_code">输入车牌号</string>
+    <string name="action_scanner_car_code">扫描车牌号</string>
+    <string name="picklist_create_empty_error">没有拣配单，不允许装车！</string>
+    <string name="loading_submit_pick_list_create">正在创建装车单&#8230;</string>
+    <string name="picklist_create_car_number" >车辆信息：%1$s，点击确定生成装车单！</string>
 </resources>

@@ -31,7 +31,7 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun authStorageUnitNewPositionByQRCode(userId: String, qrCode: String) = apiHelper.authStorageUnitNewPositionByQRCode(userId, qrCode)
 
-    override fun storageUnitModify(userId: String, oldStoragePositionCode: String, newStoragePositionCode: String) = apiHelper.storageUnitModify(userId, oldStoragePositionCode, newStoragePositionCode)
+    override fun storageUnitModify(userId: String, code: String, newStoragePositionCode: String) = apiHelper.storageUnitModify(userId, code, newStoragePositionCode)
 
     override fun logisticsReceive(logisticsReceiveJsonString: String) = apiHelper.logisticsReceive(logisticsReceiveJsonString)
 
@@ -40,6 +40,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun logisticsReceiveConfirm(userId: String, noteId: String) = apiHelper.logisticsReceiveConfirm(userId, noteId)
 
     override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiHelper.getPickListInfoByCode(userId, OpterationType, barCode)
+
+    override fun createLoadingList(userId: String, carNumber: String, pickListJson: String) = apiHelper.createLoadingList(userId, carNumber, pickListJson)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 

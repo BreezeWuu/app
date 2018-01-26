@@ -1,6 +1,7 @@
 package com.zotye.wms.data.api
 
 import com.zotye.wms.data.api.service.ApiService
+import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,4 +32,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun logisticsReceiveConfirm(userId: String, noteId: String) = apiService.logisticsReceiveConfirm(userId, noteId)
 
     override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiService.getPickListInfoByCode(userId,OpterationType, barCode)
+
+    override fun createLoadingList(userId: String, carNumber: String, pickListJson: String)=apiService.createLoadingList(userId, carNumber, pickListJson)
 }

@@ -125,4 +125,8 @@ class PackageInfo(
     fun isThirdPart(): Boolean {
         return "9999" == factoryCode
     }
+
+    override fun hashCode(): Int {
+        return code.hashCode()
+    }
 }

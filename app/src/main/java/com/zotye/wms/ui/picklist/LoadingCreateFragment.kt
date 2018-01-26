@@ -1,30 +1,32 @@
 package com.zotye.wms.ui.picklist
 
 import android.databinding.DataBindingUtil
-import android.databinding.adapters.ExpandableListViewBindingAdapter
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseExpandableListAdapter
+import android.widget.Button
 import android.widget.EditText
-import android.widget.ExpandableListAdapter
+import android.widget.TextView
+import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.data.api.model.PickListMaterialInfo
-import com.zotye.wms.databinding.LayoutPickListInfoBinding
+import com.zotye.wms.databinding.ItemPickListInfoBinding
+import com.zotye.wms.databinding.ItemPickListMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
+import com.zotye.wms.ui.common.QRCodeScannerFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_loading_create.*
-import kotlinx.android.synthetic.main.fragment_pick_list.*
-import kotlinx.android.synthetic.main.layout_code_scanner.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
-import org.jetbrains.anko.appcompat.v7.titleResource
+import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
 
@@ -74,16 +76,72 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
         }
-        adapter = PickListAdapter()
-        pickListView.setAdapter(adapter)
+        adapter = PickListAdapter(null)
+        val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
+        emptyView.find<TextView>(R.id.text_error).text = getString(R.string.pick_list_empty)
+        adapter.emptyView = emptyView
+        pickListRecyclerView.layoutManager = LinearLayoutManager(context)
+        pickListRecyclerView.adapter = adapter
+        carInput.onClick {
+            if (adapter.data.size == 0) {
+                showMessage(R.string.picklist_create_empty_error)
+            } else {
+                val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
+                val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+                editText.setHint(R.string.picklist_code)
+                AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                    pickListCreate(editText.text.toString())
+                    hideKeyboard(editText)
+                }.setPositiveButton(R.string.cancel, null).show()
+                showKeyboard(editText)
+            }
+        }
+        carScanner.onClick {
+            if (adapter.data.size == 0) {
+                showMessage(R.string.picklist_create_empty_error)
+            } else {
+                val fragment = QRCodeScannerFragment()
+                fragment.setScannerDelegate(object : ScannerDelegate {
+                    override fun succeed(result: String) {
+                        pickListCreate(result)
+                    }
+                })
+                fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+            }
+        }
+    }
+
+    private fun pickListCreate(carNumber: String) {
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(getString(R.string.picklist_create_car_number, carNumber)).setNegativeButton(R.string.ok) { _, _ ->
+            presenter.createLoadingList(carNumber, adapter.data as List<PickListInfo>)
+        }.setPositiveButton(R.string.cancel, null).create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    override fun createLoadingListSucceed(message: String) {
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(Html.fromHtml(message)).setNegativeButton(R.string.ok) { _, _ ->
+            adapter.setNewData(null)
+        }.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     override fun succeed(result: String) {
-        presenter.getPickListInfoByCode(result)
+        if (adapter.data.contains(PickListInfo(result))) {
+            showMessage(R.string.same_pick_list_error)
+        } else {
+            presenter.getPickListInfoByCode(result)
+        }
     }
 
     override fun getPickListInfo(pickListInfo: PickListInfo) {
-        adapter.addPickListInfo(pickListInfo)
+        pickListRecyclerView.post {
+            pickListInfo.subItems = pickListInfo.materialInfoList
+            adapter.addData(pickListInfo)
+        }
     }
 
     override fun onDestroyView() {
@@ -91,59 +149,39 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
         presenter.onDetach()
     }
 
-    class PickListAdapter : BaseExpandableListAdapter() {
-        private val pickListInfoList = ArrayList<PickListInfo>()
+    class PickListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {
+        private val TYPE_PICK_LIST = 0
+        private val TYPE_PICK_LIST_MATERIAL_INFO = 1
 
-        fun addPickListInfo(pickListInfo: PickListInfo) {
-            pickListInfoList.add(pickListInfo)
-            notifyDataSetChanged()
+        init {
+            addItemType(TYPE_PICK_LIST, R.layout.item_pick_list_info)
+            addItemType(TYPE_PICK_LIST_MATERIAL_INFO, R.layout.item_pick_list_material_info);
         }
 
-        override fun getGroupCount(): Int {
-            return pickListInfoList.size
-        }
-
-        override fun getGroup(groupPosition: Int): PickListInfo {
-            return pickListInfoList[groupPosition]
-        }
-
-        override fun getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View?, parent: ViewGroup): View {
-            if(convertView==null){
-
+        override fun convert(helper: BaseViewHolder, item: MultiItemEntity) {
+            when (helper.itemViewType) {
+                TYPE_PICK_LIST -> {
+                    val dataBind = DataBindingUtil.bind<ItemPickListInfoBinding>(helper.itemView)
+                    dataBind.info = item as PickListInfo
+                    helper.getView<Button>(R.id.expandButton).onClick { view ->
+                        if (item.isExpanded) {
+                            collapse(helper.adapterPosition)
+                        } else {
+                            expand(helper.adapterPosition)
+                        }
+                    }
+                    helper.getView<Button>(R.id.deleteButton).onClick { view ->
+                        AlertDialog.Builder(view!!.context).setMessage(view.resources.getString(R.string.delete_pic_item_info, item.code)).setNegativeButton(R.string.ok) { _, _ ->
+                            remove(helper.adapterPosition)
+                        }.setPositiveButton(R.string.cancel, null).show()
+                    }
+                    helper.getView<Button>(R.id.expandButton).setText(if (item.isExpanded) R.string.picklist_material_collapse else R.string.picklist_material_expand)
+                }
+                TYPE_PICK_LIST_MATERIAL_INFO -> {
+                    val dataBind = DataBindingUtil.bind<ItemPickListMaterialInfoBinding>(helper.itemView)
+                    dataBind.info = item as PickListMaterialInfo
+                }
             }
-            return View(parent.context)
         }
-
-        override fun getChildView(groupPosition: Int, childPosition: Int, isLastChild: Boolean, convertView: View?, parent: ViewGroup): View {
-            return View(parent.context)
-        }
-
-        override fun getChild(groupPosition: Int, childPosition: Int): PickListMaterialInfo? {
-            return pickListInfoList[groupPosition].materialInfoList?.get(childPosition)
-        }
-
-        override fun getChildrenCount(groupPosition: Int): Int {
-            return pickListInfoList[groupPosition].materialInfoList?.size ?: 0
-        }
-
-        override fun isChildSelectable(groupPosition: Int, childPosition: Int): Boolean {
-            return false
-        }
-
-        override fun hasStableIds(): Boolean {
-            return false
-        }
-
-        override fun getGroupId(groupPosition: Int): Long {
-            return groupPosition.toLong()
-        }
-
-        override fun getChildId(groupPosition: Int, childPosition: Int): Long {
-            return childPosition.toLong()
-        }
-    }
-
-    class GroupViewHolder{
-
     }
 }

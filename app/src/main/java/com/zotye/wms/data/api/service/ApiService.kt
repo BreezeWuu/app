@@ -57,4 +57,8 @@ interface ApiService {
     @POST("bar_code/pickListInfoByCode")
     fun getPickListInfoByCode(@Field("userId") userId: String, @Field("OpterationType") OpterationType: String, @Field("barCode") barCode: String): Call<ApiResponse<PickListInfo>>
 
+    @FormUrlEncoded
+    @POST("bar_code/createLoadingList")
+    fun createLoadingList(@Field("userId") userId: String, @Field("carNumber") carNumber: String, @Field("pickListJson") pickListJson: String): Call<ApiResponse<String>>
+
 }
