@@ -104,4 +104,5 @@
     <string name="picklist_create_car_number" >车辆信息：%1$s，点击确定生成装车单！</string>
     <string name="action_input_picklist">输入拣配单</string>
     <string name="action_scanner_pick_list_code">扫描拣配单</string>
+    <string name="pick_list_under_shelf_list_empty">下架明细列表为空</string>
 </resources>

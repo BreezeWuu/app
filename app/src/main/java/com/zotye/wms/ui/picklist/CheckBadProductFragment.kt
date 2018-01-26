@@ -27,7 +27,7 @@ import javax.inject.Inject
 /**
  * Created by hechuangju on 2018/01/25
  */
-class CheckBadProductFragment : BaseFragment(), UnderShelfContract.UnderShelfView, ScannerDelegate {
+class CheckBadProductFragment : BaseFragment(), ScannerDelegate {
     companion object {
         fun newInstance(title: String): CheckBadProductFragment {
             val fragment = CheckBadProductFragment()
@@ -48,7 +48,7 @@ class CheckBadProductFragment : BaseFragment(), UnderShelfContract.UnderShelfVie
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        presenter.onAttach(this)
+//        presenter.onAttach(this)
         toolbar_base.visibility = View.VISIBLE
         toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_check_bad_product)
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
@@ -74,35 +74,6 @@ class CheckBadProductFragment : BaseFragment(), UnderShelfContract.UnderShelfVie
 
     override fun succeed(result: String) {
         presenter.getPickListInfoByCode(result)
-    }
-
-    override fun getPickListInfo(pickListInfo: PickListInfo) {
-        this.pickListInfo = pickListInfo
-        updateTitle()
-    }
-
-    override fun getBarCodeInfo(barCodeInfo: BarcodeInfo?) {
-        barCodeInfo?.let { info ->
-            val barcodeType = BarCodeType.fromCodeType(info.barCodeType)
-            barcodeType?.let {
-                when (it) {
-                    BarCodeType.Package -> {
-                        getStorageUnitPackage(Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java))
-                    }
-                    BarCodeType.Pallet -> {
-                        getStorageUnitPallet(Gson().fromJson<PalletInfo>(info.barCodeInfo, PalletInfo::class.java))
-                    }
-                }
-            }
-        }
-    }
-
-    private fun getStorageUnitPackage(packageInfo: PackageInfo) {
-
-    }
-
-    private fun getStorageUnitPallet(palletInfo: PalletInfo) {
-
     }
 
     private fun updateTitle() {

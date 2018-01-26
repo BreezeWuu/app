@@ -44,7 +44,7 @@ object CheckBadProductContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed() && it.data != null) {
-//                                        mvpView?.getPickListInfo(it.data!!)
+//                                        mvpView?.getPickListPullOffShelfList(it.data!!)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

@@ -1,11 +1,16 @@
 package com.zotye.wms.ui.picklist
 
+import com.google.gson.Gson
+import com.google.gson.TypeAdapter
+import com.google.gson.reflect.TypeToken
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListInfo
+import com.zotye.wms.data.api.model.PickListPullOffShelf
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -19,7 +24,7 @@ import javax.inject.Inject
  */
 object UnderShelfContract {
     interface UnderShelfView : MvpView {
-        fun getPickListInfo(pickListInfo: PickListInfo)
+        fun getPickListPullOffShelfList(pickListPullOffShelfList: List<PickListPullOffShelf>)
         fun getBarCodeInfo(barCodeInfo: BarcodeInfo?)
     }
 
@@ -44,7 +49,10 @@ object UnderShelfContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed() && it.data != null) {
-//                                        mvpView?.getPickListInfo(it.data!!)
+                                        val list = Gson().fromJson<List<PickListPullOffShelf>>(it.data!!.barCodeInfo, object : TypeToken<List<PickListPullOffShelf>>() {
+
+                                        }.type)
+                                        mvpView?.getPickListPullOffShelfList(list)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

@@ -18,6 +18,7 @@ enum class BarCodeType(val type: Int) {
     Package(1),
     Pallet(2),
     PickList(3),
+    PickListPullOffShelfList(4),
     Unknown(0);
 
     companion object {
