@@ -90,7 +90,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 override fun succeed(result: String) {
                     if (pickListPullOffShelf?.storageUnitInfoCode == result) {
                         if (pickListPullOffShelf.checkFlag) {
-                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.storageUnitInfoCode!!)
+                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
                         } else {
                             pickListPullOffShelf.isAddedPackage = true
                             adapter.notifyItemChanged(position)
@@ -125,6 +125,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_under_shelf_package, null)
             val editText = codeInputView.findViewById<EditText>(R.id.underShelfEditText)
             codeInputView.findViewById<TextView>(R.id.packageCount).text = "$totalNumber"
+            codeInputView.findViewById<TextView>(R.id.underShelfNumber).text = "${it.totalNum}"
+            codeInputView.findViewById<View>(R.id.checkLayout).visibility = if (it.checkFlag) View.VISIBLE else View.GONE
             AlertDialog.Builder(context!!).setTitle(R.string.under_shelf_package_or_pallet_info).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 it.isAddedPackage = true
                 it.checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()

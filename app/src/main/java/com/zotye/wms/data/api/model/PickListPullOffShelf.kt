@@ -70,6 +70,7 @@ class PickListPullOffShelf {
      */
     var isAddedPackage: Boolean = false
 
+    val spDetailId: String? = null
 
     fun isChecked(): Boolean {
         return checkFlag && isAddedPackage
