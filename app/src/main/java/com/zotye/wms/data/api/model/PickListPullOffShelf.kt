@@ -3,7 +3,7 @@ package com.zotye.wms.data.api.model
 /**
  * Created by hechuangju on 2018/01/26
  */
-class PickListPullOffShelf{
+class PickListPullOffShelf {
     /**
      * 拣配单号
      */
@@ -52,4 +52,17 @@ class PickListPullOffShelf{
      * 库位名称
      */
     var storageAreaInfoName: String? = null
+    /**
+     * 库位code
+     */
+    var storageUnitInfoCode: String? = null
+    /**
+     * 是否需要下架确认
+     */
+    var offShelfFlag: Boolean = false
+
+    /**
+     * 是否需要下架盘点
+     */
+    var checkFlag: Boolean = false
 }
