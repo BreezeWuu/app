@@ -122,11 +122,10 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
     override fun getStorageUnitMaterialTotalNumber(position: Int, totalNumber: Long) {
         val pickListPullOffShelf = (pickListRecyclerView.adapter as PickListOffShelfAdapter).getItem(position)
         pickListPullOffShelf?.let { it ->
-            val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_pda_code_input, null)
-            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
-            editText.setHint(R.string.under_shelf_count)
-            editText.inputType = InputType.TYPE_CLASS_NUMBER
-            AlertDialog.Builder(context!!).setTitle(R.string.action_input_under_shelf_check_count).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+            val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_under_shelf_package, null)
+            val editText = codeInputView.findViewById<EditText>(R.id.underShelfEditText)
+            codeInputView.findViewById<TextView>(R.id.packageCount).text = "$totalNumber"
+            AlertDialog.Builder(context!!).setTitle(R.string.under_shelf_package_or_pallet_info).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 it.isAddedPackage = true
                 it.checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
                 pickListRecyclerView.adapter.notifyItemChanged(position)

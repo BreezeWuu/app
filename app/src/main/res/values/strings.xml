@@ -114,4 +114,7 @@
     <string name="picklist_pull_off_shelf_empty_error">下架明细列表为空，请先扫描拣配单！</string>
     <string name="picklist_pull_off_shelf_no_add_error">下架明细列表未全部确认！</string>
     <string name="under_shelf_package_or_pallet_code">包装/托盘号：</string>
+    <string name="package_count_format">包装总数：</string>
+    <string name="under_shelf_count_format">下架数量：</string>
+    <string name="under_shelf_package_or_pallet_info">下架包装详情</string>
 </resources>
