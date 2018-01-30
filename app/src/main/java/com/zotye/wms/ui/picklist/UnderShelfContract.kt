@@ -26,11 +26,13 @@ object UnderShelfContract {
     interface UnderShelfView : MvpView {
         fun getPickListPullOffShelfList(pickListPullOffShelfList: List<PickListPullOffShelf>)
         fun getBarCodeInfo(barCodeInfo: BarcodeInfo?)
+        fun getStorageUnitMaterialTotalNumber(position: Int, totalNumber: Long)
     }
 
     interface UnderShelfPresenter : MvpPresenter<UnderShelfView> {
         fun getPickListInfoByCode(barCode: String)
         fun getStorageUnitDetailInfoByCode(barCode: String)
+        fun getStorageUnitMaterialTotalNumber(position: Int, storageUnitInfoCode: String, spDetailId: String)
     }
 
     class UnderShelfPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<UnderShelfView>(), UnderShelfPresenter {
@@ -80,6 +82,34 @@ object UnderShelfContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getBarCodeInfo(it.data)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun getStorageUnitMaterialTotalNumber(position: Int, storageUnitInfoCode: String, spDetailId: String) {
+            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.getStorageUnitMaterialTotalNumber(it.userId, storageUnitInfoCode, spDetailId).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        val totalNumber = it.data?.toLong() ?: 0
+                                        mvpView?.getStorageUnitMaterialTotalNumber(position, totalNumber)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

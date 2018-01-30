@@ -16,5 +16,13 @@
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/shadow"
     android:radius="8dp">
-    <item android:drawable="@drawable/round_rect_corners" />
+    <item>
+        <selector>
+            <item
+                android:drawable="@drawable/round_rect_corners_gray"
+                android:state_enabled="false" />
+
+            <item android:drawable="@drawable/round_rect_corners" />
+        </selector>
+    </item>
 </ripple>

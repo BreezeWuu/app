@@ -70,4 +70,8 @@ class PickListPullOffShelf {
      */
     var isAddedPackage: Boolean = false
 
+
+    fun isChecked(): Boolean {
+        return checkFlag && isAddedPackage
+    }
 }

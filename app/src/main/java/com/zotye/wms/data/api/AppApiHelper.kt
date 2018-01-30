@@ -33,5 +33,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiService.getPickListInfoByCode(userId,OpterationType, barCode)
 
+    override fun getStorageUnitMaterialTotalNumber(userId: String, storageUnitInfoCode: String, spDetailId: String)=apiService.getStorageUnitMaterialTotalNumber(userId, storageUnitInfoCode, spDetailId)
+
     override fun createLoadingList(userId: String, carNumber: String, pickListJson: String)=apiService.createLoadingList(userId, carNumber, pickListJson)
 }

@@ -58,6 +58,10 @@ interface ApiService {
     fun getPickListInfoByCode(@Field("userId") userId: String, @Field("OpterationType") OpterationType: String, @Field("barCode") barCode: String): Call<ApiResponse<BarcodeInfo>>
 
     @FormUrlEncoded
+    @POST("bar_code/getStorageUnitMaterialTotalNumber")
+    fun getStorageUnitMaterialTotalNumber(@Field("userId") userId: String, @Field("storageUnitInfoCode") storageUnitInfoCode: String, @Field("spDetailId") spDetailId: String): Call<ApiResponse<String>>
+
+    @FormUrlEncoded
     @POST("bar_code/createLoadingList")
     fun createLoadingList(@Field("userId") userId: String, @Field("carNumber") carNumber: String, @Field("pickListJson") pickListJson: String): Call<ApiResponse<String>>
 

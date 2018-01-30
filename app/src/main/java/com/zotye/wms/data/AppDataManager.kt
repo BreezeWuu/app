@@ -41,6 +41,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiHelper.getPickListInfoByCode(userId, OpterationType, barCode)
 
+    override fun getStorageUnitMaterialTotalNumber(userId: String, storageUnitInfoCode: String, spDetailId: String)=apiHelper.getStorageUnitMaterialTotalNumber(userId, storageUnitInfoCode, spDetailId)
+
     override fun createLoadingList(userId: String, carNumber: String, pickListJson: String) = apiHelper.createLoadingList(userId, carNumber, pickListJson)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)

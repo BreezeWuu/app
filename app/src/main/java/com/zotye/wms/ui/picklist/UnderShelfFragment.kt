@@ -25,6 +25,8 @@ import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_pick_list_under_shelf.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
+import org.jetbrains.anko.collections.forEachByIndex
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
@@ -88,17 +90,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 override fun succeed(result: String) {
                     if (pickListPullOffShelf?.storageUnitInfoCode == result) {
                         if (pickListPullOffShelf.checkFlag) {
-                            val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_pda_code_input, null)
-                            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
-                            editText.setHint(R.string.under_shelf_count)
-                            editText.inputType = InputType.TYPE_CLASS_NUMBER
-                            AlertDialog.Builder(context!!).setTitle(R.string.action_input_under_shelf_count).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
-                                pickListPullOffShelf.isAddedPackage = true
-                                pickListPullOffShelf.checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
-                                adapter.notifyItemChanged(position)
-                                hideKeyboard(editText)
-                            }.setPositiveButton(R.string.cancel, null).show()
-                            showKeyboard(editText)
+                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.storageUnitInfoCode!!)
                         } else {
                             pickListPullOffShelf.isAddedPackage = true
                             adapter.notifyItemChanged(position)
@@ -109,6 +101,38 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 }
             })
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+        }
+        underShelfButton.onClick {
+            if (adapter.data.isEmpty()) {
+                showMessage(R.string.picklist_pull_off_shelf_empty_error)
+            } else {
+                doAsync {
+                    adapter.data.forEachByIndex { pickListPullOffShelf ->
+                        if (!pickListPullOffShelf.isAddedPackage) {
+                            showMessage(R.string.picklist_pull_off_shelf_no_add_error)
+                            return@doAsync
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    override fun getStorageUnitMaterialTotalNumber(position: Int, totalNumber: Long) {
+        val pickListPullOffShelf = (pickListRecyclerView.adapter as PickListOffShelfAdapter).getItem(position)
+        pickListPullOffShelf?.let { it ->
+            val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_pda_code_input, null)
+            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+            editText.setHint(R.string.under_shelf_count)
+            editText.inputType = InputType.TYPE_CLASS_NUMBER
+            AlertDialog.Builder(context!!).setTitle(R.string.action_input_under_shelf_check_count).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                it.isAddedPackage = true
+                it.checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
+                pickListRecyclerView.adapter.notifyItemChanged(position)
+                hideKeyboard(editText)
+            }.setPositiveButton(R.string.cancel, null).show()
+            showKeyboard(editText)
         }
     }
 
