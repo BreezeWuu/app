@@ -264,7 +264,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height_normal"
                 android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/spacing_small"
                 android:layout_marginTop="@dimen/spacing_small"
                 android:enabled="@{info.isAddedPackage?false:true}"
                 android:text="@string/action_scanner_package_or_pallet"
