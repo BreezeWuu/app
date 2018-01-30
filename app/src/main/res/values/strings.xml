@@ -93,6 +93,7 @@
     <string name="title_pick_list_add_package">添加包装或托盘</string>
     <string name="title_loading_create">创建装车单</string>
     <string name="count_format">数量：</string>
+    <string name="under_shelf_count">下架数量</string>
     <string name="pick_list_empty">拣配单列表为空</string>
     <string name="picklist_material_expand">展开物料详情</string>
     <string name="picklist_material_collapse">收起物料详情</string>
@@ -105,4 +106,7 @@
     <string name="action_input_picklist">输入拣配单</string>
     <string name="action_scanner_pick_list_code">扫描拣配单</string>
     <string name="pick_list_under_shelf_list_empty">下架明细列表为空</string>
+    <string name="action_scanner_package_or_pallet">扫描包装或托盘</string>
+    <string name="not_match_under_shelf_package">该包装不是当前下架明细所对应的包装！～</string>
+    <string name="action_input_under_shelf_count">请输入下架数量</string>
 </resources>

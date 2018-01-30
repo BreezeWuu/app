@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.Gson
@@ -22,10 +23,12 @@ import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
+import com.zotye.wms.ui.picklist.UnderShelfFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onUiThread
 import org.jetbrains.anko.textResource
@@ -84,6 +87,9 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         }
         packageRecyclerView.layoutManager = LinearLayoutManager(context)
         val goodsPackageAdapter = GoodsPackageAdapter()
+        val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
+        emptyView.find<TextView>(R.id.text_error).text = getString(R.string.package_list_empty)
+        goodsPackageAdapter.emptyView = emptyView
         goodsPackageAdapter.bindToRecyclerView(packageRecyclerView)
         goodsPackageAdapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { _, view, position ->
             when (view.id) {
@@ -91,8 +97,6 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                     context?.let {
                         AlertDialog.Builder(it).setMessage(getString(R.string.delete_package_item_info, goodsPackageAdapter.getItem(position)?.code)).setNegativeButton(R.string.ok) { _, _ ->
                             goodsPackageAdapter.remove(position)
-                            if (goodsPackageAdapter.itemCount == 0)
-                                packageEmptyTextView.bringToFront()
                         }.setPositiveButton(R.string.cancel, null).show()
                     }
                 }

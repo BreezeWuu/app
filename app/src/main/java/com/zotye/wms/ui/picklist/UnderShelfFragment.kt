@@ -4,6 +4,8 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.text.InputType
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,6 +81,35 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         adapter.emptyView = emptyView
         pickListRecyclerView.layoutManager = LinearLayoutManager(context)
         pickListRecyclerView.adapter = adapter
+        adapter.setOnItemChildClickListener { _, _, position ->
+            val pickListPullOffShelf = adapter.getItem(position)
+            val fragment = BarCodeScannerFragment()
+            fragment.setScannerDelegate(object : ScannerDelegate {
+                override fun succeed(result: String) {
+                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
+                        if (pickListPullOffShelf.checkFlag) {
+                            val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_pda_code_input, null)
+                            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+                            editText.setHint(R.string.under_shelf_count)
+                            editText.inputType = InputType.TYPE_CLASS_NUMBER
+                            AlertDialog.Builder(context!!).setTitle(R.string.action_input_under_shelf_count).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                                pickListPullOffShelf.isAddedPackage = true
+                                pickListPullOffShelf.checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
+                                adapter.notifyItemChanged(position)
+                                hideKeyboard(editText)
+                            }.setPositiveButton(R.string.cancel, null).show()
+                            showKeyboard(editText)
+                        } else {
+                            pickListPullOffShelf.isAddedPackage = true
+                            adapter.notifyItemChanged(position)
+                        }
+                    } else {
+                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.not_match_under_shelf_package).setNegativeButton(R.string.ok, null).show()
+                    }
+                }
+            })
+            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+        }
     }
 
     override fun succeed(result: String) {
@@ -125,6 +156,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         override fun convert(helper: BaseViewHolder, item: PickListPullOffShelf) {
             val dataBind = DataBindingUtil.bind<ItemPickListInfoUnderShelfBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind.info = item
+            helper.addOnClickListener(R.id.packageCodeScanner)
         }
     }
 }

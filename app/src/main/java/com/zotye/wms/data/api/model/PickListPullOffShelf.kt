@@ -56,13 +56,18 @@ class PickListPullOffShelf {
      * 库位code
      */
     var storageUnitInfoCode: String? = null
-    /**
-     * 是否需要下架确认
-     */
-    var offShelfFlag: Boolean = false
 
     /**
      * 是否需要下架盘点
      */
     var checkFlag: Boolean = false
+    /**
+     * 是否已经扫描过包装
+     */
+    var checkCount: Long = 0
+    /**
+     * 是否已经扫描过包装
+     */
+    var isAddedPackage: Boolean = false
+
 }
