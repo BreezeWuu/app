@@ -23,7 +23,6 @@ import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
-import com.zotye.wms.ui.picklist.UnderShelfFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
@@ -103,14 +102,20 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                 R.id.editButton -> {
                     val item = goodsPackageAdapter.getItem(position)
                     item?.let {
-                        val editText = goodsPackageAdapter.getViewByPosition(position, R.id.receiveNumberText)
-                        if (editText is TextInputEditText) {
-                            if (item.isEditEnable) {
-                                val numberText = editText.text.toString()
-                                item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
-                            } else {
-                                editText.requestFocus()
+                        val editText = goodsPackageAdapter.getViewByPosition(position, R.id.receiveNumberText) as TextInputEditText
+                        val batchNumberEditText = goodsPackageAdapter.getViewByPosition(position, R.id.batchNumber) as TextInputEditText
+                        if (item.isEditEnable) {
+                            if (item.isBatchMaterialEditable()) {
+                                if (batchNumberEditText.text.isNullOrBlank()) {
+                                    batchNumberEditText.error = getString(R.string.batch_number_empty_error)
+                                    return@let
+                                } else
+                                    item.batchNum = batchNumberEditText.text.toString()
                             }
+                            val numberText = editText.text.toString()
+                            item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
+                        } else {
+                            editText.requestFocus()
                         }
                         item.isEditEnable = !item.isEditEnable
                         goodsPackageAdapter.notifyItemChanged(position)
@@ -209,8 +214,8 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             if (isGroupReceive) {
                 packageInfo.receiveNum = receiveNumber
                 packageInfo.batchNum = batchNumberEditText.text.toString()
-                if (packageRecyclerView.adapter.itemCount != 0) {
-                    val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
+                val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
+                if (adapter.data.isNotEmpty()) {
                     val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
                     if (lastPackage.materialNum != packageInfo.materialNum) {
                         showSnackBar(infoView, getString(R.string.not_match_material_id))
@@ -234,10 +239,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                     }
                 }
                 packageInfo.isEditEnable = false
-                val adapter = packageRecyclerView.adapter as GoodsPackageAdapter
                 adapter.addData(packageInfo)
-                if (adapter.itemCount != 0)
-                    packageRecyclerView.bringToFront()
             } else {
                 doAsync {
                     dataManager.getCurrentUser()?.let { user ->
