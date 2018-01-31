@@ -2,6 +2,7 @@ package com.zotye.wms.ui.storageunit
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.widget.TextViewCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -9,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.Gson
@@ -27,6 +29,7 @@ import kotlinx.android.synthetic.main.layout_code_scanner.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.textResource
 import javax.inject.Inject
 
 /**
@@ -116,6 +119,17 @@ class StorageUnitInfoFragment : BaseFragment(), StorageUnitInfoContract.StorageU
             val infoView = LayoutInflater.from(context).inflate(R.layout.item_storage_unit_package_info, viewSwitcher, false)
             val dataBind = DataBindingUtil.bind<ItemStorageUnitPackageInfoBinding>(infoView, fragmentDataBindingComponent)
             dataBind.info = it
+            when (it?.state) {
+                "0" -> {
+                    infoView.findViewById<TextView>(R.id.stateTextView).textResource = R.string.package_state_un_send
+                }
+                "1" -> {
+                    infoView.findViewById<TextView>(R.id.stateTextView).textResource = R.string.package_state_sended
+                }
+                "2" -> {
+                    infoView.findViewById<TextView>(R.id.stateTextView).textResource = R.string.package_state_received
+                }
+            }
             viewSwitcher.addView(infoView)
             viewSwitcher.showNext()
             toolbar_base.titleResource = R.string.package_info

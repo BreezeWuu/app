@@ -117,4 +117,8 @@
     <string name="package_count_format">包装总数：</string>
     <string name="under_shelf_count_format">下架数量：</string>
     <string name="under_shelf_package_or_pallet_info">下架包装详情</string>
+    <string name="storage_unit_state_format">状态：</string>
+    <string name="package_state_un_send">未发货</string>
+    <string name="package_state_sended">已发货</string>
+    <string name="package_state_received">已收货</string>
 </resources>

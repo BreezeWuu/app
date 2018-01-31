@@ -50,7 +50,10 @@ class StorageUnitPackageInfo {
      * 工厂代码
      */
     var factoryCode: String? = null
-
+    /**
+     * 包装状态
+     */
+    var state: String? = null
     /**
      * 库位代码
      */
