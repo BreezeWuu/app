@@ -91,7 +91,7 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
             }
         }
         carScanner.onClick {
-            if (adapter.data.size == 0) {
+            if (adapter.data.isEmpty()) {
                 showMessage(R.string.picklist_create_empty_error)
             } else {
                 val fragment = QRCodeScannerFragment()
