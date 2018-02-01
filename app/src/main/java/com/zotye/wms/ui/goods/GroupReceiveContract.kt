@@ -7,6 +7,7 @@ import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.LogisticsReceiveInfo
+import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -21,7 +22,7 @@ import javax.inject.Inject
 object GroupReceiveContract {
     interface GroupReceiveView : MvpView {
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
-        fun submitReceiveInfoSucceed(message: String)
+        fun submitReceiveInfoSucceed(goodsReceiveResponse: GoodsReceiveResponse)
     }
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
@@ -36,17 +37,17 @@ object GroupReceiveContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.logisticsReceive(Gson().toJson(logisticsReceiveInfo)).enqueue(object : Callback<ApiResponse<String>> {
-                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                        dataManager.logisticsReceive(Gson().toJson(logisticsReceiveInfo)).enqueue(object : Callback<ApiResponse<GoodsReceiveResponse>> {
+                            override fun onFailure(call: Call<ApiResponse<GoodsReceiveResponse>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
                             }
 
-                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                            override fun onResponse(call: Call<ApiResponse<GoodsReceiveResponse>>?, response: Response<ApiResponse<GoodsReceiveResponse>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.submitReceiveInfoSucceed(it.message)
+                                        mvpView?.submitReceiveInfoSucceed(it.data!!)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

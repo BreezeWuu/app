@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.model.*
+import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
@@ -272,8 +273,8 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             presenter.getPackageInfo(isGroupReceive, result)
     }
 
-    override fun submitReceiveInfoSucceed(message: String) {
-        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setPositiveButton(R.string.ok, null).show()
+    override fun submitReceiveInfoSucceed(goodsReceiveResponse: GoodsReceiveResponse) {
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(getString(R.string.submit_group_receive_info_succeed, goodsReceiveResponse.deliveryNoteCode)).setPositiveButton(R.string.ok, null).show()
         (packageRecyclerView.adapter as GoodsPackageAdapter).setNewData(null)
     }
 

@@ -140,18 +140,32 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 
     override fun getStorageUnitMaterialTotalNumber(position: Int, totalNumber: Long) {
         val pickListPullOffShelf = (pickListRecyclerView.adapter as PickListOffShelfAdapter).getItem(position)
+        var checkDialog: AlertDialog? = null
         pickListPullOffShelf?.let { it ->
             val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_under_shelf_package, null)
             val editText = codeInputView.findViewById<EditText>(R.id.underShelfEditText)
             codeInputView.findViewById<TextView>(R.id.packageCount).text = "$totalNumber"
             codeInputView.findViewById<TextView>(R.id.underShelfNumber).text = "${it.totalNum}"
             codeInputView.findViewById<View>(R.id.checkLayout).visibility = if (it.checkFlag) View.VISIBLE else View.GONE
-            AlertDialog.Builder(context!!).setTitle(R.string.under_shelf_package_or_pallet_info).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
-                it.isAddedPackage = true
-                it.checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
+            checkDialog = AlertDialog.Builder(context!!).setTitle(R.string.under_shelf_package_or_pallet_info).setView(codeInputView).setNegativeButton(R.string.ok) { dialog, _ ->
+                val checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
+                if (it.checkFlag) {
+                    if (checkCount != (totalNumber - it.totalNum)) {
+                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed)
+                                .setPositiveButton(R.string.ok) { _, _ ->
+                                    checkDialog?.show()
+                                }.setNegativeButton(R.string.cancel) { _, _ ->
+                                    it.isAddedPackage = true
+                                }.show()
+                    } else
+                        it.isAddedPackage = true
+                } else
+                    it.isAddedPackage = true
+                it.checkCount = checkCount
                 pickListRecyclerView.adapter.notifyItemChanged(position)
                 hideKeyboard(editText)
-            }.setPositiveButton(R.string.cancel, null).show()
+            }.setPositiveButton(R.string.cancel, null).create()
+            checkDialog?.show()
             showKeyboard(editText)
         }
     }
@@ -185,7 +199,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 
     override fun underShelfSucceed() {
         (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(null)
-        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok,null).create()
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok, null).create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         dialog.show()

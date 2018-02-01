@@ -2,6 +2,7 @@ package com.zotye.wms.data.api.service
 
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.*
+import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import retrofit2.Call
 import retrofit2.http.Body
@@ -36,7 +37,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/logisticsReceive")
-    fun logisticsReceive(@Field("jsonString") logisticsReceiveJsonString: String): Call<ApiResponse<String>>
+    fun logisticsReceive(@Field("jsonString") logisticsReceiveJsonString: String): Call<ApiResponse<GoodsReceiveResponse>>
 
     @FormUrlEncoded
     @POST("bar_code/authStorageUnitNewPositionByQRCode")

@@ -26,7 +26,7 @@
     <string name="delete_package_item_info">确定删除包装单号： %1$s ？</string>
     <string name="delete_pic_item_info">确定删除拣配单号： %1$s ？</string>
     <string name="submit_receive_info_succeed">包装收货成功！</string>
-    <string name="submit_group_receive_info_succeed">组托收货成功！</string>
+    <string name="submit_group_receive_info_succeed">组托收货成功！\n交货单号：%1$s</string>
     <string name="ok">确定</string>
     <string name="delete">删除</string>
     <string name="edit">修改</string>
