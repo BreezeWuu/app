@@ -150,12 +150,13 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             checkDialog = AlertDialog.Builder(context!!).setTitle(R.string.under_shelf_package_or_pallet_info).setView(codeInputView).setNegativeButton(R.string.ok) { dialog, _ ->
                 val checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
                 if (it.checkFlag) {
-                    if (checkCount != (totalNumber - it.totalNum)) {
-                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed)
+                    if (checkCount != (if((totalNumber - it.totalNum)>=0) (totalNumber - it.totalNum) else 0)) {
+                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_no_match_count)
                                 .setPositiveButton(R.string.ok) { _, _ ->
                                     checkDialog?.show()
                                 }.setNegativeButton(R.string.cancel) { _, _ ->
                                     it.isAddedPackage = true
+                                    pickListRecyclerView.adapter.notifyItemChanged(position)
                                 }.show()
                     } else
                         it.isAddedPackage = true

@@ -124,4 +124,5 @@
     <string name="package_state_sended">已发货</string>
     <string name="package_state_received">已收货</string>
     <string name="under_shelf_succeed">下架成功！</string>
+    <string name="under_shelf_no_match_count">实盘数量和系统数量不一致，请确认是否重新盘点！</string>
 </resources>
