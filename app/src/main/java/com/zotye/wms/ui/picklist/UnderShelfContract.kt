@@ -27,7 +27,7 @@ object UnderShelfContract {
     interface UnderShelfView : MvpView {
         fun getPickListPullOffShelfList(pickListPullOffShelfList: List<PickListPullOffShelf>)
         fun getStorageUnitMaterialTotalNumber(position: Int, totalNumber: Long)
-        fun underShelfSucceed(message:String)
+        fun underShelfSucceed()
     }
 
     interface UnderShelfPresenter : MvpPresenter<UnderShelfView> {
@@ -111,7 +111,7 @@ object UnderShelfContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.underShelfSucceed(it.message)
+                                        mvpView?.underShelfSucceed()
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

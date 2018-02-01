@@ -198,9 +198,9 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(pickListPullOffShelfList)
     }
 
-    override fun underShelfSucceed(message:String) {
+    override fun underShelfSucceed() {
         (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(null)
-        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok, null).create()
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok, null).create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         dialog.show()
