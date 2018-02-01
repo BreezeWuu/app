@@ -2,7 +2,9 @@ package com.zotye.wms.data.api.service
 
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.*
+import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
@@ -65,4 +67,6 @@ interface ApiService {
     @POST("bar_code/createLoadingList")
     fun createLoadingList(@Field("userId") userId: String, @Field("carNumber") carNumber: String, @Field("pickListJson") pickListJson: String): Call<ApiResponse<String>>
 
+    @POST("bar_code/underShelfConfirm")
+    fun underShelfConfirm(@Body request: PrMobileConfirmRequest): Call<ApiResponse<String>>
 }

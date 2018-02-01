@@ -131,12 +131,12 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
     }
 
     override fun getUserResources(resources: List<Resource>) {
-        (buttonRecyclerView.adapter as HomeButtonAdapter).setNewData(resources)
+        (buttonRecyclerView?.adapter as HomeButtonAdapter).setNewData(resources)
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         presenter.onDetach()
+        super.onDestroyView()
     }
 
     class HomeButtonAdapter : BaseQuickAdapter<Resource, BaseViewHolder>(R.layout.item_home_button) {

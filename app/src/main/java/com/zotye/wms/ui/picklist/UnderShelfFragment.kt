@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Html
 import android.text.InputType
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListPullOffShelf
+import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemPickListInfoUnderShelfBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
@@ -29,6 +31,7 @@ import org.jetbrains.anko.collections.forEachByIndex
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.support.v4.onUiThread
 import javax.inject.Inject
 
 /**
@@ -106,14 +109,30 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             if (adapter.data.isEmpty()) {
                 showMessage(R.string.picklist_pull_off_shelf_empty_error)
             } else {
+                showProgressDialog(R.string.loading_create_data)
+                val request = PrMobileConfirmRequest()
+                request.confirmDetail = ArrayList()
                 doAsync {
                     adapter.data.forEachByIndex { pickListPullOffShelf ->
-                        if (!pickListPullOffShelf.isAddedPackage) {
-                            showMessage(R.string.picklist_pull_off_shelf_no_add_error)
+                        request.prNo = pickListPullOffShelf.pickListCode
+                        if (pickListPullOffShelf.checkFlag && !pickListPullOffShelf.isAddedPackage) {
+                            onUiThread {
+                                showMessage(R.string.picklist_pull_off_shelf_no_add_error)
+                                hideProgressDialog()
+                            }
                             return@doAsync
                         }
+                        if (pickListPullOffShelf.checkFlag) {
+                            val prDto = PrMobileConfirmRequest.PrCheckInfoDto()
+                            prDto.id = pickListPullOffShelf.id
+                            prDto.checkNum = pickListPullOffShelf.checkCount
+                            request.confirmDetail?.add(prDto)
+                        }
                     }
-
+                    onUiThread {
+                        hideProgressDialog()
+                        presenter.underShelfConfirm(request)
+                    }
                 }
             }
         }
@@ -164,7 +183,13 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(pickListPullOffShelfList)
     }
 
-    override fun getBarCodeInfo(barCodeInfo: BarcodeInfo?) {
+    override fun underShelfSucceed() {
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok) { _, _ ->
+            (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(null)
+        }.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     override fun canBackPressed(): Boolean {

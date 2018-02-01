@@ -5,6 +5,10 @@ package com.zotye.wms.data.api.model
  */
 class PickListPullOffShelf {
     /**
+     * 下架明细ID
+     */
+    val id: String? = null
+    /**
      * 拣配单号
      */
     var pickListCode: String? = null

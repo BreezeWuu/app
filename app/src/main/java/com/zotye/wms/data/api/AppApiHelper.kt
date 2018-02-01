@@ -1,5 +1,6 @@
 package com.zotye.wms.data.api
 
+import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.service.ApiService
 import retrofit2.Call
 import javax.inject.Inject
@@ -31,9 +32,11 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun logisticsReceiveConfirm(userId: String, noteId: String) = apiService.logisticsReceiveConfirm(userId, noteId)
 
-    override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiService.getPickListInfoByCode(userId,OpterationType, barCode)
+    override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiService.getPickListInfoByCode(userId, OpterationType, barCode)
 
-    override fun getStorageUnitMaterialTotalNumber(userId: String, storageUnitInfoCode: String, spDetailId: String)=apiService.getStorageUnitMaterialTotalNumber(userId, storageUnitInfoCode, spDetailId)
+    override fun getStorageUnitMaterialTotalNumber(userId: String, storageUnitInfoCode: String, spDetailId: String) = apiService.getStorageUnitMaterialTotalNumber(userId, storageUnitInfoCode, spDetailId)
 
-    override fun createLoadingList(userId: String, carNumber: String, pickListJson: String)=apiService.createLoadingList(userId, carNumber, pickListJson)
+    override fun underShelfConfirm(request: PrMobileConfirmRequest) = apiService.underShelfConfirm(request)
+
+    override fun createLoadingList(userId: String, carNumber: String, pickListJson: String) = apiService.createLoadingList(userId, carNumber, pickListJson)
 }

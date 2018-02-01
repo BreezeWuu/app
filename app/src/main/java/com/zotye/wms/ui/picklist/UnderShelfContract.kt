@@ -11,6 +11,7 @@ import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.data.api.model.PickListPullOffShelf
+import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -25,14 +26,14 @@ import javax.inject.Inject
 object UnderShelfContract {
     interface UnderShelfView : MvpView {
         fun getPickListPullOffShelfList(pickListPullOffShelfList: List<PickListPullOffShelf>)
-        fun getBarCodeInfo(barCodeInfo: BarcodeInfo?)
         fun getStorageUnitMaterialTotalNumber(position: Int, totalNumber: Long)
+        fun underShelfSucceed()
     }
 
     interface UnderShelfPresenter : MvpPresenter<UnderShelfView> {
         fun getPickListInfoByCode(barCode: String)
-        fun getStorageUnitDetailInfoByCode(barCode: String)
         fun getStorageUnitMaterialTotalNumber(position: Int, storageUnitInfoCode: String, spDetailId: String)
+        fun underShelfConfirm(request: PrMobileConfirmRequest)
     }
 
     class UnderShelfPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<UnderShelfView>(), UnderShelfPresenter {
@@ -66,33 +67,6 @@ object UnderShelfContract {
             }
         }
 
-        override fun getStorageUnitDetailInfoByCode(barCode: String) {
-            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
-            appExecutors.diskIO().execute {
-                dataManager.getCurrentUser()?.let {
-                    appExecutors.mainThread().execute {
-                        dataManager.getStorageUnitDetailInfoByCode(it.userId, barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
-                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
-                                mvpView?.hideProgressDialog()
-                                t.message?.let { mvpView?.showMessage(it) }
-                            }
-
-                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
-                                mvpView?.hideProgressDialog()
-                                response.body()?.let {
-                                    if (it.isSucceed()) {
-                                        mvpView?.getBarCodeInfo(it.data)
-                                    } else {
-                                        mvpView?.showMessage(it.message)
-                                    }
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-        }
-
         override fun getStorageUnitMaterialTotalNumber(position: Int, storageUnitInfoCode: String, spDetailId: String) {
             mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
             appExecutors.diskIO().execute {
@@ -110,6 +84,34 @@ object UnderShelfContract {
                                     if (it.isSucceed()) {
                                         val totalNumber = it.data?.toLong() ?: 0
                                         mvpView?.getStorageUnitMaterialTotalNumber(position, totalNumber)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun underShelfConfirm(request: PrMobileConfirmRequest) {
+            mvpView?.showProgressDialog(R.string.loading_confirm_under_shelf)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        request.userId = it.userId
+                        dataManager.underShelfConfirm(request).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.underShelfSucceed()
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

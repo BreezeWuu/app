@@ -6,6 +6,7 @@ import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
 import retrofit2.Call
@@ -41,7 +42,9 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiHelper.getPickListInfoByCode(userId, OpterationType, barCode)
 
-    override fun getStorageUnitMaterialTotalNumber(userId: String, storageUnitInfoCode: String, spDetailId: String)=apiHelper.getStorageUnitMaterialTotalNumber(userId, storageUnitInfoCode, spDetailId)
+    override fun getStorageUnitMaterialTotalNumber(userId: String, storageUnitInfoCode: String, spDetailId: String) = apiHelper.getStorageUnitMaterialTotalNumber(userId, storageUnitInfoCode, spDetailId)
+
+    override fun underShelfConfirm(request: PrMobileConfirmRequest) = apiHelper.underShelfConfirm(request)
 
     override fun createLoadingList(userId: String, carNumber: String, pickListJson: String) = apiHelper.createLoadingList(userId, carNumber, pickListJson)
 
