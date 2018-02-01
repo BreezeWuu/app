@@ -21,7 +21,7 @@ android {
     buildTypes {
         debug {
             postprocessing {
-                buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
+                buildConfigField('String', 'API_URL', '\"http://192.168.3.34:5678/mobile_api/\"')
             }
         }
         release {
@@ -31,7 +31,7 @@ android {
                 obfuscate false
                 optimizeCode false
                 proguardFile 'proguard-rules.pro'
-                buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
+                buildConfigField('String', 'API_URL', '\"http://192.168.3.34:5678/mobile_api/\"')
             }
         }
     }

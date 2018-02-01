@@ -273,8 +273,8 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             presenter.getPackageInfo(isGroupReceive, result)
     }
 
-    override fun submitReceiveInfoSucceed(goodsReceiveResponse: GoodsReceiveResponse) {
-        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(getString(R.string.submit_group_receive_info_succeed, goodsReceiveResponse.deliveryNoteCode)).setPositiveButton(R.string.ok, null).show()
+    override fun submitReceiveInfoSucceed(message: String) {
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setPositiveButton(R.string.ok, null).show()
         (packageRecyclerView.adapter as GoodsPackageAdapter).setNewData(null)
     }
 

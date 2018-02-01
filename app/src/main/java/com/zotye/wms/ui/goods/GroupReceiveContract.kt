@@ -22,7 +22,7 @@ import javax.inject.Inject
 object GroupReceiveContract {
     interface GroupReceiveView : MvpView {
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
-        fun submitReceiveInfoSucceed(goodsReceiveResponse: GoodsReceiveResponse)
+        fun submitReceiveInfoSucceed(message: String)
     }
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
@@ -47,7 +47,7 @@ object GroupReceiveContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.submitReceiveInfoSucceed(it.data!!)
+                                        mvpView?.submitReceiveInfoSucceed(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }
