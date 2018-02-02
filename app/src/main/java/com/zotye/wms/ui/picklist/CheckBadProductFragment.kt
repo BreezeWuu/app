@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.text.InputType
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,6 +93,12 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             editText.inputType = InputType.TYPE_CLASS_NUMBER
             editText.setHint(R.string.count_format)
             AlertDialog.Builder(context!!).setTitle(R.string.action_input_under_shelf_count).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                val count = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toInt()
+                if (count <= 0) {
+                    showMessage(R.string.under_shelf_count_error)
+                } else {
+
+                }
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
@@ -108,6 +115,7 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             pickListInfo.subItems = pickListInfo.materialInfoList
             adapter.setNewData(null)
             adapter.addData(pickListInfo)
+            adapter.expandAll()
         }
     }
 
@@ -162,11 +170,12 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
                             expand(helper.adapterPosition)
                         }
                     }
-                    helper.getView<Button>(R.id.deleteButton).textResource = R.string.under_shelf
-                    helper.addOnClickListener(R.id.deleteButton)
+                    helper.getView<Button>(R.id.deleteButton).visibility = View.GONE
                     helper.getView<Button>(R.id.expandButton).setText(if (item.isExpanded) R.string.picklist_material_collapse else R.string.picklist_material_expand)
                 }
                 PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO -> {
+                    helper.getView<Button>(R.id.underShelfButton).visibility = View.VISIBLE
+                    helper.addOnClickListener(R.id.underShelfButton)
                     val dataBind = DataBindingUtil.bind<ItemPickListMaterialInfoBinding>(helper.itemView)
                     dataBind.info = item as PickListMaterialInfo
                 }

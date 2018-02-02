@@ -127,4 +127,5 @@
     <string name="under_shelf_succeed">下架成功！</string>
     <string name="under_shelf_no_match_count">实盘数量和系统数量不一致，请确认是否重新盘点！</string>
     <string name="under_shelf">下架</string>
+    <string name="under_shelf_count_error">下架数量必须大于0！</string>
 </resources>
