@@ -112,6 +112,7 @@
     <string name="added_scanner_package_or_pallet">已确认包装或托盘</string>
     <string name="not_match_under_shelf_package">该包装不是当前下架明细所对应的包装！～</string>
     <string name="action_input_under_shelf_check_count">请输入盘点数量</string>
+    <string name="action_input_under_shelf_count">请输入下架数量</string>
     <string name="under_shelf_check_count_format">盘点数量：</string>
     <string name="picklist_pull_off_shelf_empty_error">下架明细列表为空，请先扫描拣配单！</string>
     <string name="picklist_pull_off_shelf_no_add_error">下架明细列表未全部确认！</string>
@@ -125,4 +126,5 @@
     <string name="package_state_received">已收货</string>
     <string name="under_shelf_succeed">下架成功！</string>
     <string name="under_shelf_no_match_count">实盘数量和系统数量不一致，请确认是否重新盘点！</string>
+    <string name="under_shelf">下架</string>
 </resources>

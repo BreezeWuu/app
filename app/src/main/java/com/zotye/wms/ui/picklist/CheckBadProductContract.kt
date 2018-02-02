@@ -1,9 +1,11 @@
 package com.zotye.wms.ui.picklist
 
+import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.ui.common.BasePresenter
@@ -43,8 +45,11 @@ object CheckBadProductContract {
                             override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
-                                    if (it.isSucceed() && it.data != null) {
-//                                        mvpView?.getPickListPullOffShelfList(it.data!!)
+                                    if (it.isSucceed()) {
+                                        if (it.data?.barCodeType == BarCodeType.PickList.type)
+                                            mvpView?.getPickListInfo(Gson().fromJson<PickListInfo>(it.data!!.barCodeInfo, PickListInfo::class.java))
+                                        else
+                                            mvpView?.showMessage(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }
