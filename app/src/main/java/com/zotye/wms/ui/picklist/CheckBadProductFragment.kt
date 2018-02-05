@@ -125,8 +125,16 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
         }
     }
 
-    override fun getPickReceiptShelfDetailList(PickReceiptShelfDetails: List<PickReceiptShelfDetail>?) {
-
+    override fun getPickReceiptShelfDetailList(pickReceiptShelfDetails: List<PickReceiptShelfDetail>?) {
+        pickReceiptShelfDetails?.let {
+            val adapter = MaterialSpAdapter()
+            val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
+            emptyView.find<TextView>(R.id.text_error).text = getString(R.string.material_storage_unit_empty)
+            adapter.emptyView = emptyView
+            materialSpRecyclerView.layoutManager = LinearLayoutManager(context)
+            adapter.setNewData(pickReceiptShelfDetails)
+            viewFlipper.showNext()
+        }
     }
 
     override fun getBarCodeInfo(barCodeInfo: BarcodeInfo?) {
@@ -139,7 +147,7 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
                 toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_check_bad_product)
             }
             1 -> {
-                toolbar_base.titleResource = R.string.title_pick_list_info
+                toolbar_base.titleResource = R.string.material_storage_unit_info
             }
         }
     }
@@ -159,6 +167,12 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
     override fun onDestroyView() {
         presenter.onDetach()
         super.onDestroyView()
+    }
+
+    class MaterialSpAdapter : BaseQuickAdapter<PickReceiptShelfDetail, BaseViewHolder>(R.layout.item_storage_unit_info_material) {
+        override fun convert(helper: BaseViewHolder?, item: PickReceiptShelfDetail?) {
+
+        }
     }
 
     class PickListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {

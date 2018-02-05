@@ -83,6 +83,7 @@
     <string name="action_receive_confirm_info">结束收货，未收货的项目实收数量将置为0</string>
     <string name="package_receive_confirm_succeed">结束收货成功</string>
     <string name="title_storage_unit_info">包装查询</string>
+    <string name="material_storage_unit_info">物料库位信息</string>
     <string name="title_under_shelf">下架确认</string>
     <string name="action_input_picklist_code">请输入拣配单号</string>
     <string name="picklist_code">拣配单号</string>
@@ -129,4 +130,9 @@
     <string name="under_shelf">下架</string>
     <string name="under_shelf_count_error">下架数量必须大于0！</string>
     <string name="loading_query_storage_unit_info"><![CDATA[正在查询物料库位信息&#8230;]]></string>
+    <string name="material_storage_unit_empty">物料库存信息为空！</string>
+    <string name="area_desc_format">区域描述：</string>
+    <string name="position_desc_format">库位描述：</string>
+    <string name="material_code_format">物料编码：</string>
+    <string name="unit_code_format">存储单元编码：</string>
 </resources>

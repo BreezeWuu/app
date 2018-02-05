@@ -25,7 +25,7 @@ object CheckBadProductContract {
     interface CheckBadProductView : MvpView {
         fun getPickListInfo(pickListInfo: PickListInfo)
         fun getBarCodeInfo(barCodeInfo: BarcodeInfo?)
-        fun getPickReceiptShelfDetailList(PickReceiptShelfDetails: List<PickReceiptShelfDetail>?)
+        fun getPickReceiptShelfDetailList(pickReceiptShelfDetails: List<PickReceiptShelfDetail>?)
     }
 
     interface CheckBadProductPresenter : MvpPresenter<CheckBadProductView> {
