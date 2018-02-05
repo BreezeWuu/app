@@ -20,6 +20,8 @@ import com.zotye.wms.R
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.data.api.model.PickListMaterialInfo
+import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
+import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.databinding.ItemPickListInfoBinding
 import com.zotye.wms.databinding.ItemPickListMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
@@ -87,7 +89,8 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
         pickListRecyclerView.layoutManager = LinearLayoutManager(context)
         pickListRecyclerView.adapter = adapter
         adapter.onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { _, _, position ->
-            val item = adapter.getItem(position)
+            val item = adapter.getItem(position) as PickListMaterialInfo
+            val parentItem = adapter.data[0] as PickListInfo
             val codeInputView = LayoutInflater.from(context).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
             editText.inputType = InputType.TYPE_CLASS_NUMBER
@@ -97,7 +100,10 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
                 if (count <= 0) {
                     showMessage(R.string.under_shelf_count_error)
                 } else {
-
+                    val request = ArrayList<GetPickReceiptShelfDetailRequestDto>()
+                    val getPickReceiptShelfDetailRequestDto = GetPickReceiptShelfDetailRequestDto(item.materialId, parentItem.outSlId, parentItem.supplierId, count.toLong())
+                    request.add(getPickReceiptShelfDetailRequestDto)
+                    presenter.getPickReceiptShelfDetail(request)
                 }
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
@@ -117,6 +123,10 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             adapter.addData(pickListInfo)
             adapter.expandAll()
         }
+    }
+
+    override fun getPickReceiptShelfDetailList(PickReceiptShelfDetails: List<PickReceiptShelfDetail>?) {
+
     }
 
     override fun getBarCodeInfo(barCodeInfo: BarcodeInfo?) {

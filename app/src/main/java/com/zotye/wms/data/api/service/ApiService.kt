@@ -2,6 +2,8 @@ package com.zotye.wms.data.api.service
 
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.*
+import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
+import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import retrofit2.Call
@@ -47,7 +49,6 @@ interface ApiService {
     @POST("bar_code/storageUnitModify")
     fun storageUnitModify(@Field("userId") userId: String, @Field("code") code: String, @Field("newStoragePositionCode") newStoragePositionCode: String): Call<ApiResponse<String>>
 
-
     @FormUrlEncoded
     @POST("bar_code/logisticsReceiveConfirmInfoByCode")
     fun logisticsReceiveConfirmInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<List<PackageInfo>>>
@@ -70,4 +71,7 @@ interface ApiService {
 
     @POST("bar_code/underShelfConfirm")
     fun underShelfConfirm(@Body request: PrMobileConfirmRequest): Call<ApiResponse<String>>
+
+    @POST("bar_code/getPickReceiptShelfDetail")
+    fun getPickReceiptShelfDetail(@Body requestDtos: List<GetPickReceiptShelfDetailRequestDto>): Call<ApiResponse<List<PickReceiptShelfDetail>>>
 }

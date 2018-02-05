@@ -8,6 +8,8 @@ import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListInfo
+import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
+import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -23,11 +25,13 @@ object CheckBadProductContract {
     interface CheckBadProductView : MvpView {
         fun getPickListInfo(pickListInfo: PickListInfo)
         fun getBarCodeInfo(barCodeInfo: BarcodeInfo?)
+        fun getPickReceiptShelfDetailList(PickReceiptShelfDetails: List<PickReceiptShelfDetail>?)
     }
 
     interface CheckBadProductPresenter : MvpPresenter<CheckBadProductView> {
         fun getPickListInfoByCode(barCode: String)
         fun getStorageUnitInfoByCode(barCode: String)
+        fun getPickReceiptShelfDetail(request: List<GetPickReceiptShelfDetailRequestDto>)
     }
 
     class CheckBadProductPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<CheckBadProductView>(), CheckBadProductPresenter {
@@ -86,6 +90,27 @@ object CheckBadProductContract {
                     }
                 }
             }
+        }
+
+        override fun getPickReceiptShelfDetail(request: List<GetPickReceiptShelfDetailRequestDto>) {
+            mvpView?.showProgressDialog(R.string.loading_query_storage_unit_info)
+            dataManager.getPickReceiptShelfDetail(request).enqueue(object : Callback<ApiResponse<List<PickReceiptShelfDetail>>> {
+                override fun onFailure(call: Call<ApiResponse<List<PickReceiptShelfDetail>>>?, t: Throwable) {
+                    mvpView?.hideProgressDialog()
+                    t.message?.let { mvpView?.showMessage(it) }
+                }
+
+                override fun onResponse(call: Call<ApiResponse<List<PickReceiptShelfDetail>>>?, response: Response<ApiResponse<List<PickReceiptShelfDetail>>>) {
+                    mvpView?.hideProgressDialog()
+                    response.body()?.let {
+                        if (it.isSucceed()) {
+                            mvpView?.getPickReceiptShelfDetailList(it.data)
+                        } else {
+                            mvpView?.showMessage(it.message)
+                        }
+                    }
+                }
+            })
         }
     }
 }

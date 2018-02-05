@@ -15,6 +15,7 @@ class PickListInfo(var code: String? = null) : AbstractExpandableItem<PickListMa
     var id: String = ""
 
     var quantity: Long = 0
+    var supplierId: String? = null
     /**
      * 供应商代码
      */
@@ -40,6 +41,10 @@ class PickListInfo(var code: String? = null) : AbstractExpandableItem<PickListMa
      * 库位名称
      */
     var storageAreaInfoName: String? = null
+    /**
+     * 出库地点
+     */
+    var outSlId: String? = null
 
     var materialInfoList: List<PickListMaterialInfo>? = null
 

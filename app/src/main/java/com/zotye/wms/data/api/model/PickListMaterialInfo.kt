@@ -10,6 +10,7 @@ class PickListMaterialInfo : MultiItemEntity {
         val TYPE_PICK_LIST_MATERIAL_INFO = 1
     }
 
+    var materialId: String? = null
     var materialNum: String? = null
     var materialWRKST: String? = null
     var desc: String? = null
