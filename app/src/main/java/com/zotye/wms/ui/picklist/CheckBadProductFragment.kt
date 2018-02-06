@@ -24,6 +24,7 @@ import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.databinding.ItemPickListInfoBinding
 import com.zotye.wms.databinding.ItemPickListMaterialInfoBinding
+import com.zotye.wms.databinding.ItemStorageUnitInfoMaterialBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
@@ -31,9 +32,9 @@ import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_check_bad_product.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
+import org.jetbrains.anko.collections.forEachByIndex
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.textResource
 import javax.inject.Inject
 
 /**
@@ -109,6 +110,34 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
         }
+        confirmButton.onClick {
+            if (materialSpRecyclerView.adapter is MaterialSpAdapter) {
+                (materialSpRecyclerView.adapter as MaterialSpAdapter).data.forEachByIndex { pickReceiptShelfDetail ->
+                    if (!pickReceiptShelfDetail.confirmed && !TextUtils.isEmpty(pickReceiptShelfDetail.unitCode)) {
+                        showMessage(R.string.not_confirm_storage_unit_code)
+                        return@onClick
+                    }
+                }
+                presenter.externalCheckPickReceiptConfirm((materialSpRecyclerView.adapter as MaterialSpAdapter).data)
+            }
+        }
+    }
+
+    override fun externalCheckPickReceiptConfirmSucceed() {
+        viewFlipper.showPrevious()
+        (pickListRecyclerView.adapter as PickListAdapter).setNewData(null)
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok, null).create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    override fun externalCheckPickReceiptConfirmFailed(message:String) {
+        viewFlipper.showPrevious()
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok, null).create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     override fun succeed(result: String) {
@@ -132,7 +161,23 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             emptyView.find<TextView>(R.id.text_error).text = getString(R.string.material_storage_unit_empty)
             adapter.emptyView = emptyView
             materialSpRecyclerView.layoutManager = LinearLayoutManager(context)
+            materialSpRecyclerView.adapter = adapter
             adapter.setNewData(pickReceiptShelfDetails)
+            adapter.setOnItemChildClickListener { _, _, position ->
+                val item = adapter.getItem(position)
+                val fragment = BarCodeScannerFragment()
+                fragment.setScannerDelegate(object : ScannerDelegate {
+                    override fun succeed(result: String) {
+                        if (item?.unitCode == result) {
+                            item.confirmed = true
+                            adapter.notifyItemChanged(position)
+                        } else {
+                            showMessage(R.string.not_match_storage_unit_code_id)
+                        }
+                    }
+                })
+                fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+            }
             viewFlipper.showNext()
         }
     }
@@ -156,9 +201,6 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
         return if (viewFlipper.displayedChild != 0) {
             viewFlipper.showPrevious()
             updateTitle()
-            if (viewFlipper.displayedChild == 0) {
-                viewFlipper.removeViewAt(1)
-            }
             false
         } else
             true
@@ -170,8 +212,11 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
     }
 
     class MaterialSpAdapter : BaseQuickAdapter<PickReceiptShelfDetail, BaseViewHolder>(R.layout.item_storage_unit_info_material) {
-        override fun convert(helper: BaseViewHolder?, item: PickReceiptShelfDetail?) {
 
+        override fun convert(helper: BaseViewHolder, item: PickReceiptShelfDetail) {
+            val dataBind = DataBindingUtil.bind<ItemStorageUnitInfoMaterialBinding>(helper.itemView)
+            dataBind.info = item
+            helper.addOnClickListener(R.id.confirmCodeButton)
         }
     }
 

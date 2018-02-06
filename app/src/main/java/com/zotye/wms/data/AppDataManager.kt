@@ -6,6 +6,7 @@ import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
@@ -51,6 +52,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun createLoadingList(userId: String, carNumber: String, pickListJson: String) = apiHelper.createLoadingList(userId, carNumber, pickListJson)
 
     override fun getPickReceiptShelfDetail(requestDtos: List<GetPickReceiptShelfDetailRequestDto>)=apiHelper.getPickReceiptShelfDetail(requestDtos)
+
+    override fun externalCheckPickReceiptConfirm(request: ExternalCheckPickReceiptConfirmDto) =apiHelper.externalCheckPickReceiptConfirm(request)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 

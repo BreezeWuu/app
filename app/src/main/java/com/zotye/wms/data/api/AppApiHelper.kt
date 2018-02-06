@@ -1,5 +1,6 @@
 package com.zotye.wms.data.api
 
+import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
@@ -43,4 +44,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun createLoadingList(userId: String, carNumber: String, pickListJson: String) = apiService.createLoadingList(userId, carNumber, pickListJson)
 
     override fun getPickReceiptShelfDetail(requestDtos: List<GetPickReceiptShelfDetailRequestDto>)=apiService.getPickReceiptShelfDetail(requestDtos)
+
+    override fun externalCheckPickReceiptConfirm(request: ExternalCheckPickReceiptConfirmDto) =apiService.externalCheckPickReceiptConfirm(request)
 }

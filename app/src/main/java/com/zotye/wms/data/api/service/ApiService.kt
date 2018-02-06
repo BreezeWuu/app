@@ -2,6 +2,7 @@ package com.zotye.wms.data.api.service
 
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.*
+import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
@@ -74,4 +75,7 @@ interface ApiService {
 
     @POST("bar_code/getPickReceiptShelfDetail")
     fun getPickReceiptShelfDetail(@Body requestDtos: List<GetPickReceiptShelfDetailRequestDto>): Call<ApiResponse<List<PickReceiptShelfDetail>>>
+
+    @POST("bar_code/externalCheckPickReceiptConfirm")
+    fun externalCheckPickReceiptConfirm(@Body request: ExternalCheckPickReceiptConfirmDto): Call<ApiResponse<String>>
 }

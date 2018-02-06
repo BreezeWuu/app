@@ -6,6 +6,10 @@
 
         <import type="com.zotye.wms.R" />
 
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
+
         <variable
             name="info"
             type="com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail" />
@@ -153,6 +157,18 @@
                     android:text="@{String.valueOf(info.num)}"
                     android:textColor="@color/black" />
             </LinearLayout>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/confirmCodeButton"
+                style="@style/Button.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/button_height_normal"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:enabled="@{!info.confirmed}"
+                android:text="@{info.confirmed?@string/confirmed_storage_unit_code:@string/confirm_storage_unit_code}"
+                android:textSize="18dp"
+                android:visibility="@{TextUtils.isEmpty(info.unitCode)?View.GONE:View.VISIBLE}" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </layout>
