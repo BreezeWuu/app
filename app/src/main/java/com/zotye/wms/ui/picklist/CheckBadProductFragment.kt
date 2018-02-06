@@ -182,10 +182,6 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
         }
     }
 
-    override fun getBarCodeInfo(barCodeInfo: BarcodeInfo?) {
-
-    }
-
     private fun updateTitle() {
         when (viewFlipper.displayedChild) {
             0 -> {

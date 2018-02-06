@@ -27,7 +27,6 @@ import javax.inject.Inject
 object CheckBadProductContract {
     interface CheckBadProductView : MvpView {
         fun getPickListInfo(pickListInfo: PickListInfo)
-        fun getBarCodeInfo(barCodeInfo: BarcodeInfo?)
         fun getPickReceiptShelfDetailList(pickReceiptShelfDetails: List<PickReceiptShelfDetail>?)
         fun externalCheckPickReceiptConfirmSucceed()
         fun externalCheckPickReceiptConfirmFailed(message:String)
@@ -35,7 +34,6 @@ object CheckBadProductContract {
 
     interface CheckBadProductPresenter : MvpPresenter<CheckBadProductView> {
         fun getPickListInfoByCode(barCode: String)
-        fun getStorageUnitInfoByCode(barCode: String)
         fun getPickReceiptShelfDetail(request: List<GetPickReceiptShelfDetailRequestDto>)
         fun externalCheckPickReceiptConfirm(request: MutableList<PickReceiptShelfDetail>)
     }
@@ -64,33 +62,6 @@ object CheckBadProductContract {
                                             mvpView?.getPickListInfo(Gson().fromJson<PickListInfo>(it.data!!.barCodeInfo, PickListInfo::class.java))
                                         } else
                                             mvpView?.showMessage(it.message)
-                                    } else {
-                                        mvpView?.showMessage(it.message)
-                                    }
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-        }
-
-        override fun getStorageUnitInfoByCode(barCode: String) {
-            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
-            appExecutors.diskIO().execute {
-                dataManager.getCurrentUser()?.let {
-                    appExecutors.mainThread().execute {
-                        dataManager.getStorageUnitInfoByBarcode(it.userId, barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
-                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
-                                mvpView?.hideProgressDialog()
-                                t.message?.let { mvpView?.showMessage(it) }
-                            }
-
-                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
-                                mvpView?.hideProgressDialog()
-                                response.body()?.let {
-                                    if (it.isSucceed()) {
-                                        mvpView?.getBarCodeInfo(it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }
