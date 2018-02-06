@@ -17,6 +17,7 @@ class AppPreferencesHelper @Inject constructor(@ApplicationContext context: Cont
 
     companion object {
         val PREF_KEY_CURRENT_USER_ID = "PREF_KEY_CURRENT_USER_ID"
+        val PREF_KEY_DEFAULT_FACTORY_CODE = "PREF_KEY_DEFAULT_FACTORY_CODE"
         val PREF_KEY_ACCESS_TOKEN = "PREF_KEY_ACCESS_TOKEN"
     }
 
@@ -26,6 +27,14 @@ class AppPreferencesHelper @Inject constructor(@ApplicationContext context: Cont
 
     override fun getCurrentUserId(): String? {
         return mPrefs.getString(PREF_KEY_CURRENT_USER_ID, null)
+    }
+
+    override fun setDefaultFactoryCode(factoryCode: String?) {
+        mPrefs.edit().putString(PREF_KEY_DEFAULT_FACTORY_CODE, factoryCode).apply()
+    }
+
+    override fun getDefaultFactoryCode(): String? {
+        return mPrefs.getString(PREF_KEY_DEFAULT_FACTORY_CODE, "")
     }
 
     override fun setAccessToken(token: String) {

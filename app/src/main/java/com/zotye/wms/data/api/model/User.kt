@@ -18,6 +18,7 @@ import org.simpleframework.xml.Root
 data class User(
         @PrimaryKey
         @SerializedName("userId") var userId: String = "", //819e5d46-1547-4be5-82a1-b6bc2cde312e
+        @SerializedName("defaultFactoryCode") var defaultFactoryCode: String = "",
         @SerializedName("resources") var resources: List<Resource> = listOf()
 )
 

@@ -1,18 +1,21 @@
 package com.zotye.wms.ui.user
 
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.zotye.wms.R
+import com.zotye.wms.data.api.model.FactoryInfo
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.main.MainFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.layout_progress.view.*
 import javax.inject.Inject
+import android.widget.ArrayAdapter
 
 
 /**
@@ -24,7 +27,10 @@ class LoginFragment : BaseFragment(), LoginContract.LoginMvpView {
         val TAG = "LoginFragment"
     }
 
-    @Inject lateinit var loginMvpPresenter: LoginContract.LoginMvpPresenter
+    @Inject
+    lateinit var loginMvpPresenter: LoginContract.LoginMvpPresenter
+    var factoryInfoList: List<FactoryInfo>? = null
+
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
@@ -49,6 +55,7 @@ class LoginFragment : BaseFragment(), LoginContract.LoginMvpView {
             }
         }
         login_submit.setOnClickListener { login() }
+        loginMvpPresenter.getAllFactory()
     }
 
     override fun getLoadView(): View = layout_login_loading
@@ -58,8 +65,10 @@ class LoginFragment : BaseFragment(), LoginContract.LoginMvpView {
     override fun getContentView(): View = layout_login_content
 
     private fun login() {
-        hideKeyboard(login_password)
-        loginMvpPresenter.onLoginClick(login_username.text.toString(), login_password.text.toString())
+        factoryInfoList?.let {
+            hideKeyboard(login_password)
+            loginMvpPresenter.onLoginClick(login_username.text.toString(), login_password.text.toString(), it[factorySpinner.selectedItemPosition].factoryCode!!)
+        }
     }
 
     override fun onDestroyView() {
@@ -71,4 +80,24 @@ class LoginFragment : BaseFragment(), LoginContract.LoginMvpView {
         fragmentManager?.beginTransaction()?.remove(this)?.replace(R.id.main_content, MainFragment())?.commit()
     }
 
+    override fun getFactoryFailed() {
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.error_get_factory).setNegativeButton(R.string.ok) { _, _ ->
+            loginMvpPresenter.getAllFactory()
+        }.setPositiveButton(R.string.cancel) { _, _ ->
+                    activity?.finish()
+                }.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    override fun getAllFactory(factoryInfoList: List<FactoryInfo>) {
+        this.factoryInfoList = factoryInfoList
+        val items = ArrayList<String>()
+        factoryInfoList.forEach {
+            items.add(it.factoryName!!)
+        }
+        val arrayAdapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, items)
+        factorySpinner.adapter = arrayAdapter
+    }
 }

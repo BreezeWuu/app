@@ -9,6 +9,10 @@ interface PreferencesHelper {
 
     fun getCurrentUserId(): String?
 
+    fun setDefaultFactoryCode(factoryCode: String?)
+
+    fun getDefaultFactoryCode(): String?
+
     fun setAccessToken(token: String)
 
     fun getAccessToken(): String?

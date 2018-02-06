@@ -6,7 +6,9 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.FactoryInfo
 import com.zotye.wms.data.api.model.User
+import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -22,10 +24,14 @@ import javax.inject.Inject
 object LoginContract {
     interface LoginMvpView : MvpView {
         fun openMainFragment()
+        fun getAllFactory(factoryInfoList: List<FactoryInfo>)
+        fun getFactoryFailed()
     }
 
     interface LoginMvpPresenter : MvpPresenter<LoginMvpView> {
-        fun onLoginClick(userName: String, password: String)
+        fun getAllFactory()
+
+        fun onLoginClick(userName: String, password: String, factoryCode: String)
 
         fun getDataManager(): DataManager
 
@@ -34,7 +40,7 @@ object LoginContract {
 
 
     class LoginPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<LoginMvpView>(), LoginMvpPresenter {
-        override fun onLoginClick(userName: String, password: String) {
+        override fun onLoginClick(userName: String, password: String, factoryCode: String) {
             if (TextUtils.isEmpty(userName)) {
                 mvpView?.showContent()
                 mvpView?.showMessage(R.string.login_name_empty_error)
@@ -46,7 +52,7 @@ object LoginContract {
                 return@onLoginClick
             }
             mvpView?.showLoading(R.string.login_loading)
-            dataManager.doLoginCall(userName, MD5Util.encryptwithSalt(password, AppConstants.MD5Salt)).enqueue(object : Callback<ApiResponse<User>> {
+            dataManager.doLoginCall(userName, MD5Util.encryptwithSalt(password, AppConstants.MD5Salt), factoryCode).enqueue(object : Callback<ApiResponse<User>> {
                 override fun onFailure(call: Call<ApiResponse<User>>, t: Throwable) {
                     mvpView?.showContent()
                     t.message?.let { mvpView?.showMessage(it) }
@@ -60,6 +66,7 @@ object LoginContract {
                                     if (dataManager.insertUser(user) > 0) {
                                         appExecutors.mainThread().execute {
                                             dataManager.setCurrentUserId(user.userId)
+                                            dataManager.setDefaultFactoryCode(user.defaultFactoryCode)
                                             mvpView?.showContent()
                                             mvpView?.openMainFragment()
                                         }
@@ -74,6 +81,29 @@ object LoginContract {
                         } else {
                             mvpView?.showContent()
                             mvpView?.showMessage(it.message)
+                        }
+                    }
+                }
+            })
+        }
+
+        override fun getAllFactory() {
+            mvpView?.showProgressDialog(R.string.loading_query_factory_info)
+            dataManager.getAllFactory().enqueue(object : Callback<ApiResponse<List<FactoryInfo>>> {
+                override fun onFailure(call: Call<ApiResponse<List<FactoryInfo>>>?, t: Throwable) {
+                    mvpView?.hideProgressDialog()
+                    t.message?.let { mvpView?.showMessage(it) }
+                    mvpView?.getFactoryFailed()
+                }
+
+                override fun onResponse(call: Call<ApiResponse<List<FactoryInfo>>>?, response: Response<ApiResponse<List<FactoryInfo>>>) {
+                    mvpView?.hideProgressDialog()
+                    response.body()?.let {
+                        if (it.isSucceed()) {
+                            mvpView?.getAllFactory(it.data!!)
+                        } else {
+                            mvpView?.showMessage(it.message)
+                            mvpView?.getFactoryFailed()
                         }
                     }
                 }

@@ -6,6 +6,7 @@ import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.FactoryInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
@@ -23,7 +24,9 @@ import javax.inject.Singleton
 @Singleton
 class AppDataManager @Inject constructor(@ApplicationContext val context: Context, private val dbHelper: DbHelper, private val preferencesHelper: PreferencesHelper, private val apiHelper: ApiHelper) : DataManager {
 
-    override fun doLoginCall(userName: String, pwd: String) = apiHelper.doLoginCall(userName, pwd)
+    override fun getAllFactory() = apiHelper.getAllFactory()
+
+    override fun doLoginCall(userName: String, pwd: String, factoryCode: String) = apiHelper.doLoginCall(userName, pwd, factoryCode)
 
     override fun getUserInfo(userId: String) = apiHelper.getUserInfo(userId)
 
@@ -51,13 +54,17 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun createLoadingList(userId: String, carNumber: String, pickListJson: String) = apiHelper.createLoadingList(userId, carNumber, pickListJson)
 
-    override fun getPickReceiptShelfDetail(requestDtos: List<GetPickReceiptShelfDetailRequestDto>)=apiHelper.getPickReceiptShelfDetail(requestDtos)
+    override fun getPickReceiptShelfDetail(requestDtos: List<GetPickReceiptShelfDetailRequestDto>) = apiHelper.getPickReceiptShelfDetail(requestDtos)
 
-    override fun externalCheckPickReceiptConfirm(request: ExternalCheckPickReceiptConfirmDto) =apiHelper.externalCheckPickReceiptConfirm(request)
+    override fun externalCheckPickReceiptConfirm(request: ExternalCheckPickReceiptConfirmDto) = apiHelper.externalCheckPickReceiptConfirm(request)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 
     override fun getCurrentUserId() = preferencesHelper.getCurrentUserId()
+
+    override fun setDefaultFactoryCode(factoryCode: String?) = preferencesHelper.setDefaultFactoryCode(factoryCode)
+
+    override fun getDefaultFactoryCode() = preferencesHelper.getDefaultFactoryCode()
 
     override fun setAccessToken(token: String) = preferencesHelper.setAccessToken(token)
 

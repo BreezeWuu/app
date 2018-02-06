@@ -61,6 +61,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                 R.id.action_logout -> {
                     AlertDialog.Builder(getContext()).setMessage(R.string.info_logout).setNegativeButton(R.string.ok) { _, _ ->
                         appDataManager.setCurrentUserId(null)
+                        appDataManager.setDefaultFactoryCode(null)
                         if (activity is MainActivity) {
                             (activity as MainActivity).handlerIntent(Intent(), null)
                         }
@@ -118,11 +119,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
             }
         }
         swipeRefreshLayout.onRefresh {
-            appExecutors.diskIO().execute {
-                appDataManager.getCurrentUser()?.let {
-                    presenter.updateUserResources(it.userId)
-                }
-            }
+            presenter.updateUserResources()
         }
     }
 

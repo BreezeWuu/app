@@ -85,6 +85,15 @@
                 android:textSize="18sp" />
         </android.support.design.widget.TextInputLayout>
 
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/factorySpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:prompt="@string/choose_factory"
+            android:spinnerMode="dropdown" />
+
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/login_submit"
             style="@style/Button.Primary"
@@ -94,30 +103,5 @@
             android:layout_marginTop="@dimen/spacing_normal"
             android:text="@string/login"
             android:textSize="18dp" />
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/registerAccount"
-                style="@style/TextAppearance.AppCompat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_small"
-                android:text="@string/login_register_account"
-                android:textColor="@color/colorAccent" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/forgotPassword"
-                style="@style/TextAppearance.AppCompat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:padding="@dimen/spacing_small"
-                android:text="@string/login_forget_password"
-                android:textColor="@color/colorAccent" />
-        </RelativeLayout>
     </LinearLayout>
 </FrameLayout>

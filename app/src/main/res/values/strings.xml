@@ -139,4 +139,7 @@
     <string name="confirmed_storage_unit_code">已确认库存单元编码</string>
     <string name="not_match_storage_unit_code_id">库存单元编码不一致，请重新扫描！</string>
     <string name="not_confirm_storage_unit_code">请先确认存储单元编码！</string>
+    <string name="loading_query_factory_info">正在查询工厂信息</string>
+    <string name="error_get_factory">获取工厂信息失败！是否重新获取？</string>
+    <string name="choose_factory">请选择工厂</string>
 </resources>

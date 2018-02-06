@@ -23,37 +23,44 @@ object MainContract {
     }
 
     interface MainMvpPresenter : MvpPresenter<MainMvpView> {
-        fun updateUserResources(userId: String)
+        fun updateUserResources()
     }
 
     class MainPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<MainMvpView>(), MainMvpPresenter {
-        override fun updateUserResources(userId: String) {
-            dataManager.getUserInfo(userId).enqueue(object : Callback<ApiResponse<User>> {
-                override fun onResponse(call: Call<ApiResponse<User>>?, response: Response<ApiResponse<User>>) {
-                    response.body()?.let {
-                        if (it.isSucceed()) {
-                            it.data?.let { user ->
-                                appExecutors.diskIO().execute {
-                                    dataManager.updateUser(user)
-                                    appExecutors.mainThread().execute {
+        override fun updateUserResources() {
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let { currentUser ->
+                    appExecutors.mainThread().execute {
+                        dataManager.getUserInfo(currentUser.userId).enqueue(object : Callback<ApiResponse<User>> {
+                            override fun onResponse(call: Call<ApiResponse<User>>?, response: Response<ApiResponse<User>>) {
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        it.data?.let { user ->
+                                            user.defaultFactoryCode = currentUser.defaultFactoryCode
+                                            appExecutors.diskIO().execute {
+                                                dataManager.updateUser(user)
+                                                appExecutors.mainThread().execute {
+                                                    mvpView?.showContent()
+                                                    mvpView?.getUserResources(user.resources)
+                                                }
+                                            }
+                                        }
+                                    } else {
                                         mvpView?.showContent()
-                                        mvpView?.getUserResources(user.resources)
+                                        mvpView?.showMessage(it.message)
                                     }
                                 }
+                                mvpView?.refreshFinished()
                             }
-                        } else {
-                            mvpView?.showContent()
-                            mvpView?.showMessage(it.message)
-                        }
-                    }
-                    mvpView?.refreshFinished()
-                }
 
-                override fun onFailure(call: Call<ApiResponse<User>>?, t: Throwable) {
-                    t.message?.let { mvpView?.showMessage(it) }
-                    mvpView?.refreshFinished()
+                            override fun onFailure(call: Call<ApiResponse<User>>?, t: Throwable) {
+                                t.message?.let { mvpView?.showMessage(it) }
+                                mvpView?.refreshFinished()
+                            }
+                        })
+                    }
                 }
-            })
+            }
         }
     }
 }

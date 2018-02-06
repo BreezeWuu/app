@@ -8,19 +8,19 @@ import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * Created by hechuangju on 2017/09/21
  */
 interface ApiService {
 
+    @GET("user/getAllFactory")
+    fun getAllFactory(): Call<ApiResponse<List<FactoryInfo>>>
+
     @FormUrlEncoded
     @POST("user/login")
-    fun doLoginCall(@Field("userName") userName: String, @Field("password") pwd: String): Call<ApiResponse<User>>
+    fun doLoginCall(@Field("userName") userName: String, @Field("password") pwd: String,@Field("factoryCode") factoryCode:String): Call<ApiResponse<User>>
 
     @FormUrlEncoded
     @POST("user/info")
