@@ -95,6 +95,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         ResourceType.ThreePLSOLDOUT -> {
                             fragment = UnderShelfFragment.newInstance(it.name)
                         }
+                        ResourceType.PRODUCE_ANDROID -> {
+
+                        }
                         ResourceType.ANDROID -> {
 
                         }
@@ -103,6 +106,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         }
                         ResourceType.ThreePLADJUST -> {
                             fragment = StorageUnitModifyFragment()
+                        }
+                        else -> {
+                            return@OnItemChildClickListener
                         }
                     }
                     fragment?.let {

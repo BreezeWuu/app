@@ -41,6 +41,7 @@ enum class ResourceType(val code: String) {
     ThreePLDELIVERY("3PLDELIVERY"),//创建装车单
     ThreePLPRCREATE("3PLPRCREATE"),//外检不良品生成拣配单
     ThreePLSOLDOUT("3PLSOLDOUT"),//下架确认
+    PRODUCE_ANDROID("PRODUCE_ANDROID"),//生产领料
     ANDROID("ANDROID"),//移动端功能
     ThreePLRECVCONFIRM("3PLRECVCONFIRM"),//确认收货
     ThreePLADJUST("3PLADJUST"),//库位调整
