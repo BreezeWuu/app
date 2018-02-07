@@ -149,4 +149,6 @@
     <string name="use_number">领用数量</string>
     <string name="save_user_number">保存领用数量</string>
     <string name="edit_user_number">修改领用数量</string>
+    <string name="error_use_number">领用数量必须大于0！</string>
+    <string name="error_same_bar_code">该标签已经存在，不能重复添加！</string>
 </resources>

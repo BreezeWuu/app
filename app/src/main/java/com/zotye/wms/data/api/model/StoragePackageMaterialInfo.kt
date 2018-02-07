@@ -1,6 +1,7 @@
 package com.zotye.wms.data.api.model
 
 import android.text.TextUtils
+import com.google.gson.annotations.Expose
 
 /**
  * Created by hechuangju on 2018/01/25
@@ -55,17 +56,15 @@ class StoragePackageMaterialInfo {
      * 可用数量
      */
     var availableNum: Long = 0
-        set(value) {
-            field = value
-            useNum = value
-        }
     /**
      * 领用数量
      */
+    @Expose
     var useNum: Long = 0
     /**
      * 是否正在编辑
      */
+    @Expose
     var isEditMode: Boolean = false
     /**
      * 工厂代码
@@ -85,5 +84,10 @@ class StoragePackageMaterialInfo {
 
     override fun hashCode(): Int {
         return code?.hashCode() ?: 0
+    }
+
+    constructor()
+    constructor(code: String) {
+        this.code = code
     }
 }

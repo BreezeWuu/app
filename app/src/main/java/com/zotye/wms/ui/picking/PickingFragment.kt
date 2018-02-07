@@ -4,9 +4,11 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
@@ -22,8 +24,10 @@ import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_picking.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.support.v4.onUiThread
 import javax.inject.Inject
 
 /**
@@ -78,14 +82,41 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
         adapter.emptyView = emptyView
         pickingRecyclerView.layoutManager = LinearLayoutManager(context)
         pickingRecyclerView.adapter = adapter
+        adapter.bindToRecyclerView(pickingRecyclerView)
+        adapter.setOnItemChildClickListener { adapter, _, position ->
+            val item = adapter.getItem(position) as StoragePackageMaterialInfo
+            val useNumEditText = adapter.getViewByPosition(position, R.id.useNumEditText) as EditText
+            if (item.isEditMode) {
+                val useNum = if (TextUtils.isEmpty(useNumEditText.text.toString())) 0 else useNumEditText.text.toString().toLong()
+                if (useNum <= 0) {
+                    showMessage(R.string.error_use_number)
+                    return@setOnItemChildClickListener
+                }
+                item.useNum = useNum
+                hideKeyboard(useNumEditText)
+            } else
+                useNumEditText.requestFocus()
+            item.isEditMode = !item.isEditMode
+            adapter.notifyItemChanged(position)
+        }
     }
 
     override fun succeed(result: String) {
-        presenter.getPickingBarCodeInfo(result)
+        if ((pickingRecyclerView.adapter as StoragePackageMaterialInfoAdapter).data.contains(StoragePackageMaterialInfo(result))) {
+            showMessage(R.string.error_same_bar_code)
+        } else
+            presenter.getPickingBarCodeInfo(result)
     }
 
     override fun getPickingBarCodeInfo(storagePackageMaterialInfoList: List<StoragePackageMaterialInfo>) {
-        (pickingRecyclerView.adapter as StoragePackageMaterialInfoAdapter).addData(storagePackageMaterialInfoList)
+        doAsync {
+            storagePackageMaterialInfoList.forEach {
+                it.useNum = it.availableNum
+            }
+            onUiThread {
+                (pickingRecyclerView.adapter as StoragePackageMaterialInfoAdapter).addData(storagePackageMaterialInfoList)
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -98,6 +129,7 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
         override fun convert(helper: BaseViewHolder, item: StoragePackageMaterialInfo) {
             val dataBind = DataBindingUtil.bind<ItemStorageMaterialInfoBinding>(helper.itemView)
             dataBind.info = item
+            helper.addOnClickListener(R.id.editButton)
         }
     }
 
