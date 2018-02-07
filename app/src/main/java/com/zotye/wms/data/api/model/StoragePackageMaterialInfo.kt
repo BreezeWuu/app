@@ -33,6 +33,10 @@ class StoragePackageMaterialInfo{
      */
     var supplierInfo: String? = null
     /**
+     * 供应商批次号
+     */
+    var batchNum: String? = null
+    /**
      * 交货单号
      */
     var deliveryNoteCode: String? = null

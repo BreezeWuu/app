@@ -78,4 +78,8 @@ interface ApiService {
 
     @POST("bar_code/externalCheckPickReceiptConfirm")
     fun externalCheckPickReceiptConfirm(@Body request: ExternalCheckPickReceiptConfirmDto): Call<ApiResponse<String>>
+
+    @FormUrlEncoded
+    @POST("bar_code/getPickingBarCodeInfo")
+    fun getPickingBarCodeInfo(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<List<StoragePackageMaterialInfo>>>
 }

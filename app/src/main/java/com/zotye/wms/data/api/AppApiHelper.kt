@@ -1,6 +1,7 @@
 package com.zotye.wms.data.api
 
 import com.zotye.wms.data.api.model.FactoryInfo
+import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
@@ -49,4 +50,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun getAllFactory() = apiService.getAllFactory()
 
     override fun externalCheckPickReceiptConfirm(request: ExternalCheckPickReceiptConfirmDto) = apiService.externalCheckPickReceiptConfirm(request)
+
+    override fun getPickingBarCodeInfo(userId: String, barCode: String)=apiService.getPickingBarCodeInfo(userId, barCode)
 }
