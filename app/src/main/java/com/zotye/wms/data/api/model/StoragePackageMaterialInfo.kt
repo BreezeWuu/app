@@ -1,9 +1,15 @@
 package com.zotye.wms.data.api.model
 
+import android.text.TextUtils
+
 /**
  * Created by hechuangju on 2018/01/25
  */
 class StoragePackageMaterialInfo {
+    /**
+     * 编号
+     */
+    var code: String? = null
     /**
      * 物料号
      */
@@ -65,4 +71,19 @@ class StoragePackageMaterialInfo {
      * 工厂代码
      */
     var factoryCode: String? = null
+
+    override fun equals(other: Any?): Boolean {
+        return if (other !is StoragePackageMaterialInfo)
+            false
+        else {
+            if (TextUtils.isEmpty(this.code))
+                false
+            else
+                this.code == other.code
+        }
+    }
+
+    override fun hashCode(): Int {
+        return code?.hashCode() ?: 0
+    }
 }
