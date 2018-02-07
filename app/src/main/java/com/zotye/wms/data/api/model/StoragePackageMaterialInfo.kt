@@ -50,6 +50,14 @@ class StoragePackageMaterialInfo {
      */
     var availableNum: Long = 0
     /**
+     * 领用数量
+     */
+    var userNum: Long = 0
+    /**
+     * 是否正在编辑
+     */
+    var isEditMode: Boolean = false
+    /**
      * 工厂代码
      */
     var factoryCode: String? = null

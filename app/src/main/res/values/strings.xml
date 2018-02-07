@@ -145,4 +145,8 @@
     <string name="title_picking">生产领料</string>
     <string name="picking_empty">物料信息为空</string>
     <string name="available_num_format">可用数量：</string>
+    <string name="use_number_format">领用数量：</string>
+    <string name="use_number">领用数量</string>
+    <string name="save_user_number">保存领用数量</string>
+    <string name="edit_user_number">修改领用数量</string>
 </resources>
