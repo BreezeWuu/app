@@ -22,6 +22,7 @@ import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.GroupReceiveFragment
 import com.zotye.wms.ui.goods.ReceiveConfirmFragment
+import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.LoadingCreateFragment
 import com.zotye.wms.ui.picklist.UnderShelfFragment
@@ -96,10 +97,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                             fragment = UnderShelfFragment.newInstance(it.name)
                         }
                         ResourceType.PRODUCE_ANDROID -> {
-
-                        }
-                        ResourceType.ANDROID -> {
-
+                            fragment = PickingFragment.newInstance(it.name)
                         }
                         ResourceType.ThreePLRECVCONFIRM -> {
                             fragment = ReceiveConfirmFragment.newInstance(it.name)

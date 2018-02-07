@@ -3,7 +3,7 @@ package com.zotye.wms.data.api.model
 /**
  * Created by hechuangju on 2018/01/25
  */
-class StoragePackageMaterialInfo{
+class StoragePackageMaterialInfo {
     /**
      * 物料号
      */
@@ -45,7 +45,10 @@ class StoragePackageMaterialInfo{
      * 收货库存地点
      */
     var slCode: String? = null
-
+    /**
+     * 可用数量
+     */
+    var availableNum: Long = 0
     /**
      * 工厂代码
      */

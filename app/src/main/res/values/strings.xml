@@ -142,4 +142,7 @@
     <string name="loading_query_factory_info">正在查询工厂信息</string>
     <string name="error_get_factory">获取工厂信息失败！是否重新获取？</string>
     <string name="choose_factory">请选择工厂</string>
+    <string name="title_picking">生产领料</string>
+    <string name="picking_empty">物料信息为空</string>
+    <string name="available_num_format">可用数量：</string>
 </resources>
