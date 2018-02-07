@@ -82,4 +82,9 @@ interface ApiService {
     @FormUrlEncoded
     @POST("bar_code/getPickingBarCodeInfo")
     fun getPickingBarCodeInfo(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<List<StoragePackageMaterialInfo>>>
+
+    @FormUrlEncoded
+    @POST("bar_code/getCostCenterByUser")
+    fun getCostCenterByUser(@Field("userId") userId: String): Call<ApiResponse<List<CostCenter>>>
+
 }

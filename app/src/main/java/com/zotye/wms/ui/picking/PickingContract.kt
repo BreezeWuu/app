@@ -4,6 +4,7 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.CostCenter
 import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
@@ -19,10 +20,12 @@ import javax.inject.Inject
 object PickingContract {
     interface PickingView : MvpView {
         fun getPickingBarCodeInfo(storagePackageMaterialInfoList: List<StoragePackageMaterialInfo>)
+        fun getCostCenter(storagePackageMaterialInfoList: List<CostCenter>)
     }
 
     interface PickingPresenter : MvpPresenter<PickingView> {
         fun getPickingBarCodeInfo(barCode: String)
+        fun getCostCenterByUser()
     }
 
     class PickingPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<PickingView>(), PickingPresenter {
@@ -42,6 +45,33 @@ object PickingContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getPickingBarCodeInfo(it.data!!)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun getCostCenterByUser() {
+            mvpView?.showProgressDialog(R.string.loading_cost_center_info)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.getCostCenterByUser(it.userId).enqueue(object : Callback<ApiResponse<List<CostCenter>>> {
+                            override fun onFailure(call: Call<ApiResponse<List<CostCenter>>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<List<CostCenter>>>?, response: Response<ApiResponse<List<CostCenter>>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.getCostCenter(it.data!!)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

@@ -6,6 +6,7 @@ import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.CostCenter
 import com.zotye.wms.data.api.model.FactoryInfo
 import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
@@ -60,6 +61,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun externalCheckPickReceiptConfirm(request: ExternalCheckPickReceiptConfirmDto) = apiHelper.externalCheckPickReceiptConfirm(request)
 
     override fun getPickingBarCodeInfo(userId: String, barCode: String) = apiHelper.getPickingBarCodeInfo(userId, barCode)
+
+    override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 

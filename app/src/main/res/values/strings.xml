@@ -151,4 +151,8 @@
     <string name="edit_user_number">修改领用数量</string>
     <string name="error_use_number">领用数量必须大于0！</string>
     <string name="error_same_bar_code">该标签已经存在，不能重复添加！</string>
+    <string name="loading_cost_center_info">正在获取部门信息</string>
+    <string name="action_picking_confirm">领料确认</string>
+    <string name="error_no_available_cost_center">该工厂下没有可供选择的部门！</string>
+    <string name="choose_cost_center">选择部门</string>
 </resources>

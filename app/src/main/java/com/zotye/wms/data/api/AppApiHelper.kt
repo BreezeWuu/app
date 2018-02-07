@@ -1,5 +1,6 @@
 package com.zotye.wms.data.api
 
+import com.zotye.wms.data.api.model.CostCenter
 import com.zotye.wms.data.api.model.FactoryInfo
 import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
@@ -52,4 +53,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun externalCheckPickReceiptConfirm(request: ExternalCheckPickReceiptConfirmDto) = apiService.externalCheckPickReceiptConfirm(request)
 
     override fun getPickingBarCodeInfo(userId: String, barCode: String)=apiService.getPickingBarCodeInfo(userId, barCode)
+
+    override fun getCostCenterByUser(userId: String)=apiService.getCostCenterByUser(userId)
 }
