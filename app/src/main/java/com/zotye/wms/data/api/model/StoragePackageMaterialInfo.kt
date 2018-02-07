@@ -49,10 +49,14 @@ class StoragePackageMaterialInfo {
      * 可用数量
      */
     var availableNum: Long = 0
+        set(value) {
+            field = value
+            useNum = value
+        }
     /**
      * 领用数量
      */
-    var userNum: Long = 0
+    var useNum: Long = 0
     /**
      * 是否正在编辑
      */
