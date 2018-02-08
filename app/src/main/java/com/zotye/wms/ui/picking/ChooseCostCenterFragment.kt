@@ -3,6 +3,8 @@ package com.zotye.wms.ui.picking
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SearchView
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +21,7 @@ import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
+
 
 /**
  * Created by hechuangju on 2018/02/08
@@ -65,6 +68,30 @@ class ChooseCostCenterFragment : BaseFragment(), ChooseCostCenterContract.Choose
             delegate?.selected(adapter.getItem(position)!!)
             activity?.onBackPressed()
         }
+        toolbar_base.inflateMenu(R.menu.search_menu)
+        val searchMenu = toolbar_base.menu.findItem(R.id.action_search)
+        val searchView = searchMenu.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                if (!TextUtils.isEmpty(query)) {
+                    adapter.setNewData(storagePackageMaterialInfoList.filter {
+                        it.name!!.contains(query)
+                    })
+                } else
+                    adapter.setNewData(storagePackageMaterialInfoList)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (!TextUtils.isEmpty(newText)) {
+                    adapter.setNewData(storagePackageMaterialInfoList.filter {
+                        it.name!!.contains(newText)
+                    })
+                } else
+                    adapter.setNewData(storagePackageMaterialInfoList)
+                return true
+            }
+        })
     }
 
     override fun showError(message: String?) {
