@@ -21,7 +21,7 @@ import javax.inject.Inject
 object PickingContract {
     interface PickingView : MvpView {
         fun getPickingBarCodeInfo(storagePackageMaterialInfoList: List<StoragePackageMaterialInfo>)
-        fun createPDAProduceAcquireSucceed()
+        fun createPDAProduceAcquireSucceed(message: String)
     }
 
     interface PickingPresenter : MvpPresenter<PickingView> {
@@ -83,7 +83,7 @@ object PickingContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.createPDAProduceAcquireSucceed()
+                                        mvpView?.createPDAProduceAcquireSucceed(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

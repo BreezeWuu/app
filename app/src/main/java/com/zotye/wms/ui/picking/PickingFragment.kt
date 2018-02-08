@@ -88,7 +88,10 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
             if (item.isEditMode) {
                 val useNum = if (TextUtils.isEmpty(useNumEditText.text.toString())) 0 else useNumEditText.text.toString().toLong()
                 if (useNum <= 0) {
-                    showMessage(R.string.error_use_number)
+                    useNumEditText.error = getString(R.string.error_use_number)
+                    return@setOnItemChildClickListener
+                } else if (useNum > item.availableNum) {
+                    useNumEditText.error = getString(R.string.error_use_number_bigger)
                     return@setOnItemChildClickListener
                 }
                 item.useNum = useNum
@@ -120,9 +123,9 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
         }.setPositiveButton(R.string.cancel, null).show()
     }
 
-    override fun createPDAProduceAcquireSucceed() {
+    override fun createPDAProduceAcquireSucceed(message: String) {
         (pickingRecyclerView.adapter as StoragePackageMaterialInfoAdapter).setNewData(null)
-        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.picking_succeed).setNegativeButton(R.string.ok, null).show()
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok, null).show()
     }
 
     override fun succeed(result: String) {
@@ -154,6 +157,7 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
             val dataBind = DataBindingUtil.bind<ItemStorageMaterialInfoBinding>(helper.itemView)
             dataBind.info = item
             helper.addOnClickListener(R.id.editButton)
+            helper.getView<EditText>(R.id.useNumEditText).error = null
         }
     }
 }
