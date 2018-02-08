@@ -6,6 +6,7 @@ import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
+import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import retrofit2.Call
 import retrofit2.http.*
@@ -20,7 +21,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("user/login")
-    fun doLoginCall(@Field("userName") userName: String, @Field("password") pwd: String,@Field("factoryCode") factoryCode:String): Call<ApiResponse<User>>
+    fun doLoginCall(@Field("userName") userName: String, @Field("password") pwd: String, @Field("factoryCode") factoryCode: String): Call<ApiResponse<User>>
 
     @FormUrlEncoded
     @POST("user/info")
@@ -87,4 +88,6 @@ interface ApiService {
     @POST("bar_code/getCostCenterByUser")
     fun getCostCenterByUser(@Field("userId") userId: String): Call<ApiResponse<List<CostCenter>>>
 
+    @POST("bar_code/createPDAProduceAcquire")
+    fun createPDAProduceAcquire(@Body request: ProduceAcquireConfirmRequest): Call<ApiResponse<String>>
 }

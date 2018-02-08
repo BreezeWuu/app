@@ -99,14 +99,30 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
             adapter.notifyItemChanged(position)
         }
         pickingConfirmButton.onClick {
-            val fragment = ChooseCostCenterFragment()
-            fragment.delegate = this@PickingFragment
-            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+            if (adapter.data.isEmpty()) {
+                showMessage(R.string.error_material_list_empty)
+                return@onClick
+            } else {
+                if (adapter.data.any { it.isEditMode }) {
+                    showMessage(R.string.error_save_use_number)
+                } else {
+                    val fragment = ChooseCostCenterFragment()
+                    fragment.delegate = this@PickingFragment
+                    fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+                }
+            }
         }
     }
 
     override fun selected(costCenter: CostCenter) {
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(getString(R.string.picking_confirm_format, costCenter.name)).setNegativeButton(R.string.ok) { _, _ ->
+            presenter.createPDAProduceAcquire(costCenter.code!!, (pickingRecyclerView.adapter as StoragePackageMaterialInfoAdapter).data)
+        }.setPositiveButton(R.string.cancel, null).show()
+    }
 
+    override fun createPDAProduceAcquireSucceed() {
+        (pickingRecyclerView.adapter as StoragePackageMaterialInfoAdapter).setNewData(null)
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.picking_succeed).setNegativeButton(R.string.ok, null).show()
     }
 
     override fun succeed(result: String) {

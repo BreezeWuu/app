@@ -4,8 +4,9 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.CostCenter
 import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
+import com.zotye.wms.data.api.model.checkbad.ExternalCheckDetailDto
+import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -20,10 +21,12 @@ import javax.inject.Inject
 object PickingContract {
     interface PickingView : MvpView {
         fun getPickingBarCodeInfo(storagePackageMaterialInfoList: List<StoragePackageMaterialInfo>)
+        fun createPDAProduceAcquireSucceed()
     }
 
     interface PickingPresenter : MvpPresenter<PickingView> {
         fun getPickingBarCodeInfo(barCode: String)
+        fun createPDAProduceAcquire(costCenterCode: String, data: List<StoragePackageMaterialInfo>)
     }
 
     class PickingPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<PickingView>(), PickingPresenter {
@@ -43,6 +46,44 @@ object PickingContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getPickingBarCodeInfo(it.data!!)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun createPDAProduceAcquire(costCenterCode: String, data: List<StoragePackageMaterialInfo>) {
+            mvpView?.showProgressDialog(R.string.loading_confirm_picking)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    val request = ProduceAcquireConfirmRequest()
+                    request.userId = it.userId
+                    request.costCenterCode = costCenterCode
+                    request.externalDetail = ArrayList()
+                    data.forEach { info ->
+                        val externalCheckDetailDto = ExternalCheckDetailDto()
+                        externalCheckDetailDto.storageUnitCode = info.code
+                        externalCheckDetailDto.spMaterialDetailId = info.spMaterialDetailId
+                        externalCheckDetailDto.count = info.useNum
+                        (request.externalDetail as ArrayList).add(externalCheckDetailDto)
+                    }
+                    appExecutors.mainThread().execute {
+                        dataManager.createPDAProduceAcquire(request).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.createPDAProduceAcquireSucceed()
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

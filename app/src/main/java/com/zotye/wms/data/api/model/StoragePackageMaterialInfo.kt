@@ -11,6 +11,7 @@ class StoragePackageMaterialInfo {
      * 编号
      */
     var code: String? = null
+    var spMaterialDetailId: String? = null
     /**
      * 物料号
      */

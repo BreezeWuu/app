@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
+import android.text.Html
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -71,6 +72,7 @@ class ChooseCostCenterFragment : BaseFragment(), ChooseCostCenterContract.Choose
         toolbar_base.inflateMenu(R.menu.search_menu)
         val searchMenu = toolbar_base.menu.findItem(R.id.action_search)
         val searchView = searchMenu.actionView as SearchView
+        searchView.queryHint = getString(R.string.search_cost_center)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (!TextUtils.isEmpty(query)) {

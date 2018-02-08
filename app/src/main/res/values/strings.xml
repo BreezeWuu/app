@@ -105,7 +105,7 @@
     <string name="loading_submit_pick_list_create">正在创建装车单&#8230;</string>
     <string name="loading_create_data">生成数据&#8230;</string>
     <string name="loading_confirm_under_shelf">正在提交下架明细&#8230;</string>
-    <string name="picklist_create_car_number" >车辆信息：%1$s，点击确定生成装车单！</string>
+    <string name="picklist_create_car_number">车辆信息：%1$s，点击确定生成装车单！</string>
     <string name="action_input_picklist">输入拣配单</string>
     <string name="action_scanner_pick_list_code">扫描拣配单</string>
     <string name="pick_list_under_shelf_list_empty">下架明细列表为空</string>
@@ -154,8 +154,13 @@
     <string name="loading_cost_center_info">正在获取部门信息</string>
     <string name="action_picking_confirm">领料确认</string>
     <string name="error_no_available_cost_center">该工厂下没有可供选择的部门！</string>
-    <string name="choose_cost_center">选择部门</string>
+    <string name="search_cost_center">搜索部门</string>
     <string name="title_choose_cost_center">选择部门</string>
     <string name="tap_screen_retry">点击屏幕重新加载！</string>
     <string name="search">搜索</string>
+    <string name="error_material_list_empty">请扫描包装或托盘添加库存物料信息！</string>
+    <string name="error_save_use_number">请先保存领用物料数量！</string>
+    <string name="picking_confirm_format">部门名称：%1$s，\n\n点击确定确认领料！</string>
+    <string name="picking_succeed">生产领料成功！</string>
+    <string name="loading_confirm_picking">正在提交生产领料信息&#8230;</string>
 </resources>

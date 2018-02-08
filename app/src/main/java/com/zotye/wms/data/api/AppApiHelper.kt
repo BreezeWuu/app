@@ -6,6 +6,7 @@ import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
+import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.service.ApiService
 import retrofit2.Call
@@ -52,7 +53,9 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun externalCheckPickReceiptConfirm(request: ExternalCheckPickReceiptConfirmDto) = apiService.externalCheckPickReceiptConfirm(request)
 
-    override fun getPickingBarCodeInfo(userId: String, barCode: String)=apiService.getPickingBarCodeInfo(userId, barCode)
+    override fun getPickingBarCodeInfo(userId: String, barCode: String) = apiService.getPickingBarCodeInfo(userId, barCode)
 
-    override fun getCostCenterByUser(userId: String)=apiService.getCostCenterByUser(userId)
+    override fun getCostCenterByUser(userId: String) = apiService.getCostCenterByUser(userId)
+
+    override fun createPDAProduceAcquire(request: ProduceAcquireConfirmRequest) = apiService.createPDAProduceAcquire(request)
 }
