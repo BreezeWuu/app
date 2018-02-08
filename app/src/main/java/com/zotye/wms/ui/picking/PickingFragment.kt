@@ -13,6 +13,7 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
+import com.zotye.wms.data.api.model.CostCenter
 import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.databinding.ItemStorageMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
@@ -31,7 +32,7 @@ import javax.inject.Inject
 /**
  * Created by hechuangju on 2018/02/07
  */
-class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDelegate {
+class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDelegate, ChooseCostCenterFragment.ChooseCostCenterDelegate {
 
     companion object {
         fun newInstance(title: String): PickingFragment {
@@ -99,8 +100,13 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
         }
         pickingConfirmButton.onClick {
             val fragment = ChooseCostCenterFragment()
+            fragment.delegate = this@PickingFragment
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
+    }
+
+    override fun selected(costCenter: CostCenter) {
+
     }
 
     override fun succeed(result: String) {

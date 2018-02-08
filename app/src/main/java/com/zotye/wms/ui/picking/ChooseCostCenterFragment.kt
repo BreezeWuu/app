@@ -25,8 +25,13 @@ import javax.inject.Inject
  */
 class ChooseCostCenterFragment : BaseFragment(), ChooseCostCenterContract.ChooseCostCenterView {
 
+    interface ChooseCostCenterDelegate {
+        fun selected(costCenter: CostCenter)
+    }
+
     @Inject
     lateinit var presenter: ChooseCostCenterContract.ChooseCostCenterPresenter
+    var delegate: ChooseCostCenterDelegate? = null
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_choose_cost_center, container, false)
@@ -56,6 +61,10 @@ class ChooseCostCenterFragment : BaseFragment(), ChooseCostCenterContract.Choose
         adapter.emptyView = emptyView
         constCenterRecyclerView.adapter = adapter
         adapter.setNewData(storagePackageMaterialInfoList)
+        adapter.setOnItemChildClickListener { _, _, position ->
+            delegate?.selected(adapter.getItem(position)!!)
+            activity?.onBackPressed()
+        }
     }
 
     override fun showError(message: String?) {
@@ -72,6 +81,7 @@ class ChooseCostCenterFragment : BaseFragment(), ChooseCostCenterContract.Choose
 
         override fun convert(helper: BaseViewHolder, item: CostCenter) {
             helper.setText(R.id.nameTextView, item.name)
+            helper.addOnClickListener(R.id.nameTextView)
         }
     }
 }
