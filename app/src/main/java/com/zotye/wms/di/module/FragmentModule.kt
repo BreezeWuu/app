@@ -3,6 +3,7 @@ package com.zotye.wms.di.module
 import com.zotye.wms.ui.goods.GroupReceiveFragment
 import com.zotye.wms.ui.goods.ReceiveConfirmFragment
 import com.zotye.wms.ui.main.MainFragment
+import com.zotye.wms.ui.picking.ChooseCostCenterFragment
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.LoadingCreateFragment
@@ -49,4 +50,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributePickingFragment(): PickingFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeChooseCostCenterFragment(): ChooseCostCenterFragment
 }

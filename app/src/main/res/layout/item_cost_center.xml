@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatTextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/nameTextView"
+        style="@style/Toolbar.TitleText"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/button_bg"
+        android:drawableRight="@drawable/ic_chevron_right_black"
+        android:gravity="center_vertical"
+        android:padding="@dimen/spacing_small"
+        android:textColor="@color/black">
+
+    </android.support.v7.widget.AppCompatTextView>
+</LinearLayout>

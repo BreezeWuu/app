@@ -155,4 +155,6 @@
     <string name="action_picking_confirm">领料确认</string>
     <string name="error_no_available_cost_center">该工厂下没有可供选择的部门！</string>
     <string name="choose_cost_center">选择部门</string>
+    <string name="title_choose_cost_center">选择部门</string>
+    <string name="tap_screen_retry">点击屏幕重新加载！</string>
 </resources>

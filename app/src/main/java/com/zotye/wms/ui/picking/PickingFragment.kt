@@ -1,6 +1,5 @@
 package com.zotye.wms.ui.picking
 
-import android.app.Dialog
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -14,7 +13,6 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.CostCenter
 import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.databinding.ItemStorageMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
@@ -28,12 +26,6 @@ import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onUiThread
 import javax.inject.Inject
-import android.content.DialogInterface
-import android.support.annotation.NonNull
-import android.support.v4.app.DialogFragment
-import android.support.v7.widget.RecyclerView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 
 
 /**
@@ -106,7 +98,8 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
             adapter.notifyItemChanged(position)
         }
         pickingConfirmButton.onClick {
-            presenter.getCostCenterByUser()
+            val fragment = ChooseCostCenterFragment()
+            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
     }
 
@@ -125,24 +118,6 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
             onUiThread {
                 (pickingRecyclerView.adapter as StoragePackageMaterialInfoAdapter).addData(storagePackageMaterialInfoList)
             }
-        }
-    }
-
-    override fun getCostCenter(storagePackageMaterialInfoList: List<CostCenter>) {
-        if (storagePackageMaterialInfoList.isEmpty()) {
-            showMessage(R.string.error_no_available_cost_center)
-        } else {
-            val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_choose_cost_center, null)
-            val spinner = dialogView.findViewById<Spinner>(R.id.constCenterSpinner)
-            spinner.adapter = ArrayAdapter<CostCenter>(context, android.R.layout.simple_spinner_dropdown_item,storagePackageMaterialInfoList)
-            AlertDialog.Builder(context!!)
-                    .setTitle(R.string.choose_cost_center)
-                    .setView(dialogView)
-                    .setPositiveButton(android.R.string.ok)
-                    { _, _ ->
-
-                    }
-                    .show()
         }
     }
 
