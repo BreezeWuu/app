@@ -25,6 +25,7 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_marginBottom="4dp"
+            android:scaleType="centerCrop"
             app:glide_do_animate="@{false}"
             app:glide_error="@{R.mipmap.ic_launcher_round}"
             app:glide_imageUrl="@{buttonItem.icon}"
