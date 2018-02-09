@@ -164,4 +164,6 @@
     <string name="picking_succeed">生产领料成功！</string>
     <string name="loading_confirm_picking">正在提交生产领料信息&#8230;</string>
     <string name="error_use_number_bigger">领用数量不能大于可用数量！</string>
+    <string name="action_turn_on_light">打开手电筒</string>
+    <string name="action_turn_off_light">关闭手电筒</string>
 </resources>

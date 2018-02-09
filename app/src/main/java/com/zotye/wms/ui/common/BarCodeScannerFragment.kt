@@ -7,6 +7,7 @@ import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.BarCodeType
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_code_scanner.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
+import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.textResource
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -50,6 +53,15 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
     override fun onPermissionsGranted(requestCode: Int, perms: List<String>) {
         zbarview.startCamera()
         zbarview.startSpotAndShowRect()
+        toggleLightButton.onClick {
+            if (it!!.isSelected) {
+                zbarview.closeFlashlight()
+            } else {
+                zbarview.openFlashlight()
+            }
+            it.isSelected = !it.isSelected
+            (it as Button).textResource = if (it.isSelected) R.string.action_turn_off_light else R.string.action_turn_on_light
+        }
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: List<String>) {
@@ -68,6 +80,15 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
         } else {
             zbarview.startCamera()
             zbarview.startSpotAndShowRect()
+            toggleLightButton.onClick {
+                if (it!!.isSelected) {
+                    zbarview.closeFlashlight()
+                } else {
+                    zbarview.openFlashlight()
+                }
+                it.isSelected = !it.isSelected
+                (it as Button).textResource = if (it.isSelected) R.string.action_turn_off_light else R.string.action_turn_on_light
+            }
         }
     }
 

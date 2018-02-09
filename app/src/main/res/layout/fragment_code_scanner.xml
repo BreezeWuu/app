@@ -30,4 +30,17 @@
         app:qrcv_toolbarHeight="56dp"
         app:qrcv_topOffset="20dp" />
 
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/toggleLightButton"
+        style="@style/Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height_normal"
+        android:layout_margin="@dimen/spacing_normal"
+        android:paddingLeft="@dimen/dp_40"
+        android:paddingRight="@dimen/dp_40"
+        android:text="@string/action_turn_on_light"
+        android:textSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>
