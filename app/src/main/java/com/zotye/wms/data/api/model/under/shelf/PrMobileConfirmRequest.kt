@@ -10,7 +10,7 @@ class PrMobileConfirmRequest {
 
     class PrCheckInfoDto {
         var id: String? = null//下架明细id
-        var checkNum: Long = 0//下架后实盘数量
+        var checkNum: Long? = 0//下架后实盘数量
         var actualOffshelfNum: Long = 0
     }
 }

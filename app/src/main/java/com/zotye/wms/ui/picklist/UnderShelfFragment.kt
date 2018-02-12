@@ -125,7 +125,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                         if (pickListPullOffShelf.checkFlag) {
                             val prDto = PrMobileConfirmRequest.PrCheckInfoDto()
                             prDto.id = pickListPullOffShelf.id
-                            prDto.checkNum = pickListPullOffShelf.checkCount
+                            prDto.checkNum = if (pickListPullOffShelf.isChecked()) pickListPullOffShelf.checkCount else null
                             prDto.actualOffshelfNum = pickListPullOffShelf.actulOffShellNumber
                             request.confirmDetail?.add(prDto)
                         }
