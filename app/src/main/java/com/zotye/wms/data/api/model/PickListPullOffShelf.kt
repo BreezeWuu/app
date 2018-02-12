@@ -69,6 +69,8 @@ class PickListPullOffShelf {
      * 是否已经扫描过包装
      */
     var checkCount: Long = 0
+
+    var actulOffShellNumber: Long = 0
     /**
      * 是否已经扫描过包装
      */

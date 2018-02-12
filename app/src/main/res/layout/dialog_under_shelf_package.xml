@@ -48,7 +48,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
             <android.support.v7.widget.AppCompatTextView
                 style="@style/TextAppearance.AppCompat.Medium"
@@ -60,15 +61,15 @@
                 android:text="@string/under_shelf_count_format"
                 android:textColor="@color/black" />
 
-            <android.support.v7.widget.AppCompatTextView
+            <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/underShelfNumber"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="7"
+                android:inputType="number"
                 android:gravity="center_vertical"
-                android:text="@{String.valueOf(info.totalNum)}"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -99,6 +100,33 @@
                 android:gravity="center_vertical"
                 android:inputType="number"
                 android:textColor="@color/black" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/actionLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="@dimen/spacing_smaller"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/okButton"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:text="@string/ok"
+                android:textSize="@dimen/font_large" />
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/cancelButton"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textSize="@dimen/font_large" />
         </LinearLayout>
     </LinearLayout>
 </layout>

@@ -126,6 +126,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                             val prDto = PrMobileConfirmRequest.PrCheckInfoDto()
                             prDto.id = pickListPullOffShelf.id
                             prDto.checkNum = pickListPullOffShelf.checkCount
+                            prDto.actualOffshelfNum = pickListPullOffShelf.actulOffShellNumber
                             request.confirmDetail?.add(prDto)
                         }
                     }
@@ -144,14 +145,28 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         pickListPullOffShelf?.let { it ->
             val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_under_shelf_package, null)
             val editText = codeInputView.findViewById<EditText>(R.id.underShelfEditText)
+            val underCountEditText = codeInputView.findViewById<EditText>(R.id.underShelfNumber)
             codeInputView.findViewById<TextView>(R.id.packageCount).text = "$totalNumber"
             codeInputView.findViewById<TextView>(R.id.underShelfNumber).text = "${it.totalNum}"
             codeInputView.findViewById<View>(R.id.checkLayout).visibility = if (it.checkFlag) View.VISIBLE else View.GONE
-            checkDialog = AlertDialog.Builder(context!!).setTitle(R.string.under_shelf_package_or_pallet_info).setView(codeInputView).setNegativeButton(R.string.ok) { dialog, _ ->
+            codeInputView.find<View>(R.id.cancelButton).onClick {
+                checkDialog?.dismiss()
+            }
+            codeInputView.find<View>(R.id.okButton).onClick { _ ->
+                val underCount = if (TextUtils.isEmpty(underCountEditText.text.toString())) 0 else underCountEditText.text.toString().toLong()
                 val checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
+                if (underCount > totalNumber || underCount > it.totalNum) {
+                    codeInputView.findViewById<EditText>(R.id.underShelfNumber).error = getString(R.string.error_under_shelf_count)
+                    return@onClick
+                }
+                if (underCount <= 0) {
+                    codeInputView.findViewById<EditText>(R.id.underShelfNumber).error = getString(R.string.error_under_shelf_count_less_than_zero)
+                    return@onClick
+                }
+                it.actulOffShellNumber = underCount
                 if (it.checkFlag) {
-                    if (checkCount != (if((totalNumber - it.totalNum)>=0) (totalNumber - it.totalNum) else 0)) {
-                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_no_match_count)
+                    if (checkCount != (if ((totalNumber - underCount) >= 0) (totalNumber - underCount) else 0)) {
+                        AlertDialog.Builder(getContext()!!).setTitle(R.string.info).setMessage(R.string.under_shelf_no_match_count)
                                 .setPositiveButton(R.string.ok) { _, _ ->
                                     checkDialog?.show()
                                 }.setNegativeButton(R.string.cancel) { _, _ ->
@@ -165,7 +180,9 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 it.checkCount = checkCount
                 pickListRecyclerView.adapter.notifyItemChanged(position)
                 hideKeyboard(editText)
-            }.setPositiveButton(R.string.cancel, null).create()
+                checkDialog?.dismiss()
+            }
+            checkDialog = AlertDialog.Builder(context!!).setTitle(R.string.under_shelf_package_or_pallet_info).setView(codeInputView).create()
             checkDialog?.show()
             showKeyboard(editText)
         }

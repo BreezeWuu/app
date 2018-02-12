@@ -166,4 +166,6 @@
     <string name="error_use_number_bigger">领用数量不能大于可用数量！</string>
     <string name="action_turn_on_light">打开手电筒</string>
     <string name="action_turn_off_light">关闭手电筒</string>
+    <string name="error_under_shelf_count">实际下架数量不能大于包装总数或者计划的下架数量！</string>
+    <string name="error_under_shelf_count_less_than_zero">实际下架数量必须大于0！</string>
 </resources>
