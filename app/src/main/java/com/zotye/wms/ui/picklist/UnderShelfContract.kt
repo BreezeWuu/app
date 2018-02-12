@@ -12,6 +12,7 @@ import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.data.api.model.PickListPullOffShelf
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
+import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -26,7 +27,7 @@ import javax.inject.Inject
 object UnderShelfContract {
     interface UnderShelfView : MvpView {
         fun getPickListPullOffShelfList(pickListPullOffShelfList: List<PickListPullOffShelf>)
-        fun getStorageUnitMaterialTotalNumber(position: Int, totalNumber: Long)
+        fun getStorageUnitMaterialTotalNumber(position: Int, info: SUMaterialInfo)
         fun underShelfSucceed()
     }
 
@@ -72,18 +73,17 @@ object UnderShelfContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.getStorageUnitMaterialTotalNumber(it.userId, storageUnitInfoCode, spDetailId).enqueue(object : Callback<ApiResponse<String>> {
-                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                        dataManager.getStorageUnitMaterialTotalNumber(it.userId, storageUnitInfoCode, spDetailId).enqueue(object : Callback<ApiResponse<SUMaterialInfo>> {
+                            override fun onFailure(call: Call<ApiResponse<SUMaterialInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
                             }
 
-                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                            override fun onResponse(call: Call<ApiResponse<SUMaterialInfo>>?, response: Response<ApiResponse<SUMaterialInfo>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        val totalNumber = it.data?.toLong() ?: 0
-                                        mvpView?.getStorageUnitMaterialTotalNumber(position, totalNumber)
+                                        mvpView?.getStorageUnitMaterialTotalNumber(position, it.data!!)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

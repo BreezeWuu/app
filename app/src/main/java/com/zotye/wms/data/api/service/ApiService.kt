@@ -8,6 +8,7 @@ import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
+import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -65,7 +66,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/getStorageUnitMaterialTotalNumber")
-    fun getStorageUnitMaterialTotalNumber(@Field("userId") userId: String, @Field("storageUnitInfoCode") storageUnitInfoCode: String, @Field("spDetailId") spDetailId: String): Call<ApiResponse<String>>
+    fun getStorageUnitMaterialTotalNumber(@Field("userId") userId: String, @Field("storageUnitInfoCode") storageUnitInfoCode: String, @Field("spDetailId") spDetailId: String): Call<ApiResponse<SUMaterialInfo>>
 
     @FormUrlEncoded
     @POST("bar_code/createLoadingList")
