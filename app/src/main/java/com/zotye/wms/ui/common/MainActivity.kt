@@ -95,7 +95,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
                 val appVersion = intent.extras.getSerializable("appVersion") as AppVersion
                 val dialog = AlertDialog.Builder(this@MainActivity).setTitle(R.string.new_version).setMessage(appVersion.versionDesc)
                         .setNegativeButton(R.string.ok) { _, _ ->
-                            val apkDownloadUrl = "http://assets.sfcdn.org/pub/com.shafa.market/296/fe18a6c/com.shafa.market_5.0.4_webmarket.apk?_upd=%E6%B2%99%E5%8F%91%E7%AE%A1%E5%AE%B6V5.0_v5.0.4_webmarket.apk"
+                            val apkDownloadUrl = appVersion.address
                             mDownloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
                             val file = File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "${BuildConfig.APPLICATION_ID}.apk")
                             if (file.exists()) {
