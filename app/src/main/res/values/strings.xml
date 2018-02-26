@@ -168,4 +168,7 @@
     <string name="action_turn_off_light">关闭手电筒</string>
     <string name="error_under_shelf_count">实际下架数量不能大于包装总数或者计划的下架数量！</string>
     <string name="error_under_shelf_count_less_than_zero">实际下架数量必须大于0！</string>
+    <string name="new_version">发现新版本！</string>
+    <string name="download_now">正在下载最新版本～</string>
+    <string name="error_url">下载地址解析出现异常！</string>
 </resources>

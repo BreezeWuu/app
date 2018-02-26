@@ -54,19 +54,25 @@ class AppModule {
 
     @Provides
     @Singleton
+    @Named("responseInterceptor")
+    fun provideResponseInterceptor(responseInterceptor: ResponseInterceptor): Interceptor = responseInterceptor
+
+    @Provides
+    @Singleton
     @Named("httpLoggingInterceptor")
     fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
     @Provides
     @Singleton
     fun provideHttpClient(@Named("headerInterceptor") headerInterceptor: Interceptor,
+                          @Named("responseInterceptor") responseInterceptor: Interceptor,
                           @Named("httpLoggingInterceptor") httpLoggingInterceptor: Interceptor): OkHttpClient {
         return OkHttpClient.Builder()
                 .readTimeout(TIMEOUT_IN_SEC.toLong(), TimeUnit.SECONDS)
                 .writeTimeout(TIMEOUT_IN_SEC.toLong(), TimeUnit.SECONDS)
                 .connectTimeout(TIMEOUT_IN_SEC.toLong(), TimeUnit.SECONDS)
                 .addInterceptor(headerInterceptor)
-                .addInterceptor(ResponseInterceptor())
+                .addInterceptor(responseInterceptor)
                 .addInterceptor(httpLoggingInterceptor)
                 .addNetworkInterceptor(StethoInterceptor())
                 .build()
