@@ -1,15 +1,20 @@
 package com.zotye.wms.ui.common
 
+import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.support.v4.app.Fragment
+import android.support.v4.content.FileProvider
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
-import android.widget.Toast
 import com.zotye.wms.AppConstants
+import com.zotye.wms.BuildConfig
 import com.zotye.wms.R
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.model.AppVersion
@@ -18,18 +23,9 @@ import com.zotye.wms.ui.user.LoginFragment
 import com.zotye.wms.util.Log
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import javax.inject.Inject
-import android.app.DownloadManager
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.support.v4.content.FileProvider
-import com.zotye.wms.BuildConfig
-import java.io.File
-import java.net.URI
-import android.support.v4.content.ContextCompat.startActivity
-import org.jetbrains.anko.custom.onUiThread
 import org.jetbrains.anko.doAsync
+import java.io.File
+import javax.inject.Inject
 
 
 class MainActivity : BaseActivity(), HasSupportFragmentInjector {
@@ -98,13 +94,17 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
                             val apkDownloadUrl = appVersion.address
                             mDownloadManager = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
                             val file = File(getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), "${BuildConfig.APPLICATION_ID}.apk")
-                            if (file.exists()) {
-                                file.delete()
+                            doAsync {
+                                if (file.exists()) {
+                                    file.delete()
+                                }
+                                runOnUiThread {
+                                    val request = DownloadManager.Request(Uri.parse(apkDownloadUrl))
+                                    request.setDestinationUri(Uri.fromFile(file))
+                                    // 获取下载队列 id
+                                    enqueueId = mDownloadManager?.enqueue(request) ?: -1
+                                }
                             }
-                            val request = DownloadManager.Request(Uri.parse(apkDownloadUrl))
-                            request.setDestinationUri(Uri.fromFile(file))
-                            // 获取下载队列 id
-                            enqueueId = mDownloadManager?.enqueue(request) ?: -1
                         }.setPositiveButton(R.string.cancel) { _, _ ->
                             finish()
                         }.create()
