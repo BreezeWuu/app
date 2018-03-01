@@ -11,7 +11,7 @@ import android.widget.Button
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.zotye.wms.R
 import kotlinx.android.synthetic.main.fragment_base.*
-import kotlinx.android.synthetic.main.fragment_code_scanner.*
+import kotlinx.android.synthetic.main.fragment_qr_code_scanner.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
