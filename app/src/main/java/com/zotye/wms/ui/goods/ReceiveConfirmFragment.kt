@@ -110,7 +110,7 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: PackageInfo) {
             val dataBind = DataBindingUtil.bind<ItemUnReceivePackageBinding>(helper.itemView, fragmentDataBindingComponent)
-            dataBind.info = item
+            dataBind?.info = item
         }
     }
 }

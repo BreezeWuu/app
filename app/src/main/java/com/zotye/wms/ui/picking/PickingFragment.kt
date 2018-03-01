@@ -155,7 +155,7 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
 
         override fun convert(helper: BaseViewHolder, item: StoragePackageMaterialInfo) {
             val dataBind = DataBindingUtil.bind<ItemStorageMaterialInfoBinding>(helper.itemView)
-            dataBind.info = item
+            dataBind?.info = item
             helper.addOnClickListener(R.id.editButton)
             helper.getView<EditText>(R.id.useNumEditText).error = null
         }

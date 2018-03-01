@@ -18,7 +18,6 @@ import com.zotye.wms.data.db.AppDbHelper
 import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.AppPreferencesHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
-import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.zotye.wms.BuildConfig
 import com.zotye.wms.data.api.interceptor.ResponseInterceptor
 import dagger.Module
@@ -74,7 +73,6 @@ class AppModule {
                 .addInterceptor(headerInterceptor)
                 .addInterceptor(responseInterceptor)
                 .addInterceptor(httpLoggingInterceptor)
-                .addNetworkInterceptor(StethoInterceptor())
                 .build()
     }
 

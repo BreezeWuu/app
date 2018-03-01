@@ -104,7 +104,7 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
             dialog.dismiss()
         }
         val dataBind = DataBindingUtil.bind<ItemStorageUnitInfoPalletBinding>(infoView, fragmentDataBindingComponent)
-        dataBind.info = palletInfo
+        dataBind?.info = palletInfo
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
@@ -128,7 +128,7 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
             dialog.dismiss()
         }
         val dataBind = DataBindingUtil.bind<ItemStorageUnitInfoPackageBinding>(infoView, fragmentDataBindingComponent)
-        dataBind.info = packageInfo
+        dataBind?.info = packageInfo
         dialog.setCancelable(false)
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()

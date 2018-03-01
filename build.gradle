@@ -2,8 +2,7 @@
 
 buildscript {
     //Tools Version
-    ext.build_tools_version = "27.0.2"
-    ext.gradle_version = '3.1.0-alpha05'
+    ext.build_tools_version = "27.0.3"
     ext.kotlin_version = '1.2.21'
     ext.kotlin_anko_version = '0.10.1'
 
@@ -29,18 +28,12 @@ buildscript {
     ext.android_support_test_espresso = '3.0.0'
     ext.android_support_version = '27.0.2'
     ext.android_arch_version = '1.0.0'
-    ext.databinding_version = "2.3.2"
     ext.android_support_constraint_layout_version = '1.0.2'
 
     ext.dagger_version = '2.14.1'
 
-    ext.stetho_version = '1.5.0'
-
     ext.glide_version = '3.7.0'
 
-    ext.tik_xml_version = '0.8.13'
-
-    ext.exoplayer_version = 'r2.5.1'
     //Git Info
     ext.git_user_name = 'git config user.name'.execute().text.trim()
     ext.git_version = 'git rev-parse --short HEAD'.execute().text.trim()
@@ -55,7 +48,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:$gradle_version"
+        classpath "com.android.tools.build:gradle:3.2.0-alpha04"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong

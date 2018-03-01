@@ -145,7 +145,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
 
         override fun convert(helper: BaseViewHolder, item: Resource) {
             val itemMicroCourseBinding = DataBindingUtil.bind<ItemHomeButtonBinding>(helper.itemView, fragmentDataBindingComponent)
-            itemMicroCourseBinding.buttonItem = item
+            itemMicroCourseBinding?.buttonItem = item
             helper.addOnClickListener(R.id.buttonLayout)
         }
     }

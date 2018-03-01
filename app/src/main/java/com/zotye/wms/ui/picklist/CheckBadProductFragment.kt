@@ -211,7 +211,7 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
 
         override fun convert(helper: BaseViewHolder, item: PickReceiptShelfDetail) {
             val dataBind = DataBindingUtil.bind<ItemStorageUnitInfoMaterialBinding>(helper.itemView)
-            dataBind.info = item
+            dataBind?.info = item
             helper.addOnClickListener(R.id.confirmCodeButton)
         }
     }
@@ -227,7 +227,7 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             when (helper.itemViewType) {
                 PickListInfo.TYPE_PICK_LIST -> {
                     val dataBind = DataBindingUtil.bind<ItemPickListInfoBinding>(helper.itemView)
-                    dataBind.info = item as PickListInfo
+                    dataBind?.info = item as PickListInfo
                     helper.getView<Button>(R.id.expandButton).onClick { view ->
                         if (item.isExpanded) {
                             collapse(helper.adapterPosition)
@@ -242,7 +242,7 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
                     helper.getView<Button>(R.id.underShelfButton).visibility = View.VISIBLE
                     helper.addOnClickListener(R.id.underShelfButton)
                     val dataBind = DataBindingUtil.bind<ItemPickListMaterialInfoBinding>(helper.itemView)
-                    dataBind.info = item as PickListMaterialInfo
+                    dataBind?.info = item as PickListMaterialInfo
                 }
             }
         }

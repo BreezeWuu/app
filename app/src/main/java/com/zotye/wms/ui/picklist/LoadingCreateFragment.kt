@@ -160,7 +160,7 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
             when (helper.itemViewType) {
                 PickListInfo.TYPE_PICK_LIST -> {
                     val dataBind = DataBindingUtil.bind<ItemPickListInfoBinding>(helper.itemView)
-                    dataBind.info = item as PickListInfo
+                    dataBind?.info = item as PickListInfo
                     helper.getView<Button>(R.id.expandButton).onClick { view ->
                         if (item.isExpanded) {
                             collapse(helper.adapterPosition)
@@ -177,7 +177,7 @@ class LoadingCreateFragment : BaseFragment(), LoadingCreateContract.LoadingCreat
                 }
                 PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO -> {
                     val dataBind = DataBindingUtil.bind<ItemPickListMaterialInfoBinding>(helper.itemView)
-                    dataBind.info = item as PickListMaterialInfo
+                    dataBind?.info = item as PickListMaterialInfo
                 }
             }
         }

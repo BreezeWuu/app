@@ -194,7 +194,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
         infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
         packageInfo.receiveNum = packageInfo.deliveryNum
-        dataBind.info = packageInfo
+        dataBind?.info = packageInfo
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
         infoView.findViewById<AppCompatButton>(R.id.okButton).textResource = if (isGroupReceive) R.string.add else R.string.goods_receive
         infoView.findViewById<View>(R.id.okButton).onClick {
@@ -287,7 +287,7 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: PackageInfo) {
             val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(helper.itemView, fragmentDataBindingComponent)
-            dataBind.info = item
+            dataBind?.info = item
             helper.itemView.findViewById<View>(R.id.actionLayout).visibility = View.VISIBLE
             helper.addOnClickListener(R.id.deleteButton)
             helper.addOnClickListener(R.id.editButton)

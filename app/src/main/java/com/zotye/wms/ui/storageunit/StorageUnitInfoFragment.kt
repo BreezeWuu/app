@@ -102,7 +102,7 @@ class StorageUnitInfoFragment : BaseFragment(), StorageUnitInfoContract.StorageU
         storageUnitPalletInfo?.let {
             val infoView = LayoutInflater.from(context).inflate(R.layout.item_storage_unit_pallet_info, viewSwitcher, false)
             val dataBind = DataBindingUtil.bind<ItemStorageUnitPalletInfoBinding>(infoView, fragmentDataBindingComponent)
-            dataBind.info = it
+            dataBind?.info = it
             val adapter = PackageMaterialAdapter()
             val palletRecyclerView = infoView.findViewById<RecyclerView>(R.id.palletRecyclerView)
             palletRecyclerView.layoutManager = LinearLayoutManager(context)
@@ -118,7 +118,7 @@ class StorageUnitInfoFragment : BaseFragment(), StorageUnitInfoContract.StorageU
         storageUnitPackageInfo.let {
             val infoView = LayoutInflater.from(context).inflate(R.layout.item_storage_unit_package_info, viewSwitcher, false)
             val dataBind = DataBindingUtil.bind<ItemStorageUnitPackageInfoBinding>(infoView, fragmentDataBindingComponent)
-            dataBind.info = it
+            dataBind?.info = it
             when (it?.state) {
                 "0" -> {
                     infoView.findViewById<TextView>(R.id.stateTextView).textResource = R.string.package_state_un_send
@@ -154,7 +154,7 @@ class StorageUnitInfoFragment : BaseFragment(), StorageUnitInfoContract.StorageU
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: StoragePackageMaterialInfo) {
             val dataBind = DataBindingUtil.bind<ItemStorageUnitPackageMaterialInfoBinding>(helper.itemView, fragmentDataBindingComponent)
-            dataBind.info = item
+            dataBind?.info = item
         }
     }
 }

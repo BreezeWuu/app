@@ -237,7 +237,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: PickListPullOffShelf) {
             val dataBind = DataBindingUtil.bind<ItemPickListInfoUnderShelfBinding>(helper.itemView, fragmentDataBindingComponent)
-            dataBind.info = item
+            dataBind?.info = item
             helper.addOnClickListener(R.id.packageCodeScanner)
         }
     }
