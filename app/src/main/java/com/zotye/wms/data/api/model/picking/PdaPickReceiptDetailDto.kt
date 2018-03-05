@@ -1,9 +1,11 @@
 package com.zotye.wms.data.api.model.picking
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
+
 /**
  * Created by hechuangju on 2018/03/05
  */
-class PdaPickReceiptDetailDto {
+class PdaPickReceiptDetailDto : MultiItemEntity {
     var pickReceiptDetailId: String? = null
 
     var materialNum: String? = null
@@ -19,4 +21,8 @@ class PdaPickReceiptDetailDto {
     var lackNum: Long = 0
 
     var unqualifyNum: Long = 0
+
+    override fun getItemType(): Int {
+        return 1
+    }
 }
