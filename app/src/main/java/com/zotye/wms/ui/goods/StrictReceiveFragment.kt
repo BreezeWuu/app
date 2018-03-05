@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -18,8 +19,6 @@ import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.data.api.model.PickListMaterialInfo
 import com.zotye.wms.data.api.model.picking.PdaPickReceiptDetailDto
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
-import com.zotye.wms.databinding.ItemPickListInfoBinding
-import com.zotye.wms.databinding.ItemPickListMaterialInfoBinding
 import com.zotye.wms.databinding.ItemPickReceiptInfoBinding
 import com.zotye.wms.databinding.ItemPickReceiptMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
@@ -81,10 +80,33 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
 
         val adapter = PickReceiptListAdapter(null)
         val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
-        emptyView.find<TextView>(R.id.text_error).text = getString(R.string.package_list_empty)
+        emptyView.find<TextView>(R.id.text_error).text = getString(R.string.pick_receipt_info_empty)
         adapter.emptyView = emptyView
         pickInfoRecyclerView.layoutManager = LinearLayoutManager(context)
         pickInfoRecyclerView.adapter = adapter
+        adapter.bindToRecyclerView(pickInfoRecyclerView)
+        adapter.setOnItemChildClickListener { _, _, position ->
+            val item = adapter.getItem(position) as PdaPickReceiptDetailDto
+            if (item.isEditEnable) {
+                val reciprocalNumString = (adapter.getViewByPosition(position, R.id.reciprocalNumber) as TextView).text.toString()
+                val lackNumberString = (adapter.getViewByPosition(position, R.id.lackNumber) as TextView).text.toString()
+                val unqualifyNumberString = (adapter.getViewByPosition(position, R.id.unqualifyNumber) as TextView).text.toString()
+                item.reciprocalNum = if (reciprocalNumString.isNullOrBlank()) 0 else reciprocalNumString.toLong()
+                item.lackNum = if (lackNumberString.isNullOrBlank()) 0 else lackNumberString.toLong()
+                item.unqualifyNum = if (unqualifyNumberString.isNullOrBlank()) 0 else unqualifyNumberString.toLong()
+                if ((item.reciprocalNum + item.unqualifyNum + item.lackNum) != item.deliveryCount) {
+                    Toast.makeText(context, R.string.delivery_num_error, Toast.LENGTH_SHORT).show()
+                    return@setOnItemChildClickListener
+                }
+            }
+            item.isEditEnable = !item.isEditEnable
+            adapter.notifyItemChanged(position)
+            if (item.isEditEnable) {
+                (adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText).requestFocus()
+            } else {
+                hideKeyboard((adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText))
+            }
+        }
     }
 
     override fun succeed(result: String) {
@@ -93,11 +115,18 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
 
 
     override fun getPickReceiptInfoByCode(pickReceiptDto: PickReceiptDto?) {
-        pickReceiptDto?.let {
+        pickReceiptDto?.let { pickInfo ->
             val adapter = pickInfoRecyclerView.adapter as PickReceiptListAdapter
-            it.subItems = it.pickReceiptDetail
+            adapter.pickReceiptDto = pickInfo
+            pickInfo.pickReceiptDetail?.map {
+                if (pickInfo.pickReceiptSource == "3") {
+                    it.reciprocalNum = it.deliveryCount
+                } else
+                    it.reciprocalNum = it.deliveryCount - it.lackNum - it.unqualifyNum
+            }
+            pickInfo.subItems = pickInfo.pickReceiptDetail
             adapter.setNewData(null)
-            adapter.addData(it)
+            adapter.addData(pickInfo)
             adapter.expandAll()
         }
     }
@@ -108,6 +137,7 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
     }
 
     class PickReceiptListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {
+        var pickReceiptDto: PickReceiptDto? = null
 
         init {
             addItemType(PickListInfo.TYPE_PICK_LIST, R.layout.item_pick_receipt_info)
@@ -126,14 +156,17 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
                             expand(helper.adapterPosition)
                         }
                     }
-                    helper.getView<Button>(R.id.deleteButton).visibility = View.GONE
                     helper.getView<Button>(R.id.expandButton).setText(if (item.isExpanded) R.string.picklist_material_collapse else R.string.picklist_material_expand)
                 }
                 PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO -> {
-                    helper.getView<Button>(R.id.underShelfButton).visibility = View.VISIBLE
-                    helper.addOnClickListener(R.id.underShelfButton)
                     val dataBind = DataBindingUtil.bind<ItemPickReceiptMaterialInfoBinding>(helper.itemView)
                     dataBind?.info = item as PdaPickReceiptDetailDto
+                    if (pickReceiptDto?.pickReceiptSource != "3") {
+                        helper.getView<View>(R.id.editButton).visibility = View.VISIBLE
+                        helper.addOnClickListener(R.id.editButton)
+                    } else {
+                        helper.getView<View>(R.id.editButton).visibility = View.GONE
+                    }
                 }
             }
         }

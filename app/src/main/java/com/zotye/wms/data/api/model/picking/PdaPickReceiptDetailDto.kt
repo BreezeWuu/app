@@ -16,11 +16,15 @@ class PdaPickReceiptDetailDto : MultiItemEntity {
 
     var deliveryCount: Long = 0
 
+    var reciprocalNum: Long = 0
+
     var sequence: Int = 0
 
     var lackNum: Long = 0
 
     var unqualifyNum: Long = 0
+
+    var isEditEnable: Boolean = false
 
     override fun getItemType(): Int {
         return 1

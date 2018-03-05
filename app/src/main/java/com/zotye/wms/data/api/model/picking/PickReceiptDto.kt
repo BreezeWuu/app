@@ -6,12 +6,14 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
 /**
  * Created by hechuangju on 2018/03/05
  */
-class PickReceiptDto: AbstractExpandableItem<PdaPickReceiptDetailDto>(), MultiItemEntity {
+class PickReceiptDto : AbstractExpandableItem<PdaPickReceiptDetailDto>(), MultiItemEntity {
     var pickReceiptId: String? = null
 
     var pickReceiptCode: String? = null
 
     var pickReceiptSource: String? = null
+
+    var pickReceiptSourceMsg: String? = null
 
     var pickReceiptDetail: List<PdaPickReceiptDetailDto>? = null
 

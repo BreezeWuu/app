@@ -93,6 +93,7 @@ interface ApiService {
     @POST("bar_code/createPDAProduceAcquire")
     fun createPDAProduceAcquire(@Body request: ProduceAcquireConfirmRequest): Call<ApiResponse<String>>
 
+    @FormUrlEncoded
     @POST("bar_code//loadingReceipt/getPickReceiptInfoByCode")
     fun getPickReceiptInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<PickReceiptDto>>
 }

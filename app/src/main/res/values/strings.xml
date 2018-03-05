@@ -173,4 +173,10 @@
     <string name="download_now">正在下载最新版本～</string>
     <string name="error_url">下载地址解析出现异常！</string>
     <string name="pick_source_format">来源：</string>
+    <string name="pick_receipt_info_empty">拣配单信息为空</string>
+    <string name="material_delivery_count_format">发货数：</string>
+    <string name="material_reciprocal_number_format">实收数：</string>
+    <string name="material_lack_num_format">少收数：</string>
+    <string name="material_unqualify_num_format">退货数：</string>
+    <string name="delivery_num_error">实收数量，少收数量，退货数量相加必须等于发货数量！</string>
 </resources>

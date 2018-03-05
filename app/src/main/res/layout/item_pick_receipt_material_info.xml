@@ -60,7 +60,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+
+                    android:layout_marginTop="12dp">
 
                     <android.support.v7.widget.AppCompatTextView
                         style="@style/TextAppearance.AppCompat.Medium"
@@ -80,6 +82,124 @@
                         android:layout_weight="7"
                         android:gravity="center_vertical"
                         android:text="@{info.wrkst}"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="12dp">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="center_vertical|right"
+                        android:singleLine="true"
+                        android:text="@string/material_delivery_count_format"
+                        android:textColor="@color/black" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="7"
+                        android:gravity="center_vertical"
+                        android:text="@{String.valueOf(info.deliveryCount)}"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="center_vertical|right"
+                        android:text="@string/material_reciprocal_number_format"
+                        android:textColor="@color/black" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/reciprocalNumber"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="7"
+                        android:enabled="@{info.isEditEnable}"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@{String.valueOf(info.reciprocalNum)}"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="center_vertical|right"
+                        android:text="@string/material_lack_num_format"
+                        android:textColor="@color/black" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/lackNumber"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="7"
+                        android:enabled="@{info.isEditEnable}"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+
+                        android:singleLine="true"
+                        android:text="@{String.valueOf(info.lackNum)}"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="center_vertical|right"
+                        android:text="@string/material_unqualify_num_format"
+                        android:textColor="@color/black" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/unqualifyNumber"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="7"
+                        android:enabled="@{info.isEditEnable}"
+                        android:gravity="center_vertical"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:text="@{String.valueOf(info.unqualifyNum)}"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -117,9 +237,8 @@
                     android:layout_height="@dimen/button_height_normal"
                     android:layout_marginTop="@dimen/spacing_small"
                     android:layout_weight="1"
-                    android:text="@string/edit"
-                    android:textSize="@dimen/font_large"
-                    android:visibility="gone" />
+                    android:text="@{info.editEnable?@string/save:@string/edit}"
+                    android:textSize="@dimen/font_large" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
