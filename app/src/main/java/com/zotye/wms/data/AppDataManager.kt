@@ -12,6 +12,7 @@ import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
+import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.di.qualifier.ApplicationContext
@@ -64,6 +65,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun getPickingBarCodeInfo(userId: String, barCode: String) = apiHelper.getPickingBarCodeInfo(userId, barCode)
 
     override fun createPDAProduceAcquire(request: ProduceAcquireConfirmRequest) = apiHelper.createPDAProduceAcquire(request)
+
+    override fun getPickReceiptInfoByCode(userId: String, barCode: String)=apiHelper.getPickReceiptInfoByCode(userId, barCode)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 

@@ -2,6 +2,7 @@ package com.zotye.wms.di.module
 
 import com.zotye.wms.ui.goods.GroupReceiveFragment
 import com.zotye.wms.ui.goods.ReceiveConfirmFragment
+import com.zotye.wms.ui.goods.StrictReceiveFragment
 import com.zotye.wms.ui.main.MainFragment
 import com.zotye.wms.ui.picking.ChooseCostCenterFragment
 import com.zotye.wms.ui.picking.PickingFragment
@@ -53,4 +54,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeChooseCostCenterFragment(): ChooseCostCenterFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeStrictReceiveFragment(): StrictReceiveFragment
 }

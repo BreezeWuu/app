@@ -22,6 +22,7 @@ import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.GroupReceiveFragment
 import com.zotye.wms.ui.goods.ReceiveConfirmFragment
+import com.zotye.wms.ui.goods.StrictReceiveFragment
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.LoadingCreateFragment
@@ -104,6 +105,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         }
                         ResourceType.ThreePLADJUST -> {
                             fragment = StorageUnitModifyFragment()
+                        }
+                        ResourceType.STRICT_RECV -> {
+                            fragment = StrictReceiveFragment.newInstance(it.name)
                         }
                         else -> {
                             return@OnItemChildClickListener

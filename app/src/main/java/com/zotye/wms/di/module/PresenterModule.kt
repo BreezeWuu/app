@@ -2,6 +2,7 @@ package com.zotye.wms.di.module
 
 import com.zotye.wms.ui.goods.GroupReceiveContract
 import com.zotye.wms.ui.goods.ReceiveConfirmContract
+import com.zotye.wms.ui.goods.StrictReceiveContract
 import com.zotye.wms.ui.main.MainContract
 import com.zotye.wms.ui.picking.ChooseCostCenterContract
 import com.zotye.wms.ui.picking.PickingContract
@@ -52,4 +53,7 @@ class PresenterModule {
 
     @Provides
     fun provideChooseCostCenterPresenter(presenter: ChooseCostCenterContract.ChooseCostCenterPresenterImpl): ChooseCostCenterContract.ChooseCostCenterPresenter = presenter
+
+    @Provides
+    fun provideStrictReceivePresenter(presenter: StrictReceiveContract.StrictReceivePresenterImpl): StrictReceiveContract.StrictReceivePresenter = presenter
 }
