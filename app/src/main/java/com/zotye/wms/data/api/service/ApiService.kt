@@ -6,6 +6,7 @@ import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
+import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
@@ -91,4 +92,7 @@ interface ApiService {
 
     @POST("bar_code/createPDAProduceAcquire")
     fun createPDAProduceAcquire(@Body request: ProduceAcquireConfirmRequest): Call<ApiResponse<String>>
+
+    @POST("bar_code//loadingReceipt/getPickReceiptInfoByCode")
+    fun getPickReceiptInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<PickReceiptDto>>
 }
