@@ -66,6 +66,10 @@ class PickListPullOffShelf {
      */
     var checkFlag: Boolean = false
     /**
+     * 是否需要下架确认
+     */
+    var pullOffConfirm: Boolean = false
+    /**
      * 是否已经扫描过包装
      */
     var checkCount: Long = 0

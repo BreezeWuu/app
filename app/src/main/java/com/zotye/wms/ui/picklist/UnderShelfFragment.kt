@@ -116,14 +116,14 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 doAsync {
                     adapter.data.forEachByIndex { pickListPullOffShelf ->
                         request.prNo = pickListPullOffShelf.pickListCode
-                        if (pickListPullOffShelf.checkFlag && !pickListPullOffShelf.isAddedPackage) {
+                        if (pickListPullOffShelf.pullOffConfirm && pickListPullOffShelf.checkFlag && !pickListPullOffShelf.isAddedPackage) {
                             onUiThread {
                                 showMessage(R.string.picklist_pull_off_shelf_no_add_error)
                                 hideProgressDialog()
                             }
                             return@doAsync
                         }
-                        if (pickListPullOffShelf.checkFlag) {
+                        if (pickListPullOffShelf.pullOffConfirm && pickListPullOffShelf.checkFlag) {
                             val prDto = PrMobileConfirmRequest.PrCheckInfoDto()
                             prDto.id = pickListPullOffShelf.id
                             prDto.checkNum = if (pickListPullOffShelf.isChecked()) pickListPullOffShelf.checkCount else null
