@@ -131,6 +131,10 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
         }
     }
 
+    override fun truckReceiveSucceed() {
+
+    }
+
     override fun onDestroyView() {
         presenter.onDetach()
         super.onDestroyView()
