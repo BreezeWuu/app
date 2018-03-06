@@ -24,13 +24,13 @@ import com.zotye.wms.databinding.ItemPickReceiptMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
-import com.zotye.wms.ui.picklist.UnderShelfFragment
 import kotlinx.android.synthetic.main.fragment_base.*
-import kotlinx.android.synthetic.main.fragment_pick_list_under_shelf.*
 import kotlinx.android.synthetic.main.fragment_strict_receive.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.support.v4.onUiThread
 import javax.inject.Inject
 
 /**
@@ -110,7 +110,21 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
             }
         }
         confirmButton.onClick {
-            presenter.truckReceive(adapter.pickReceiptDto)
+            if (adapter.pickReceiptDto == null)
+                showMessage(R.string.error_no_available_pick_info)
+            else {
+                doAsync {
+                    adapter.pickReceiptDto?.pickReceiptDetail?.forEach {
+                        if (it.isEditEnable) {
+                            showMessage(R.string.error_no_save_receive_number)
+                            return@doAsync
+                        }
+                    }
+                    onUiThread {
+                        presenter.truckReceive(adapter.pickReceiptDto)
+                    }
+                }
+            }
         }
     }
 

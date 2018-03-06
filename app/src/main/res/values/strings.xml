@@ -180,4 +180,6 @@
     <string name="material_unqualify_num_format">退货数：</string>
     <string name="delivery_num_error">实收数量，少收数量，退货数量相加必须等于发货数量！</string>
     <string name="strict_receive_succeed">装车单收货成功！</string>
+    <string name="error_no_available_pick_info">拣配单信息为空，请先扫描拣配单！</string>
+    <string name="error_no_save_receive_number">请先保存修改过的物料信息！</string>
 </resources>
