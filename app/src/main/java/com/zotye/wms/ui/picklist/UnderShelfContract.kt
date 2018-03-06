@@ -11,6 +11,7 @@ import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.data.api.model.PickListPullOffShelf
+import com.zotye.wms.data.api.model.under.shelf.MaterialReplenishment
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
 import com.zotye.wms.ui.common.BasePresenter
@@ -101,13 +102,13 @@ object UnderShelfContract {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
                         request.userId = it.userId
-                        dataManager.underShelfConfirm(request).enqueue(object : Callback<ApiResponse<String>> {
-                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                        dataManager.underShelfConfirm(request).enqueue(object : Callback<ApiResponse<List<MaterialReplenishment>>> {
+                            override fun onFailure(call: Call<ApiResponse<List<MaterialReplenishment>>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
                             }
 
-                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                            override fun onResponse(call: Call<ApiResponse<List<MaterialReplenishment>>>?, response: Response<ApiResponse<List<MaterialReplenishment>>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {

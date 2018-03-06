@@ -8,6 +8,7 @@ import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
+import com.zotye.wms.data.api.model.under.shelf.MaterialReplenishment
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
 import retrofit2.Call
@@ -74,7 +75,7 @@ interface ApiService {
     fun createLoadingList(@Field("userId") userId: String, @Field("carNumber") carNumber: String, @Field("pickListJson") pickListJson: String): Call<ApiResponse<String>>
 
     @POST("bar_code/underShelfConfirm")
-    fun underShelfConfirm(@Body request: PrMobileConfirmRequest): Call<ApiResponse<String>>
+    fun underShelfConfirm(@Body request: PrMobileConfirmRequest): Call<ApiResponse<List<MaterialReplenishment>>>
 
     @POST("bar_code/getPickReceiptShelfDetail")
     fun getPickReceiptShelfDetail(@Body requestDtos: List<GetPickReceiptShelfDetailRequestDto>): Call<ApiResponse<List<PickReceiptShelfDetail>>>
