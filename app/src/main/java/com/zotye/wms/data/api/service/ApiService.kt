@@ -6,6 +6,7 @@ import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
 import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
+import com.zotye.wms.data.api.model.loadingReceipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.MaterialReplenishment
@@ -97,4 +98,7 @@ interface ApiService {
     @FormUrlEncoded
     @POST("bar_code//loadingReceipt/getPickReceiptInfoByCode")
     fun getPickReceiptInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<PickReceiptDto>>
+
+    @POST("bar_code//loadingReceipt/truckReceive")
+    fun truckReceive(@Body recvInfo: List<MobilePickReceiptRecvDto>): Call<ApiResponse<String>>
 }

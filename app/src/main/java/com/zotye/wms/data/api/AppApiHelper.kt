@@ -6,6 +6,7 @@ import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
+import com.zotye.wms.data.api.model.loadingReceipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
@@ -61,4 +62,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun createPDAProduceAcquire(request: ProduceAcquireConfirmRequest) = apiService.createPDAProduceAcquire(request)
 
     override fun getPickReceiptInfoByCode(userId: String, barCode: String) = apiService.getPickReceiptInfoByCode(userId, barCode)
+
+    override fun truckReceive(recvInfo: List<MobilePickReceiptRecvDto>)=apiService.truckReceive(recvInfo)
 }
