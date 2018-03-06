@@ -5,6 +5,8 @@ import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.loadingReceipt.MobilePickReceiptRecvDto
+import com.zotye.wms.data.api.model.loadingReceipt.MobileSinglePickReceiptRecvDto
+import com.zotye.wms.data.api.model.loadingReceipt.PickReceiptDetailReceiveDto
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
@@ -26,7 +28,7 @@ object StrictReceiveContract {
 
     interface StrictReceivePresenter : MvpPresenter<StrictReceiveView> {
         fun getPickReceiptInfoByCode(barCode: String)
-        fun truckReceive(pickReceiptDto: PickReceiptDto)
+        fun truckReceive(pickReceiptDto: PickReceiptDto?)
     }
 
     class StrictReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<StrictReceiveView>(), StrictReceivePresenter {
@@ -58,29 +60,47 @@ object StrictReceiveContract {
             }
         }
 
-        override fun truckReceive(pickReceiptDto: PickReceiptDto) {
-            mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
-            appExecutors.diskIO().execute {
-                dataManager.getCurrentUser()?.let {
-                    val recvInfoList = ArrayList<MobilePickReceiptRecvDto>()
-                    appExecutors.mainThread().execute {
-                        dataManager.truckReceive(recvInfoList).enqueue(object : Callback<ApiResponse<String>> {
-                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
-                                mvpView?.hideProgressDialog()
-                                t.message?.let { mvpView?.showMessage(it) }
-                            }
+        override fun truckReceive(pickReceiptDto: PickReceiptDto?) {
+            pickReceiptDto?.let {
+                mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
+                appExecutors.diskIO().execute {
+                    dataManager.getCurrentUser()?.let {
+                        val recvInfoList = ArrayList<MobilePickReceiptRecvDto>()
+                        val mobilePickReceiptRecvDto = MobilePickReceiptRecvDto()
+                        mobilePickReceiptRecvDto.userId = it.userId
+                        mobilePickReceiptRecvDto.recvDetail = ArrayList()
+                        val mobileSinglePickReceiptRecvDto = MobileSinglePickReceiptRecvDto()
+                        mobileSinglePickReceiptRecvDto.pickReceiptId = pickReceiptDto.pickReceiptId
+                        mobileSinglePickReceiptRecvDto.pickReceiptDetail = ArrayList()
+                        pickReceiptDto.pickReceiptDetail?.forEach {
+                            val pickReceiptDetailReceiveDto = PickReceiptDetailReceiveDto()
+                            pickReceiptDetailReceiveDto.lackNum = it.lackNum
+                            pickReceiptDetailReceiveDto.pickReceiptDetailId = it.pickReceiptDetailId
+                            pickReceiptDetailReceiveDto.recvNum = it.reciprocalNum
+                            pickReceiptDetailReceiveDto.unqualifyNum = it.unqualifyNum
+                            (mobileSinglePickReceiptRecvDto.pickReceiptDetail as ArrayList).add(pickReceiptDetailReceiveDto)
+                        }
+                        (mobilePickReceiptRecvDto.recvDetail as ArrayList).add(mobileSinglePickReceiptRecvDto)
+                        recvInfoList.add(mobilePickReceiptRecvDto)
+                        appExecutors.mainThread().execute {
+                            dataManager.truckReceive(recvInfoList).enqueue(object : Callback<ApiResponse<String>> {
+                                override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                    mvpView?.hideProgressDialog()
+                                    t.message?.let { mvpView?.showMessage(it) }
+                                }
 
-                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
-                                mvpView?.hideProgressDialog()
-                                response.body()?.let {
-                                    if (it.isSucceed()) {
-                                        mvpView?.truckReceiveSucceed()
-                                    } else {
-                                        mvpView?.showMessage(it.message)
+                                override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                    mvpView?.hideProgressDialog()
+                                    response.body()?.let {
+                                        if (it.isSucceed()) {
+                                            mvpView?.truckReceiveSucceed()
+                                        } else {
+                                            mvpView?.showMessage(it.message)
+                                        }
                                     }
                                 }
-                            }
-                        })
+                            })
+                        }
                     }
                 }
             }

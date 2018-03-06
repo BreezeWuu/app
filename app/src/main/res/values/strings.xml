@@ -179,4 +179,5 @@
     <string name="material_lack_num_format">少收数：</string>
     <string name="material_unqualify_num_format">退货数：</string>
     <string name="delivery_num_error">实收数量，少收数量，退货数量相加必须等于发货数量！</string>
+    <string name="strict_receive_succeed">装车单收货成功！</string>
 </resources>

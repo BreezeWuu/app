@@ -24,7 +24,9 @@ import com.zotye.wms.databinding.ItemPickReceiptMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
+import com.zotye.wms.ui.picklist.UnderShelfFragment
 import kotlinx.android.synthetic.main.fragment_base.*
+import kotlinx.android.synthetic.main.fragment_pick_list_under_shelf.*
 import kotlinx.android.synthetic.main.fragment_strict_receive.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.find
@@ -107,6 +109,9 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
                 hideKeyboard((adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText))
             }
         }
+        confirmButton.onClick {
+            presenter.truckReceive(adapter.pickReceiptDto)
+        }
     }
 
     override fun succeed(result: String) {
@@ -132,7 +137,11 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
     }
 
     override fun truckReceiveSucceed() {
-
+        (pickInfoRecyclerView.adapter as PickReceiptListAdapter).setNewData(null)
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.strict_receive_succeed).setNegativeButton(R.string.ok, null).create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
     override fun onDestroyView() {
