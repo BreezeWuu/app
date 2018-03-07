@@ -151,7 +151,7 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
     }
 
     override fun getSlInfoForDeliveryNote(note: DeliveryNoteInfoDto, data: List<ValidSlInfoDto>?) {
-
+        AlertDialog.Builder(context!!).setTitle(R.string.choose_storage_location)
     }
 
     class DeliveryNoteReceiptListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {

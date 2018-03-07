@@ -190,4 +190,5 @@
     <string name="material_name_format">物料名称：</string>
     <string name="delivery_package_number_format">单包装数量：</string>
     <string name="delivery_batch_num_error">批次号不能为空！</string>
+    <string name="choose_storage_location">选择交货库存地点</string>
 </resources>
