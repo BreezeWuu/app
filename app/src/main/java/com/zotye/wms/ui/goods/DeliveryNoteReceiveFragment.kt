@@ -109,7 +109,7 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                     Toast.makeText(context, R.string.delivery_batch_num_error, Toast.LENGTH_SHORT).show()
                     return@setOnItemChildClickListener
                 }
-                if ((item.receiveNum + item.unqualifyNum + item.lackNum) != item.componentCount) {
+                if ((item.receiveNum + item.unqualifyNum + item.lackNum) != item.requireNum) {
                     Toast.makeText(context, R.string.delivery_num_error, Toast.LENGTH_SHORT).show()
                     return@setOnItemChildClickListener
                 }
