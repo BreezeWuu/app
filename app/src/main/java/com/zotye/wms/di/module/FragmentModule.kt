@@ -1,5 +1,6 @@
 package com.zotye.wms.di.module
 
+import com.zotye.wms.ui.goods.DeliveryNoteReceiveFragment
 import com.zotye.wms.ui.goods.GroupReceiveFragment
 import com.zotye.wms.ui.goods.ReceiveConfirmFragment
 import com.zotye.wms.ui.goods.StrictReceiveFragment
@@ -57,4 +58,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeStrictReceiveFragment(): StrictReceiveFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeDeliveryNoteReceiveFragment(): DeliveryNoteReceiveFragment
 }

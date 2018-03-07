@@ -1,5 +1,6 @@
 package com.zotye.wms.di.module
 
+import com.zotye.wms.ui.goods.DeliveryNoteReceiveContract
 import com.zotye.wms.ui.goods.GroupReceiveContract
 import com.zotye.wms.ui.goods.ReceiveConfirmContract
 import com.zotye.wms.ui.goods.StrictReceiveContract
@@ -56,4 +57,8 @@ class PresenterModule {
 
     @Provides
     fun provideStrictReceivePresenter(presenter: StrictReceiveContract.StrictReceivePresenterImpl): StrictReceiveContract.StrictReceivePresenter = presenter
+
+    @Provides
+    fun provideDeliveryNoteReceivePresenter(presenter: DeliveryNoteReceiveContract.DeliveryNoteReceivePresenterImpl): DeliveryNoteReceiveContract.DeliveryNoteReceivePresenter = presenter
+
 }
