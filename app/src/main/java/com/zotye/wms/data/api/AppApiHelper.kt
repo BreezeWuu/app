@@ -1,5 +1,6 @@
 package com.zotye.wms.data.api
 
+import com.zotye.wms.data.api.model.ValidSlInfoDto
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
@@ -62,4 +63,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun truckReceive(recvInfo: List<MobilePickReceiptRecvDto>) = apiService.truckReceive(recvInfo)
 
     override fun getDeliveryNoteInfoByCode(userId: String, barCode: String) = apiService.getDeliveryNoteInfoByCode(userId, barCode)
+
+    override fun getSlInfoForDeliveryNote(userId: String, noteCode: String)=apiService.getSlInfoForDeliveryNote(userId, noteCode)
 }

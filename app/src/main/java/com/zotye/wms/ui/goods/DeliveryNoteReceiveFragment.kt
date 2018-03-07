@@ -17,6 +17,7 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.zotye.wms.R
+import com.zotye.wms.data.api.model.ValidSlInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.receipt.ReceiveDetailDto
@@ -91,32 +92,40 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
         deliveryNoteInfoRecyclerView.layoutManager = LinearLayoutManager(context)
         deliveryNoteInfoRecyclerView.adapter = adapter
         adapter.bindToRecyclerView(deliveryNoteInfoRecyclerView)
-        adapter.setOnItemChildClickListener { _, _, position ->
-            val item = adapter.getItem(position) as ReceiveDetailDto
-            if (item.isEditEnable) {
-                val batchNumString = (adapter.getViewByPosition(position, R.id.batchNumber) as TextView).text.toString()
-                val reciprocalNumString = (adapter.getViewByPosition(position, R.id.reciprocalNumber) as TextView).text.toString()
-                val lackNumberString = (adapter.getViewByPosition(position, R.id.lackNumber) as TextView).text.toString()
-                val unqualifyNumberString = (adapter.getViewByPosition(position, R.id.unqualifyNumber) as TextView).text.toString()
-                item.batchNum = batchNumString
-                item.receiveNum = if (reciprocalNumString.isNullOrBlank()) 0 else reciprocalNumString.toLong()
-                item.lackNum = if (lackNumberString.isNullOrBlank()) 0 else lackNumberString.toLong()
-                item.unqualifyNum = if (unqualifyNumberString.isNullOrBlank()) 0 else unqualifyNumberString.toLong()
-                if (item.isBatch!! && TextUtils.isEmpty(batchNumString)) {
-                    Toast.makeText(context, R.string.delivery_batch_num_error, Toast.LENGTH_SHORT).show()
-                    return@setOnItemChildClickListener
+        adapter.setOnItemChildClickListener { _, view, position ->
+            when (view.id) {
+                R.id.editButton -> {
+                    val item = adapter.getItem(position) as ReceiveDetailDto
+                    if (item.isEditEnable) {
+                        val batchNumString = (adapter.getViewByPosition(position, R.id.batchNumber) as TextView).text.toString()
+                        val reciprocalNumString = (adapter.getViewByPosition(position, R.id.reciprocalNumber) as TextView).text.toString()
+                        val lackNumberString = (adapter.getViewByPosition(position, R.id.lackNumber) as TextView).text.toString()
+                        val unqualifyNumberString = (adapter.getViewByPosition(position, R.id.unqualifyNumber) as TextView).text.toString()
+                        item.batchNum = batchNumString
+                        item.receiveNum = if (reciprocalNumString.isNullOrBlank()) 0 else reciprocalNumString.toLong()
+                        item.lackNum = if (lackNumberString.isNullOrBlank()) 0 else lackNumberString.toLong()
+                        item.unqualifyNum = if (unqualifyNumberString.isNullOrBlank()) 0 else unqualifyNumberString.toLong()
+                        if (item.isBatch!! && TextUtils.isEmpty(batchNumString)) {
+                            Toast.makeText(context, R.string.delivery_batch_num_error, Toast.LENGTH_SHORT).show()
+                            return@setOnItemChildClickListener
+                        }
+                        if ((item.receiveNum + item.unqualifyNum + item.lackNum) != item.requireNum) {
+                            Toast.makeText(context, R.string.delivery_num_error, Toast.LENGTH_SHORT).show()
+                            return@setOnItemChildClickListener
+                        }
+                    }
+                    item.isEditEnable = !item.isEditEnable
+                    adapter.notifyItemChanged(position)
+                    if (item.isEditEnable) {
+                        (adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText).requestFocus()
+                    } else {
+                        hideKeyboard((adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText))
+                    }
                 }
-                if ((item.receiveNum + item.unqualifyNum + item.lackNum) != item.requireNum) {
-                    Toast.makeText(context, R.string.delivery_num_error, Toast.LENGTH_SHORT).show()
-                    return@setOnItemChildClickListener
+                R.id.storageLocationText -> {
+                    val item = adapter.getItem(position) as DeliveryNoteInfoDto
+                    presenter.getSlInfoForDeliveryNote(item)
                 }
-            }
-            item.isEditEnable = !item.isEditEnable
-            adapter.notifyItemChanged(position)
-            if (item.isEditEnable) {
-                (adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText).requestFocus()
-            } else {
-                hideKeyboard((adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText))
             }
         }
     }
@@ -139,6 +148,9 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                 }
             }
         }
+    }
+
+    override fun getSlInfoForDeliveryNote(note: DeliveryNoteInfoDto, data: List<ValidSlInfoDto>?) {
 
     }
 
@@ -174,6 +186,7 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                         }, yy, mm, dd)
                         datePicker.show()
                     }
+                    helper.addOnClickListener(R.id.storageLocationText)
                 }
                 ReceiveDetailDto.TYPE_RECEIVE_DETAIL -> {
                     val dataBind = DataBindingUtil.bind<ItemDeliveryNoteReceiptMaterialInfoBinding>(helper.itemView)

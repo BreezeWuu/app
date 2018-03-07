@@ -4,6 +4,8 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.ValidSlInfoDto
+import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
@@ -20,10 +22,12 @@ object DeliveryNoteReceiveContract {
 
     interface DeliveryNoteReceiveView : MvpView {
         fun getDeliveryNoteInfoByCode(data: DeliveryNoteInfoResponse?)
+        fun getSlInfoForDeliveryNote(note: DeliveryNoteInfoDto, data: List<ValidSlInfoDto>?)
     }
 
     interface DeliveryNoteReceivePresenter : MvpPresenter<DeliveryNoteReceiveView> {
         fun getDeliveryNoteInfoByCode(barCode: String)
+        fun getSlInfoForDeliveryNote(note: DeliveryNoteInfoDto)
     }
 
     class DeliveryNoteReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<DeliveryNoteReceiveView>(), DeliveryNoteReceivePresenter {
@@ -44,6 +48,33 @@ object DeliveryNoteReceiveContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getDeliveryNoteInfoByCode(it.data)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun getSlInfoForDeliveryNote(note: DeliveryNoteInfoDto) {
+            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.getSlInfoForDeliveryNote(it.userId, note.noteCode!!).enqueue(object : Callback<ApiResponse<List<ValidSlInfoDto>>> {
+                            override fun onFailure(call: Call<ApiResponse<List<ValidSlInfoDto>>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<List<ValidSlInfoDto>>>?, response: Response<ApiResponse<List<ValidSlInfoDto>>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.getSlInfoForDeliveryNote(note, it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

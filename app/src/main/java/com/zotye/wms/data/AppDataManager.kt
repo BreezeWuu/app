@@ -6,6 +6,7 @@ import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.ValidSlInfoDto
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
@@ -68,6 +69,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun truckReceive(recvInfo: List<MobilePickReceiptRecvDto>) = apiHelper.truckReceive(recvInfo)
 
     override fun getDeliveryNoteInfoByCode(userId: String, barCode: String) = apiHelper.getDeliveryNoteInfoByCode(userId, barCode)
+
+    override fun getSlInfoForDeliveryNote(userId: String, noteCode: String)=apiHelper.getSlInfoForDeliveryNote(userId, noteCode)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 
