@@ -1,5 +1,6 @@
 package com.zotye.wms.ui.goods
 
+import android.app.DatePickerDialog
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -16,17 +17,11 @@ import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.PickListInfo
-import com.zotye.wms.data.api.model.PickListMaterialInfo
-import com.zotye.wms.data.api.model.picking.PdaPickReceiptDetailDto
-import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.receipt.ReceiveDetailDto
 import com.zotye.wms.databinding.ItemDeliveryNoteReceiptInfoBinding
 import com.zotye.wms.databinding.ItemDeliveryNoteReceiptMaterialInfoBinding
-import com.zotye.wms.databinding.ItemPickReceiptInfoBinding
-import com.zotye.wms.databinding.ItemPickReceiptMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
@@ -37,7 +32,9 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onUiThread
+import java.util.*
 import javax.inject.Inject
+
 
 /**
  * Created by hechuangju on 2018/03/07
@@ -165,6 +162,18 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                         }
                     }
                     helper.getView<Button>(R.id.expandButton).setText(if (item.isExpanded) R.string.picklist_material_collapse else R.string.picklist_material_expand)
+                    helper.getView<TextView>(R.id.postTimeText).onClick {
+                        val calendar = Calendar.getInstance()
+                        val yy = calendar.get(Calendar.YEAR)
+                        val mm = calendar.get(Calendar.MONTH)
+                        val dd = calendar.get(Calendar.DAY_OF_MONTH)
+                        val datePicker = DatePickerDialog(mContext, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
+                            val date = (year.toString() + "-" + (monthOfYear + 1).toString()
+                                    + "-" + dayOfMonth.toString())
+                            helper.getView<TextView>(R.id.postTimeText).text = date
+                        }, yy, mm, dd)
+                        datePicker.show()
+                    }
                 }
                 ReceiveDetailDto.TYPE_RECEIVE_DETAIL -> {
                     val dataBind = DataBindingUtil.bind<ItemDeliveryNoteReceiptMaterialInfoBinding>(helper.itemView)
