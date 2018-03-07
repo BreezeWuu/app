@@ -20,6 +20,7 @@ import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemHomeButtonBinding
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
+import com.zotye.wms.ui.goods.DeliveryNoteReceiveFragment
 import com.zotye.wms.ui.goods.GroupReceiveFragment
 import com.zotye.wms.ui.goods.ReceiveConfirmFragment
 import com.zotye.wms.ui.goods.StrictReceiveFragment
@@ -108,6 +109,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         }
                         ResourceType.STRICT_RECV -> {
                             fragment = StrictReceiveFragment.newInstance(it.name)
+                        }
+                        ResourceType.NORMAL_RECV -> {
+                            fragment = DeliveryNoteReceiveFragment.newInstance(it.name)
                         }
                         else -> {
                             return@OnItemChildClickListener

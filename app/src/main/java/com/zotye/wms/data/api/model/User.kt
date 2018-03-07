@@ -47,6 +47,7 @@ enum class ResourceType(val code: String) {
     ThreePLADJUST("3PLADJUST"),//库位调整
     STQUERY("STQUERY"),//包装查询
     STRICT_RECV("STRICT_RECV"),//装车单收货
+    NORMAL_RECV("NORMAL_RECV"),//交货单收货
     Unknown("");
 
 
