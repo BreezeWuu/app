@@ -18,7 +18,6 @@ import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.model.*
-import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment

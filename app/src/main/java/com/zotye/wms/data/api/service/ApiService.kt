@@ -5,10 +5,11 @@ import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
-import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
-import com.zotye.wms.data.api.model.loadingReceipt.MobilePickReceiptRecvDto
+import com.zotye.wms.data.api.model.receipt.GoodsReceiveResponse
+import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
+import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.under.shelf.MaterialReplenishment
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
@@ -96,9 +97,14 @@ interface ApiService {
     fun createPDAProduceAcquire(@Body request: ProduceAcquireConfirmRequest): Call<ApiResponse<String>>
 
     @FormUrlEncoded
-    @POST("bar_code//loadingReceipt/getPickReceiptInfoByCode")
+    @POST("bar_code/loadingReceipt/getPickReceiptInfoByCode")
     fun getPickReceiptInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<PickReceiptDto>>
 
-    @POST("bar_code//loadingReceipt/truckReceive")
+    @POST("bar_code/loadingReceipt/truckReceive")
     fun truckReceive(@Body recvInfo: List<MobilePickReceiptRecvDto>): Call<ApiResponse<String>>
+
+    @FormUrlEncoded
+    @POST("bar_code/DeliveryNoteReceipt/getDeliveryNoteInfoByCode")
+    fun getDeliveryNoteInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<DeliveryNoteInfoResponse>>
+
 }

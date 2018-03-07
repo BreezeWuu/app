@@ -1,14 +1,10 @@
 package com.zotye.wms.data.api
 
-import com.zotye.wms.data.api.model.CostCenter
-import com.zotye.wms.data.api.model.FactoryInfo
-import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
-import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
-import com.zotye.wms.data.api.model.loadingReceipt.MobilePickReceiptRecvDto
-import com.zotye.wms.data.api.model.picking.PickReceiptDto
+import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
+import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.service.ApiService
 import retrofit2.Call
@@ -63,5 +59,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun getPickReceiptInfoByCode(userId: String, barCode: String) = apiService.getPickReceiptInfoByCode(userId, barCode)
 
-    override fun truckReceive(recvInfo: List<MobilePickReceiptRecvDto>)=apiService.truckReceive(recvInfo)
+    override fun truckReceive(recvInfo: List<MobilePickReceiptRecvDto>) = apiService.truckReceive(recvInfo)
+
+    override fun getDeliveryNoteInfoByCode(userId: String, barCode: String) = apiService.getDeliveryNoteInfoByCode(userId, barCode)
 }

@@ -1,4 +1,4 @@
-package com.zotye.wms.data.api.model.loadingReceipt
+package com.zotye.wms.data.api.model.receipt
 
 /**
  * Created by hechuangju on 2018/03/06

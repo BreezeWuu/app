@@ -4,9 +4,9 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.loadingReceipt.MobilePickReceiptRecvDto
-import com.zotye.wms.data.api.model.loadingReceipt.MobileSinglePickReceiptRecvDto
-import com.zotye.wms.data.api.model.loadingReceipt.PickReceiptDetailReceiveDto
+import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
+import com.zotye.wms.data.api.model.receipt.MobileSinglePickReceiptRecvDto
+import com.zotye.wms.data.api.model.receipt.PickReceiptDetailReceiveDto
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter

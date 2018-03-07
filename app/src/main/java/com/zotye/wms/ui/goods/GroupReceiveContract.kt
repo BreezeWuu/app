@@ -7,7 +7,7 @@ import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.LogisticsReceiveInfo
-import com.zotye.wms.data.api.model.goods.receive.GoodsReceiveResponse
+import com.zotye.wms.data.api.model.receipt.GoodsReceiveResponse
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView

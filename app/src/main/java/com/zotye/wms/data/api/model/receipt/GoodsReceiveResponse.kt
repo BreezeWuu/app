@@ -1,4 +1,4 @@
-package com.zotye.wms.data.api.model.goods.receive
+package com.zotye.wms.data.api.model.receipt
 import com.google.gson.annotations.SerializedName
 
 
