@@ -1,5 +1,8 @@
 package com.zotye.wms.data.api.model.receipt
 
+import com.chad.library.adapter.base.entity.AbstractExpandableItem
+import com.chad.library.adapter.base.entity.MultiItemEntity
+
 /**
  * Created by hechuangju on 2018/03/07
  */
@@ -8,7 +11,12 @@ class DeliveryNoteInfoResponse {
     var receiveDetailList: List<ReceiveDetailDto>? = null
 }
 
-class DeliveryNoteInfoDto {
+class DeliveryNoteInfoDto : AbstractExpandableItem<ReceiveDetailDto>(), MultiItemEntity {
+
+    companion object {
+        const val TYPE_NOTE_INFO = 0
+    }
+
     var noteCode: String? = null
 
     var noteType: String? = null
@@ -28,9 +36,20 @@ class DeliveryNoteInfoDto {
     var pickReceiptCount: Int = 0
 
     var receivedPickReceiptCount: Int = 0
+
+    override fun getItemType(): Int {
+        return 0
+    }
+
+    override fun getLevel(): Int {
+        return 0
+    }
 }
 
-class ReceiveDetailDto {
+class ReceiveDetailDto : MultiItemEntity {
+    companion object {
+        val TYPE_RECEIVE_DETAIL = 1
+    }
 
     /**
      * 记录Id
@@ -100,4 +119,10 @@ class ReceiveDetailDto {
     var lackNum: Long = 0
 
     var unqualifyNum: Long = 0
+
+    var isEditEnable: Boolean = false
+
+    override fun getItemType(): Int {
+        return 1
+    }
 }

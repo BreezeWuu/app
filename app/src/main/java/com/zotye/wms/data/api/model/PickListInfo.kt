@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.entity.MultiItemEntity
  */
 class PickListInfo(var code: String? = null) : AbstractExpandableItem<PickListMaterialInfo>(), MultiItemEntity {
     companion object {
-        val TYPE_PICK_LIST = 0
+        const val TYPE_PICK_LIST = 0
     }
 
     var id: String = ""

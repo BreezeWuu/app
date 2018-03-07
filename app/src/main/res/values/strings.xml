@@ -183,4 +183,11 @@
     <string name="strict_receive_succeed">装车单收货成功！</string>
     <string name="error_no_available_pick_info">拣配单信息为空，请先扫描拣配单！</string>
     <string name="error_no_save_receive_number">请先保存修改过的物料信息！</string>
+    <string name="delivery_note_time_format">过帐日期：</string>
+    <string name="delivery_note_location_format">交货库存地点：</string>
+    <string name="delivery_note_supplier_name_format">供应商名称：</string>
+    <string name="delivery_note_supplier_code_format">供应商代码：</string>
+    <string name="material_name_format">物料名称：</string>
+    <string name="delivery_package_number_format">单包装数量：</string>
+    <string name="delivery_batch_num_error">批次号不能为空！</string>
 </resources>
