@@ -1,6 +1,7 @@
 package com.zotye.wms.ui.goods
 
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -9,10 +10,7 @@ import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.chad.library.adapter.base.BaseMultiItemQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.chad.library.adapter.base.entity.MultiItemEntity
@@ -151,7 +149,15 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
     }
 
     override fun getSlInfoForDeliveryNote(note: DeliveryNoteInfoDto, data: List<ValidSlInfoDto>?) {
-        AlertDialog.Builder(context!!).setTitle(R.string.choose_storage_location)
+        val adapter = deliveryNoteInfoRecyclerView.adapter as DeliveryNoteReceiptListAdapter
+        val arrayAdapter: ArrayAdapter<ValidSlInfoDto> = ArrayAdapter(context, android.R.layout.simple_list_item_single_choice)
+        arrayAdapter.addAll(data)
+        AlertDialog.Builder(context!!).setTitle(R.string.choose_storage_location).setAdapter(arrayAdapter) { dialog, which ->
+            val validSlInfoDto = arrayAdapter.getItem(which)
+            (adapter.getItem(0) as DeliveryNoteInfoDto).storageLocationCode = validSlInfoDto.slCode
+            (adapter.getItem(0) as DeliveryNoteInfoDto).storageLocationName = validSlInfoDto.slName
+            adapter.notifyItemChanged(0)
+        }.show()
     }
 
     class DeliveryNoteReceiptListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {

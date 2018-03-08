@@ -3,8 +3,14 @@ package com.zotye.wms.data.api.model
 /**
  * Created by hechuangju on 2018/03/07
  */
-class ValidSlInfoDto{
+class ValidSlInfoDto {
     var slCode: String? = null
 
     var slName: String? = null
+
+    override fun toString(): String {
+        return slName + ""
+    }
+
+
 }
