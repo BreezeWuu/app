@@ -113,7 +113,6 @@ interface ApiService {
     @POST("bar_code/DeliveryNoteReceipt/getSlInfoForDeliveryNote")
     fun getSlInfoForDeliveryNote(@Field("userId") userId: String, @Field("noteCode") noteCode: String): Call<ApiResponse<List<ValidSlInfoDto>>>
 
-    @FormUrlEncoded
     @POST("bar_code/DeliveryNoteReceipt/normalNoteReceive")
     fun normalNoteReceive(@Body recvInfo: List<MobileNoteRecvRequest>): Call<ApiResponse<ReceiveConfirmResponse>>
 

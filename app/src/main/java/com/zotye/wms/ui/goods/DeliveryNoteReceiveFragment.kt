@@ -205,6 +205,7 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                         val datePicker = DatePickerDialog(mContext, DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
                             val date = (year.toString() + "-" + (monthOfYear + 1).toString()
                                     + "-" + dayOfMonth.toString())
+                            item.postTime = date
                             helper.getView<TextView>(R.id.postTimeText).text = date
                         }, yy, mm, dd)
                         datePicker.show()
