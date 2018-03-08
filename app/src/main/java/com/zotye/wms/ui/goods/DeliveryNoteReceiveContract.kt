@@ -47,10 +47,10 @@ object DeliveryNoteReceiveContract {
                             }
 
                             override fun onResponse(call: Call<ApiResponse<DeliveryNoteInfoResponse>>?, response: Response<ApiResponse<DeliveryNoteInfoResponse>>) {
-                                response.body()?.let {
-                                    if (it.isSucceed()) {
+                                response.body()?.let { noteInfo ->
+                                    if (noteInfo.isSucceed()) {
                                         appExecutors.diskIO().execute {
-                                            it.data?.receiveDetailList?.let {
+                                            noteInfo.data?.receiveDetailList?.let {
                                                 val keyList = ArrayMap<String, ReceiveDetailDto>()
                                                 it.filter { it.isBom == null || !it.isBom!! }.map { receiveDetailDto ->
                                                     keyList.put(receiveDetailDto.id, receiveDetailDto)
@@ -58,15 +58,16 @@ object DeliveryNoteReceiveContract {
                                                 it.filter { it.isBom != null && it.isBom!! }.map { receiveDetailDto ->
                                                     keyList[receiveDetailDto.parent]?.child?.add(receiveDetailDto)
                                                 }.toList()
+                                                noteInfo.data?.receiveDetailList = keyList.values.toList()
                                             }
                                             appExecutors.mainThread().execute {
                                                 mvpView?.hideProgressDialog()
-                                                mvpView?.getDeliveryNoteInfoByCode(it.data)
+                                                mvpView?.getDeliveryNoteInfoByCode(noteInfo.data)
                                             }
                                         }
                                     } else {
                                         mvpView?.hideProgressDialog()
-                                        mvpView?.showMessage(it.message)
+                                        mvpView?.showMessage(noteInfo.message)
                                     }
                                 }
                             }
