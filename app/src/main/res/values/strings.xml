@@ -192,4 +192,6 @@
     <string name="delivery_batch_num_error">批次号不能为空！</string>
     <string name="choose_storage_location">选择交货库存地点</string>
     <string name="current_num_format">当前数量：</string>
+    <string name="delivery_view_child_material_detail">查看附件列表</string>
+    <string name="child_material_detail">子附件详情</string>
 </resources>

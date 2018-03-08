@@ -1,7 +1,6 @@
 package com.zotye.wms.ui.goods
 
 import android.app.DatePickerDialog
-import android.content.DialogInterface
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -27,10 +26,8 @@ import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_delivery_note_receive.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
-import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
-import org.jetbrains.anko.support.v4.onUiThread
 import java.util.*
 import javax.inject.Inject
 
@@ -120,6 +117,10 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                         hideKeyboard((adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText))
                     }
                 }
+                R.id.viewDetailButton->{
+                    val item = adapter.getItem(position) as ReceiveDetailDto
+                    fragmentManager?.beginTransaction()?.add(R.id.main_content, DeliveryNoteChildDetailFragment.newInstance(item))?.addToBackStack(null)?.commit()
+                }
                 R.id.storageLocationText -> {
                     val item = adapter.getItem(position) as DeliveryNoteInfoDto
                     presenter.getSlInfoForDeliveryNote(item)
@@ -192,6 +193,7 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                     val dataBind = DataBindingUtil.bind<ItemDeliveryNoteReceiptMaterialInfoBinding>(helper.itemView)
                     dataBind?.info = item as ReceiveDetailDto
                     helper.addOnClickListener(R.id.editButton)
+                    helper.addOnClickListener(R.id.viewDetailButton)
                 }
             }
         }

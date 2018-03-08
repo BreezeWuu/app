@@ -1,6 +1,7 @@
 package com.zotye.wms.ui.goods
 
 import android.support.v4.util.ArrayMap
+import android.text.TextUtils
 import android.util.SparseArray
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
@@ -52,13 +53,21 @@ object DeliveryNoteReceiveContract {
                                         appExecutors.diskIO().execute {
                                             noteInfo.data?.receiveDetailList?.let {
                                                 val keyList = ArrayMap<String, ReceiveDetailDto>()
-                                                it.filter { it.isBom == null || !it.isBom!! }.map { receiveDetailDto ->
+                                                it.filter { TextUtils.isEmpty(it.parent) }.map { receiveDetailDto ->
                                                     keyList.put(receiveDetailDto.id, receiveDetailDto)
                                                 }.toList()
-                                                it.filter { it.isBom != null && it.isBom!! }.map { receiveDetailDto ->
+                                                it.filter { !TextUtils.isEmpty(it.parent) }.map { receiveDetailDto ->
                                                     keyList[receiveDetailDto.parent]?.child?.add(receiveDetailDto)
                                                 }.toList()
                                                 noteInfo.data?.receiveDetailList = keyList.values.toList()
+                                                noteInfo.data?.receiveDetailList?.let {
+                                                    it.forEach { parent ->
+                                                        parent.receiveNum = parent.requireNum - parent.lackNum - parent.unqualifyNum
+                                                        parent.child.forEach { child ->
+                                                            child.receiveNum = parent.receiveNum * child.componentCount
+                                                        }
+                                                    }
+                                                }
                                             }
                                             appExecutors.mainThread().execute {
                                                 mvpView?.hideProgressDialog()

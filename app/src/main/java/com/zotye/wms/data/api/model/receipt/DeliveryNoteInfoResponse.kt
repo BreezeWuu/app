@@ -2,6 +2,7 @@ package com.zotye.wms.data.api.model.receipt
 
 import com.chad.library.adapter.base.entity.AbstractExpandableItem
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import java.io.Serializable
 
 /**
  * Created by hechuangju on 2018/03/07
@@ -46,7 +47,7 @@ class DeliveryNoteInfoDto : AbstractExpandableItem<ReceiveDetailDto>(), MultiIte
     }
 }
 
-class ReceiveDetailDto : MultiItemEntity {
+class ReceiveDetailDto : MultiItemEntity ,Serializable{
     companion object {
         const val TYPE_RECEIVE_DETAIL = 1
     }
