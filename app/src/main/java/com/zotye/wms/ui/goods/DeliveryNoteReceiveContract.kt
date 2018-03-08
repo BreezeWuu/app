@@ -47,20 +47,25 @@ object DeliveryNoteReceiveContract {
                             }
 
                             override fun onResponse(call: Call<ApiResponse<DeliveryNoteInfoResponse>>?, response: Response<ApiResponse<DeliveryNoteInfoResponse>>) {
-                                mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        it.data?.receiveDetailList?.let {
-                                            val keyList = ArrayMap<String, ReceiveDetailDto>()
-                                            it.filter { it.isBom == null || !it.isBom!! }.map { receiveDetailDto ->
-                                                keyList.put(receiveDetailDto.id, receiveDetailDto)
-                                            }.toList()
-                                            it.filter { it.isBom != null && it.isBom!! }.map { receiveDetailDto ->
-                                                keyList[receiveDetailDto.parent]?.child?.add(receiveDetailDto)
-                                            }.toList()
+                                        appExecutors.diskIO().execute {
+                                            it.data?.receiveDetailList?.let {
+                                                val keyList = ArrayMap<String, ReceiveDetailDto>()
+                                                it.filter { it.isBom == null || !it.isBom!! }.map { receiveDetailDto ->
+                                                    keyList.put(receiveDetailDto.id, receiveDetailDto)
+                                                }.toList()
+                                                it.filter { it.isBom != null && it.isBom!! }.map { receiveDetailDto ->
+                                                    keyList[receiveDetailDto.parent]?.child?.add(receiveDetailDto)
+                                                }.toList()
+                                            }
+                                            appExecutors.mainThread().execute {
+                                                mvpView?.hideProgressDialog()
+                                                mvpView?.getDeliveryNoteInfoByCode(it.data)
+                                            }
                                         }
-                                        mvpView?.getDeliveryNoteInfoByCode(it.data)
                                     } else {
+                                        mvpView?.hideProgressDialog()
                                         mvpView?.showMessage(it.message)
                                     }
                                 }
