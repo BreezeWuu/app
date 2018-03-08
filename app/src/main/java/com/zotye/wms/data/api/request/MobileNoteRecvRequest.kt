@@ -1,5 +1,7 @@
 package com.zotye.wms.data.api.request
 
+import com.zotye.wms.data.api.model.receipt.ReceiveDetailDto
+
 /**
  * Created by hechuangju on 2018/03/08
  */
@@ -16,6 +18,20 @@ class MobileNoteRecvRequest {
 }
 
 class ReceiveConfirmRequest {
+
+    companion object {
+        fun newInstance(detailDto: ReceiveDetailDto): ReceiveConfirmRequest {
+            val request = ReceiveConfirmRequest()
+            request.id = detailDto.id
+            request.isBom = detailDto.isBom
+            request.receiveNum = detailDto.receiveNum
+            request.batchNum = detailDto.batchNum
+            request.lackNum = detailDto.lackNum
+            request.unqualifyNum = detailDto.unqualifyNum
+            return request
+        }
+    }
+
     var id: String? = null
 
     var isBom: Boolean? = null

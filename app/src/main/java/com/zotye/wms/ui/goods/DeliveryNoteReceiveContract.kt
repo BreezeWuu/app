@@ -11,6 +11,7 @@ import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.receipt.ReceiveDetailDto
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
+import com.zotye.wms.data.api.request.ReceiveConfirmRequest
 import com.zotye.wms.data.api.response.ReceiveConfirmResponse
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
@@ -122,6 +123,17 @@ object DeliveryNoteReceiveContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     val request = MobileNoteRecvRequest()
+                    request.userId = it.userId
+                    request.slCode = response.deliveryNoteInfo?.storageLocationCode
+                    request.noteCode = response.deliveryNoteInfo?.noteCode
+                    request.postTime = response.deliveryNoteInfo?.postTime
+                    response.receiveDetailList?.forEach { parent ->
+                        request.noteDetail.add(ReceiveConfirmRequest.newInstance(parent))
+                        parent.child.forEach { child ->
+                            child.receiveNum = parent.receiveNum * child.componentCount
+                            request.noteDetail.add(ReceiveConfirmRequest.newInstance(child))
+                        }
+                    }
                     requestList.add(request)
                     appExecutors.mainThread().execute {
                         dataManager.normalNoteReceive(requestList).enqueue(object : Callback<ApiResponse<ReceiveConfirmResponse>> {
