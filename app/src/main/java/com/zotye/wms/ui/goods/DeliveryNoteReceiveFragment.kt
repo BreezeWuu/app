@@ -40,8 +40,6 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
     @Inject
     lateinit var presenter: DeliveryNoteReceiveContract.DeliveryNoteReceivePresenter
 
-    private var response: DeliveryNoteInfoResponse? = null
-
     companion object {
         fun newInstance(title: String): DeliveryNoteReceiveFragment {
             val fragment = DeliveryNoteReceiveFragment()
@@ -129,10 +127,13 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
             }
         }
         confirmButton.onClick {
-            if (response == null)
+            if (adapter.data.isEmpty())
                 showMessage(R.string.error_no_available_delivery_note_info)
             else {
-                presenter.normalNoteReceive(response!!)
+                val response = DeliveryNoteInfoResponse()
+                response.deliveryNoteInfo = adapter.data[0] as DeliveryNoteInfoDto
+                response.receiveDetailList = response.deliveryNoteInfo!!.subItems
+                presenter.normalNoteReceive(response)
             }
         }
     }
@@ -143,11 +144,10 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
 
     override fun getDeliveryNoteInfoByCode(data: DeliveryNoteInfoResponse?) {
         data?.let {
-            response = it
             val adapter = deliveryNoteInfoRecyclerView.adapter as DeliveryNoteReceiptListAdapter
-            response!!.deliveryNoteInfo?.subItems = response!!.receiveDetailList
+            it.deliveryNoteInfo?.subItems = it.receiveDetailList
             adapter.setNewData(null)
-            adapter.addData(response!!.deliveryNoteInfo!!)
+            adapter.addData(it.deliveryNoteInfo!!)
             adapter.expandAll()
         }
     }

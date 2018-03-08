@@ -2,7 +2,6 @@ package com.zotye.wms.ui.goods
 
 import android.support.v4.util.ArrayMap
 import android.text.TextUtils
-import android.util.SparseArray
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
@@ -11,13 +10,14 @@ import com.zotye.wms.data.api.model.ValidSlInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.receipt.ReceiveDetailDto
+import com.zotye.wms.data.api.request.MobileNoteRecvRequest
+import com.zotye.wms.data.api.response.ReceiveConfirmResponse
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Body
 import javax.inject.Inject
 
 /**
@@ -117,7 +117,33 @@ object DeliveryNoteReceiveContract {
         }
 
         override fun normalNoteReceive(response: DeliveryNoteInfoResponse) {
+            val requestList = ArrayList<MobileNoteRecvRequest>()
+            mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    val request = MobileNoteRecvRequest()
+                    requestList.add(request)
+                    appExecutors.mainThread().execute {
+                        dataManager.normalNoteReceive(requestList).enqueue(object : Callback<ApiResponse<ReceiveConfirmResponse>> {
+                            override fun onFailure(call: Call<ApiResponse<ReceiveConfirmResponse>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
 
+                            override fun onResponse(call: Call<ApiResponse<ReceiveConfirmResponse>>?, response: Response<ApiResponse<ReceiveConfirmResponse>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.normalNoteReceiveSucceed()
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
         }
     }
 }
