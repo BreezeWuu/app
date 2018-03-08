@@ -135,16 +135,10 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
     override fun getDeliveryNoteInfoByCode(data: DeliveryNoteInfoResponse?) {
         data?.let {
             val adapter = deliveryNoteInfoRecyclerView.adapter as DeliveryNoteReceiptListAdapter
-            doAsync {
-                it.deliveryNoteInfo?.subItems = it.receiveDetailList?.filter {
-                    it.isBom == null || !it.isBom!!
-                }?.toList()
-                onUiThread {
-                    adapter.setNewData(null)
-                    adapter.addData(it.deliveryNoteInfo!!)
-                    adapter.expandAll()
-                }
-            }
+            it.deliveryNoteInfo?.subItems = it.receiveDetailList
+            adapter.setNewData(null)
+            adapter.addData(it.deliveryNoteInfo!!)
+            adapter.expandAll()
         }
     }
 

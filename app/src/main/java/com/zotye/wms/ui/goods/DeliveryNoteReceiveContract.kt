@@ -1,5 +1,7 @@
 package com.zotye.wms.ui.goods
 
+import android.support.v4.util.ArrayMap
+import android.util.SparseArray
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
@@ -7,6 +9,7 @@ import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.ValidSlInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoDto
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
+import com.zotye.wms.data.api.model.receipt.ReceiveDetailDto
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -47,6 +50,15 @@ object DeliveryNoteReceiveContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
+                                        it.data?.receiveDetailList?.let {
+                                            val keyList = ArrayMap<String, ReceiveDetailDto>()
+                                            it.filter { it.isBom == null || !it.isBom!! }.map { receiveDetailDto ->
+                                                keyList.put(receiveDetailDto.id, receiveDetailDto)
+                                            }.toList()
+                                            it.filter { it.isBom != null && it.isBom!! }.map { receiveDetailDto ->
+                                                keyList[receiveDetailDto.parent]?.child?.add(receiveDetailDto)
+                                            }.toList()
+                                        }
                                         mvpView?.getDeliveryNoteInfoByCode(it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)

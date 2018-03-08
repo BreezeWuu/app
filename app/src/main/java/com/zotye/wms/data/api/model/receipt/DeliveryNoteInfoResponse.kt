@@ -48,7 +48,7 @@ class DeliveryNoteInfoDto : AbstractExpandableItem<ReceiveDetailDto>(), MultiIte
 
 class ReceiveDetailDto : MultiItemEntity {
     companion object {
-        val TYPE_RECEIVE_DETAIL = 1
+        const val TYPE_RECEIVE_DETAIL = 1
     }
 
     /**
@@ -121,6 +121,8 @@ class ReceiveDetailDto : MultiItemEntity {
     var unqualifyNum: Long = 0
 
     var isEditEnable: Boolean = false
+
+    var child: ArrayList<ReceiveDetailDto> = ArrayList()
 
     override fun getItemType(): Int {
         return 1
