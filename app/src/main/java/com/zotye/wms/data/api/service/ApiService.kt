@@ -13,6 +13,8 @@ import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.under.shelf.MaterialReplenishment
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
+import com.zotye.wms.data.api.request.MobileNoteRecvRequest
+import com.zotye.wms.data.api.response.ReceiveConfirmResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -101,7 +103,7 @@ interface ApiService {
     fun getPickReceiptInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<PickReceiptDto>>
 
     @POST("bar_code/loadingReceipt/truckReceive")
-    fun truckReceive(@Body recvInfo: List<MobilePickReceiptRecvDto>): Call<ApiResponse<String>>
+    fun truckReceive(@Body recvInfo: List<MobilePickReceiptRecvDto>): Call<ApiResponse<ReceiveConfirmResponse>>
 
     @FormUrlEncoded
     @POST("bar_code/DeliveryNoteReceipt/getDeliveryNoteInfoByCode")
@@ -110,4 +112,9 @@ interface ApiService {
     @FormUrlEncoded
     @POST("bar_code/DeliveryNoteReceipt/getSlInfoForDeliveryNote")
     fun getSlInfoForDeliveryNote(@Field("userId") userId: String, @Field("noteCode") noteCode: String): Call<ApiResponse<List<ValidSlInfoDto>>>
+
+    @FormUrlEncoded
+    @POST("bar_code/DeliveryNoteReceipt/normalNoteReceive")
+    fun normalNoteReceive(@Body recvInfo: List<MobileNoteRecvRequest>): Call<ApiResponse<ReceiveConfirmResponse>>
+
 }

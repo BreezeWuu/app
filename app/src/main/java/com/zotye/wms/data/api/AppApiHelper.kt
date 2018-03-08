@@ -7,6 +7,7 @@ import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
+import com.zotye.wms.data.api.request.MobileNoteRecvRequest
 import com.zotye.wms.data.api.service.ApiService
 import retrofit2.Call
 import javax.inject.Inject
@@ -65,4 +66,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun getDeliveryNoteInfoByCode(userId: String, barCode: String) = apiService.getDeliveryNoteInfoByCode(userId, barCode)
 
     override fun getSlInfoForDeliveryNote(userId: String, noteCode: String)=apiService.getSlInfoForDeliveryNote(userId, noteCode)
+
+    override fun normalNoteReceive(recvInfo: List<MobileNoteRecvRequest>)=apiService.normalNoteReceive(recvInfo)
 }

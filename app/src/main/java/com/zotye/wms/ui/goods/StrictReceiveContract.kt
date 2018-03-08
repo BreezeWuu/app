@@ -8,6 +8,7 @@ import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.receipt.MobileSinglePickReceiptRecvDto
 import com.zotye.wms.data.api.model.receipt.PickReceiptDetailReceiveDto
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
+import com.zotye.wms.data.api.response.ReceiveConfirmResponse
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -83,13 +84,13 @@ object StrictReceiveContract {
                         (mobilePickReceiptRecvDto.recvDetail as ArrayList).add(mobileSinglePickReceiptRecvDto)
                         recvInfoList.add(mobilePickReceiptRecvDto)
                         appExecutors.mainThread().execute {
-                            dataManager.truckReceive(recvInfoList).enqueue(object : Callback<ApiResponse<String>> {
-                                override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                            dataManager.truckReceive(recvInfoList).enqueue(object : Callback<ApiResponse<ReceiveConfirmResponse>> {
+                                override fun onFailure(call: Call<ApiResponse<ReceiveConfirmResponse>>?, t: Throwable) {
                                     mvpView?.hideProgressDialog()
                                     t.message?.let { mvpView?.showMessage(it) }
                                 }
 
-                                override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                override fun onResponse(call: Call<ApiResponse<ReceiveConfirmResponse>>?, response: Response<ApiResponse<ReceiveConfirmResponse>>) {
                                     mvpView?.hideProgressDialog()
                                     response.body()?.let {
                                         if (it.isSucceed()) {

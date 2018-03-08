@@ -17,6 +17,7 @@ import com.zotye.wms.ui.common.MvpView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.http.Body
 import javax.inject.Inject
 
 /**
@@ -27,11 +28,13 @@ object DeliveryNoteReceiveContract {
     interface DeliveryNoteReceiveView : MvpView {
         fun getDeliveryNoteInfoByCode(data: DeliveryNoteInfoResponse?)
         fun getSlInfoForDeliveryNote(note: DeliveryNoteInfoDto, data: List<ValidSlInfoDto>?)
+        fun normalNoteReceiveSucceed()
     }
 
     interface DeliveryNoteReceivePresenter : MvpPresenter<DeliveryNoteReceiveView> {
         fun getDeliveryNoteInfoByCode(barCode: String)
         fun getSlInfoForDeliveryNote(note: DeliveryNoteInfoDto)
+        fun normalNoteReceive(response: DeliveryNoteInfoResponse)
     }
 
     class DeliveryNoteReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<DeliveryNoteReceiveView>(), DeliveryNoteReceivePresenter {
@@ -111,6 +114,10 @@ object DeliveryNoteReceiveContract {
                     }
                 }
             }
+        }
+
+        override fun normalNoteReceive(response: DeliveryNoteInfoResponse) {
+
         }
     }
 }

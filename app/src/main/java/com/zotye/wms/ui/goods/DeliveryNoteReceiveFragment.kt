@@ -40,6 +40,8 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
     @Inject
     lateinit var presenter: DeliveryNoteReceiveContract.DeliveryNoteReceivePresenter
 
+    private var response: DeliveryNoteInfoResponse? = null
+
     companion object {
         fun newInstance(title: String): DeliveryNoteReceiveFragment {
             val fragment = DeliveryNoteReceiveFragment()
@@ -79,7 +81,6 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
         }
-
         val adapter = DeliveryNoteReceiptListAdapter(null)
         val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
         emptyView.find<TextView>(R.id.text_error).text = getString(R.string.delivery_note_info_empty)
@@ -117,7 +118,7 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                         hideKeyboard((adapter.getViewByPosition(position, R.id.reciprocalNumber) as EditText))
                     }
                 }
-                R.id.viewDetailButton->{
+                R.id.viewDetailButton -> {
                     val item = adapter.getItem(position) as ReceiveDetailDto
                     fragmentManager?.beginTransaction()?.add(R.id.main_content, DeliveryNoteChildDetailFragment.newInstance(item))?.addToBackStack(null)?.commit()
                 }
@@ -125,6 +126,13 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                     val item = adapter.getItem(position) as DeliveryNoteInfoDto
                     presenter.getSlInfoForDeliveryNote(item)
                 }
+            }
+        }
+        confirmButton.onClick {
+            if (response == null)
+                showMessage(R.string.error_no_available_delivery_note_info)
+            else {
+                presenter.normalNoteReceive(response!!)
             }
         }
     }
@@ -135,10 +143,11 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
 
     override fun getDeliveryNoteInfoByCode(data: DeliveryNoteInfoResponse?) {
         data?.let {
+            response = it
             val adapter = deliveryNoteInfoRecyclerView.adapter as DeliveryNoteReceiptListAdapter
-            it.deliveryNoteInfo?.subItems = it.receiveDetailList
+            response!!.deliveryNoteInfo?.subItems = response!!.receiveDetailList
             adapter.setNewData(null)
-            adapter.addData(it.deliveryNoteInfo!!)
+            adapter.addData(response!!.deliveryNoteInfo!!)
             adapter.expandAll()
         }
     }
@@ -153,6 +162,19 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
             (adapter.getItem(0) as DeliveryNoteInfoDto).storageLocationName = validSlInfoDto.slName
             adapter.notifyItemChanged(0)
         }.show()
+    }
+
+    override fun normalNoteReceiveSucceed() {
+        (deliveryNoteInfoRecyclerView.adapter as DeliveryNoteReceiptListAdapter).setNewData(null)
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.delivery_note_receive_succeed).setNegativeButton(R.string.ok, null).create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    override fun onDestroyView() {
+        presenter.onDetach()
+        super.onDestroyView()
     }
 
     class DeliveryNoteReceiptListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {

@@ -194,4 +194,6 @@
     <string name="current_num_format">当前数量：</string>
     <string name="delivery_view_child_material_detail">查看附件列表</string>
     <string name="child_material_detail">子附件详情</string>
+    <string name="delivery_note_receive_succeed">交货单收货成功！</string>
+    <string name="error_no_available_delivery_note_info">交货单信息为空，请先扫描交货单单！</string>
 </resources>
