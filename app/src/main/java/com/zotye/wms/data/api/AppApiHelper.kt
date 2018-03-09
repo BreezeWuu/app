@@ -65,7 +65,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun getDeliveryNoteInfoByCode(userId: String, barCode: String) = apiService.getDeliveryNoteInfoByCode(userId, barCode)
 
-    override fun getSlInfoForDeliveryNote(userId: String, noteCode: String)=apiService.getSlInfoForDeliveryNote(userId, noteCode)
+    override fun getSlInfoForDeliveryNote(userId: String, noteCode: String) = apiService.getSlInfoForDeliveryNote(userId, noteCode)
 
-    override fun normalNoteReceive(recvInfo: List<MobileNoteRecvRequest>)=apiService.normalNoteReceive(recvInfo)
+    override fun normalNoteReceive(recvInfo: MobileNoteRecvRequest) = apiService.normalNoteReceive(recvInfo)
 }

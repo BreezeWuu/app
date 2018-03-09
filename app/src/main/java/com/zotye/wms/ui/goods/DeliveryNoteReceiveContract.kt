@@ -118,7 +118,6 @@ object DeliveryNoteReceiveContract {
         }
 
         override fun normalNoteReceive(response: DeliveryNoteInfoResponse) {
-            val requestList = ArrayList<MobileNoteRecvRequest>()
             mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
@@ -134,9 +133,8 @@ object DeliveryNoteReceiveContract {
                             request.noteDetail.add(ReceiveConfirmRequest.newInstance(child))
                         }
                     }
-                    requestList.add(request)
                     appExecutors.mainThread().execute {
-                        dataManager.normalNoteReceive(requestList).enqueue(object : Callback<ApiResponse<ReceiveConfirmResponse>> {
+                        dataManager.normalNoteReceive(request).enqueue(object : Callback<ApiResponse<ReceiveConfirmResponse>> {
                             override fun onFailure(call: Call<ApiResponse<ReceiveConfirmResponse>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }

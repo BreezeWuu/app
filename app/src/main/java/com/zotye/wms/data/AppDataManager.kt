@@ -71,9 +71,9 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getDeliveryNoteInfoByCode(userId: String, barCode: String) = apiHelper.getDeliveryNoteInfoByCode(userId, barCode)
 
-    override fun getSlInfoForDeliveryNote(userId: String, noteCode: String)=apiHelper.getSlInfoForDeliveryNote(userId, noteCode)
+    override fun getSlInfoForDeliveryNote(userId: String, noteCode: String) = apiHelper.getSlInfoForDeliveryNote(userId, noteCode)
 
-    override fun normalNoteReceive(recvInfo: List<MobileNoteRecvRequest>)=apiHelper.normalNoteReceive(recvInfo)
+    override fun normalNoteReceive(recvInfo: MobileNoteRecvRequest) = apiHelper.normalNoteReceive(recvInfo)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 
