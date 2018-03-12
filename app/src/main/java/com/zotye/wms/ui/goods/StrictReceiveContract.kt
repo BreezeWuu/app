@@ -66,7 +66,6 @@ object StrictReceiveContract {
                 mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
                 appExecutors.diskIO().execute {
                     dataManager.getCurrentUser()?.let {
-                        val recvInfoList = ArrayList<MobilePickReceiptRecvDto>()
                         val mobilePickReceiptRecvDto = MobilePickReceiptRecvDto()
                         mobilePickReceiptRecvDto.userId = it.userId
                         mobilePickReceiptRecvDto.recvDetail = ArrayList()
@@ -82,9 +81,8 @@ object StrictReceiveContract {
                             (mobileSinglePickReceiptRecvDto.pickReceiptDetail as ArrayList).add(pickReceiptDetailReceiveDto)
                         }
                         (mobilePickReceiptRecvDto.recvDetail as ArrayList).add(mobileSinglePickReceiptRecvDto)
-                        recvInfoList.add(mobilePickReceiptRecvDto)
                         appExecutors.mainThread().execute {
-                            dataManager.truckReceive(recvInfoList).enqueue(object : Callback<ApiResponse<ReceiveConfirmResponse>> {
+                            dataManager.truckReceive(mobilePickReceiptRecvDto).enqueue(object : Callback<ApiResponse<ReceiveConfirmResponse>> {
                                 override fun onFailure(call: Call<ApiResponse<ReceiveConfirmResponse>>?, t: Throwable) {
                                     mvpView?.hideProgressDialog()
                                     t.message?.let { mvpView?.showMessage(it) }

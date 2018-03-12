@@ -103,7 +103,7 @@ interface ApiService {
     fun getPickReceiptInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<PickReceiptDto>>
 
     @POST("bar_code/loadingReceipt/truckReceive")
-    fun truckReceive(@Body recvInfo: List<MobilePickReceiptRecvDto>): Call<ApiResponse<ReceiveConfirmResponse>>
+    fun truckReceive(@Body recvInfo: MobilePickReceiptRecvDto): Call<ApiResponse<ReceiveConfirmResponse>>
 
     @FormUrlEncoded
     @POST("bar_code/DeliveryNoteReceipt/getDeliveryNoteInfoByCode")

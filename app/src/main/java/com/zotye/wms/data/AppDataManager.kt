@@ -67,7 +67,7 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getPickReceiptInfoByCode(userId: String, barCode: String) = apiHelper.getPickReceiptInfoByCode(userId, barCode)
 
-    override fun truckReceive(recvInfo: List<MobilePickReceiptRecvDto>) = apiHelper.truckReceive(recvInfo)
+    override fun truckReceive(recvInfo: MobilePickReceiptRecvDto) = apiHelper.truckReceive(recvInfo)
 
     override fun getDeliveryNoteInfoByCode(userId: String, barCode: String) = apiHelper.getDeliveryNoteInfoByCode(userId, barCode)
 

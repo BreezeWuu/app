@@ -61,7 +61,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun getPickReceiptInfoByCode(userId: String, barCode: String) = apiService.getPickReceiptInfoByCode(userId, barCode)
 
-    override fun truckReceive(recvInfo: List<MobilePickReceiptRecvDto>) = apiService.truckReceive(recvInfo)
+    override fun truckReceive(recvInfo: MobilePickReceiptRecvDto) = apiService.truckReceive(recvInfo)
 
     override fun getDeliveryNoteInfoByCode(userId: String, barCode: String) = apiService.getDeliveryNoteInfoByCode(userId, barCode)
 
