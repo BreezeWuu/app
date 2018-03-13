@@ -12,7 +12,10 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.PackageInfo
+import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
+import com.zotye.wms.databinding.ItemPickListInfoBinding
+import com.zotye.wms.databinding.ItemPickReceiptInfoBinding
 import com.zotye.wms.databinding.ItemUnReceivePackageBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
@@ -60,7 +63,8 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
         codeInput.onClick {
             val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
-            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+            editText.setHint(R.string.delivery_note_code)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_delivery_note_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 succeed(editText.text.toString())
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
@@ -95,6 +99,15 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
         adapter.setNewData(packageInfoList)
     }
 
+    override fun getUnReceivePickInfoList(pickInfoList: List<PickListInfo>) {
+        viewSwitcher.showNext()
+        toolbar_base.titleResource = R.string.un_receive_pick_list
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        val adapter = PickInfoAdapter()
+        recyclerView.adapter = adapter
+        adapter.setNewData(pickInfoList)
+    }
+
     override fun packageReceiveSucceed(message: String) {
         viewSwitcher.showPrevious()
         toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_receive_confirm)
@@ -111,6 +124,15 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
         override fun convert(helper: BaseViewHolder, item: PackageInfo) {
             val dataBind = DataBindingUtil.bind<ItemUnReceivePackageBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
+        }
+    }
+
+    class PickInfoAdapter : BaseQuickAdapter<PickListInfo, BaseViewHolder>(R.layout.item_pick_list_info) {
+        private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
+        override fun convert(helper: BaseViewHolder, item: PickListInfo) {
+            val dataBind = DataBindingUtil.bind<ItemPickListInfoBinding>(helper.itemView, fragmentDataBindingComponent)
+            dataBind?.info = item
+            helper.getView<View>(R.id.actionLayout).visibility = View.GONE
         }
     }
 }

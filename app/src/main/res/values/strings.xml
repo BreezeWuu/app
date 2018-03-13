@@ -52,6 +52,8 @@
     <string name="supplier_nfo_format">供应商简称：</string>
     <string name="supplier_full_name_format">供应商：</string>
     <string name="delivery_note_code_format">交货单号：</string>
+    <string name="delivery_note_code">交货单号</string>
+    <string name="action_input_delivery_note_code">请输入交货单号</string>
     <string name="receive_num_format">实收数量：</string>
     <string name="batch_code_format">批次号：</string>
     <string name="storage_unit_position_format">库位：</string>
@@ -79,6 +81,7 @@
     <string name="action_finish">退出</string>
     <string name="action_receive_confirm">结束收货</string>
     <string name="un_receive_package_list">未收货包装列表</string>
+    <string name="un_receive_pick_list">未收货拣配单列表</string>
     <string name="receive_sl_code">收货库存地点：</string>
     <string name="action_receive_confirm_info">结束收货，未收货的项目实收数量将置为0</string>
     <string name="package_receive_confirm_succeed">结束收货成功</string>

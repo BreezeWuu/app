@@ -1,9 +1,12 @@
 package com.zotye.wms.ui.goods
 
+import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.BarCodeType
+import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
@@ -12,12 +15,16 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
+import com.google.gson.reflect.TypeToken
+import com.zotye.wms.data.api.model.PickListInfo
+
 
 /**
  * Created by hechuangju on 2018/01/24
  */
 object ReceiveConfirmContract {
     interface ReceiveConfirmView : MvpView {
+        fun getUnReceivePickInfoList(pickInfoList: List<PickListInfo>)
         fun getUnReceivePackageList(packageInfoList: List<PackageInfo>)
         fun packageReceiveSucceed(message: String)
     }
@@ -33,17 +40,31 @@ object ReceiveConfirmContract {
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.logisticsReceiveConfirmInfoByCode(it.userId, barCode).enqueue(object : Callback<ApiResponse<List<PackageInfo>>> {
-                            override fun onFailure(call: Call<ApiResponse<List<PackageInfo>>>?, t: Throwable) {
+                        dataManager.logisticsReceiveConfirmInfoByCode(it.userId, barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
                             }
 
-                            override fun onResponse(call: Call<ApiResponse<List<PackageInfo>>>?, response: Response<ApiResponse<List<PackageInfo>>>) {
+                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
-                                    if (it.isSucceed() && it.data != null && it.data!!.isNotEmpty()) {
-                                        mvpView?.getUnReceivePackageList(it.data!!)
+                                    if (it.isSucceed() && it.data != null) {
+                                        when (it.data!!.barCodeType) {
+                                            BarCodeType.Package.type -> {
+                                                mvpView?.getUnReceivePackageList(Gson().fromJson<List<PackageInfo>>(it.data!!.barCodeInfo, object : TypeToken<List<PackageInfo>>() {
+
+                                                }.type))
+                                            }
+                                            BarCodeType.PickList.type -> {
+                                                mvpView?.getUnReceivePickInfoList(Gson().fromJson<List<PickListInfo>>(it.data!!.barCodeInfo, object : TypeToken<List<PickListInfo>>() {
+
+                                                }.type))
+                                            }
+                                            else -> {
+
+                                            }
+                                        }
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

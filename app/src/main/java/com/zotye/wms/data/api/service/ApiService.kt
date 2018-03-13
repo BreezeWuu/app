@@ -60,7 +60,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/logisticsReceiveConfirmInfoByCode")
-    fun logisticsReceiveConfirmInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<List<PackageInfo>>>
+    fun logisticsReceiveConfirmInfoByCode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<BarcodeInfo>>
 
     @FormUrlEncoded
     @POST("bar_code/logisticsReceiveConfirm")
