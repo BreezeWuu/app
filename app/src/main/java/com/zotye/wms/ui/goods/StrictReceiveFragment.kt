@@ -110,18 +110,21 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
             }
         }
         confirmButton.onClick {
-            if (adapter.pickReceiptDto == null)
+            if (adapter.data.isEmpty())
                 showMessage(R.string.error_no_available_pick_info)
             else {
                 doAsync {
-                    adapter.pickReceiptDto?.pickReceiptDetail?.forEach {
-                        if (it.isEditEnable) {
-                            showMessage(R.string.error_no_save_receive_number)
-                            return@doAsync
+                    adapter.data.forEach {
+                        val pickReceiptDto = it as PickReceiptDto
+                        pickReceiptDto.pickReceiptDetail?.forEach {
+                            if (it.isEditEnable) {
+                                showMessage(R.string.error_no_save_receive_number)
+                                return@doAsync
+                            }
                         }
-                    }
-                    onUiThread {
-                        presenter.truckReceive(adapter.pickReceiptDto)
+                        onUiThread {
+                            presenter.truckReceive(adapter.data)
+                        }
                     }
                 }
             }
@@ -136,7 +139,6 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
     override fun getPickReceiptInfoByCode(pickReceiptDto: PickReceiptDto?) {
         pickReceiptDto?.let { pickInfo ->
             val adapter = pickInfoRecyclerView.adapter as PickReceiptListAdapter
-            adapter.pickReceiptDto = pickInfo
             pickInfo.pickReceiptDetail?.map {
                 if (pickInfo.pickReceiptSource == "3") {
                     it.reciprocalNum = it.deliveryCount
@@ -144,7 +146,6 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
                     it.reciprocalNum = it.deliveryCount - it.lackNum - it.unqualifyNum
             }
             pickInfo.subItems = pickInfo.pickReceiptDetail
-            adapter.setNewData(null)
             adapter.addData(pickInfo)
             adapter.expandAll()
         }
@@ -164,7 +165,6 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
     }
 
     class PickReceiptListAdapter(data: MutableList<MultiItemEntity>?) : BaseMultiItemQuickAdapter<MultiItemEntity, BaseViewHolder>(data) {
-        var pickReceiptDto: PickReceiptDto? = null
 
         init {
             addItemType(PickListInfo.TYPE_PICK_LIST, R.layout.item_pick_receipt_info)
@@ -188,7 +188,8 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
                 PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO -> {
                     val dataBind = DataBindingUtil.bind<ItemPickReceiptMaterialInfoBinding>(helper.itemView)
                     dataBind?.info = item as PdaPickReceiptDetailDto
-                    if (pickReceiptDto?.pickReceiptSource != "3") {
+                    val pickReceiptDto = getItem(helper.adapterPosition) as PickReceiptDto
+                    if (pickReceiptDto.pickReceiptSource != "3") {
                         helper.getView<View>(R.id.editButton).visibility = View.VISIBLE
                         helper.addOnClickListener(R.id.editButton)
                     } else {

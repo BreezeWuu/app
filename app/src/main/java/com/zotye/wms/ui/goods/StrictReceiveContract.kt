@@ -1,5 +1,6 @@
 package com.zotye.wms.ui.goods
 
+import com.chad.library.adapter.base.entity.MultiItemEntity
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
@@ -29,7 +30,7 @@ object StrictReceiveContract {
 
     interface StrictReceivePresenter : MvpPresenter<StrictReceiveView> {
         fun getPickReceiptInfoByCode(barCode: String)
-        fun truckReceive(pickReceiptDto: PickReceiptDto?)
+        fun truckReceive(pickReceiptDto: List<MultiItemEntity>)
     }
 
     class StrictReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<StrictReceiveView>(), StrictReceivePresenter {
@@ -61,26 +62,29 @@ object StrictReceiveContract {
             }
         }
 
-        override fun truckReceive(pickReceiptDto: PickReceiptDto?) {
-            pickReceiptDto?.let {
+        override fun truckReceive(pickReceiptDto: List<MultiItemEntity>) {
+            pickReceiptDto.let {
                 mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
                 appExecutors.diskIO().execute {
                     dataManager.getCurrentUser()?.let {
                         val mobilePickReceiptRecvDto = MobilePickReceiptRecvDto()
                         mobilePickReceiptRecvDto.userId = it.userId
                         mobilePickReceiptRecvDto.recvDetail = ArrayList()
-                        val mobileSinglePickReceiptRecvDto = MobileSinglePickReceiptRecvDto()
-                        mobileSinglePickReceiptRecvDto.pickReceiptId = pickReceiptDto.pickReceiptId
-                        mobileSinglePickReceiptRecvDto.pickReceiptDetail = ArrayList()
-                        pickReceiptDto.pickReceiptDetail?.forEach {
-                            val pickReceiptDetailReceiveDto = PickReceiptDetailReceiveDto()
-                            pickReceiptDetailReceiveDto.lackNum = it.lackNum
-                            pickReceiptDetailReceiveDto.pickReceiptDetailId = it.pickReceiptDetailId
-                            pickReceiptDetailReceiveDto.recvNum = it.reciprocalNum
-                            pickReceiptDetailReceiveDto.unqualifyNum = it.unqualifyNum
-                            (mobileSinglePickReceiptRecvDto.pickReceiptDetail as ArrayList).add(pickReceiptDetailReceiveDto)
+                        pickReceiptDto.forEach { item ->
+                            val pickReceipt = item as PickReceiptDto
+                            val mobileSinglePickReceiptRecvDto = MobileSinglePickReceiptRecvDto()
+                            mobileSinglePickReceiptRecvDto.pickReceiptId = pickReceipt.pickReceiptId
+                            mobileSinglePickReceiptRecvDto.pickReceiptDetail = ArrayList()
+                            (pickReceiptDto as PickReceiptDto).pickReceiptDetail?.forEach {
+                                val pickReceiptDetailReceiveDto = PickReceiptDetailReceiveDto()
+                                pickReceiptDetailReceiveDto.lackNum = it.lackNum
+                                pickReceiptDetailReceiveDto.pickReceiptDetailId = it.pickReceiptDetailId
+                                pickReceiptDetailReceiveDto.recvNum = it.reciprocalNum
+                                pickReceiptDetailReceiveDto.unqualifyNum = it.unqualifyNum
+                                (mobileSinglePickReceiptRecvDto.pickReceiptDetail as ArrayList).add(pickReceiptDetailReceiveDto)
+                            }
+                            (mobilePickReceiptRecvDto.recvDetail as ArrayList).add(mobileSinglePickReceiptRecvDto)
                         }
-                        (mobilePickReceiptRecvDto.recvDetail as ArrayList).add(mobileSinglePickReceiptRecvDto)
                         appExecutors.mainThread().execute {
                             dataManager.truckReceive(mobilePickReceiptRecvDto).enqueue(object : Callback<ApiResponse<ReceiveConfirmResponse>> {
                                 override fun onFailure(call: Call<ApiResponse<ReceiveConfirmResponse>>?, t: Throwable) {
