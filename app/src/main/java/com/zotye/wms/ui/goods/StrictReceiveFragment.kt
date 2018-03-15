@@ -132,6 +132,13 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
     }
 
     override fun succeed(result: String) {
+        val adapter = pickInfoRecyclerView.adapter as PickReceiptListAdapter
+        adapter.data.forEach {
+            if ((it is PickReceiptDto) && (result == it.pickReceiptCode)) {
+                showMessage(R.string.error_same_bar_code)
+                return
+            }
+        }
         presenter.getPickReceiptInfoByCode(result)
     }
 
