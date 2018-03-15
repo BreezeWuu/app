@@ -144,6 +144,7 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
                     it.reciprocalNum = it.deliveryCount
                 } else
                     it.reciprocalNum = it.deliveryCount - it.lackNum - it.unqualifyNum
+                it.parent = pickInfo
             }
             pickInfo.subItems = pickInfo.pickReceiptDetail
             adapter.addData(pickInfo)
@@ -188,8 +189,8 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
                 PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO -> {
                     val dataBind = DataBindingUtil.bind<ItemPickReceiptMaterialInfoBinding>(helper.itemView)
                     dataBind?.info = item as PdaPickReceiptDetailDto
-                    val pickReceiptDto = getItem(helper.adapterPosition) as PickReceiptDto
-                    if (pickReceiptDto.pickReceiptSource != "3") {
+                    val pickReceiptDto = item.parent
+                    if (pickReceiptDto?.pickReceiptSource != "3") {
                         helper.getView<View>(R.id.editButton).visibility = View.VISIBLE
                         helper.addOnClickListener(R.id.editButton)
                     } else {

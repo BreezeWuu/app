@@ -70,12 +70,14 @@ object StrictReceiveContract {
                         val mobilePickReceiptRecvDto = MobilePickReceiptRecvDto()
                         mobilePickReceiptRecvDto.userId = it.userId
                         mobilePickReceiptRecvDto.recvDetail = ArrayList()
-                        pickReceiptDto.forEach { item ->
+                        pickReceiptDto.filter {
+                            it is PickReceiptDto
+                        }.forEach { item ->
                             val pickReceipt = item as PickReceiptDto
                             val mobileSinglePickReceiptRecvDto = MobileSinglePickReceiptRecvDto()
                             mobileSinglePickReceiptRecvDto.pickReceiptId = pickReceipt.pickReceiptId
                             mobileSinglePickReceiptRecvDto.pickReceiptDetail = ArrayList()
-                            (pickReceiptDto as PickReceiptDto).pickReceiptDetail?.forEach {
+                            pickReceipt.pickReceiptDetail?.forEach {
                                 val pickReceiptDetailReceiveDto = PickReceiptDetailReceiveDto()
                                 pickReceiptDetailReceiveDto.lackNum = it.lackNum
                                 pickReceiptDetailReceiveDto.pickReceiptDetailId = it.pickReceiptDetailId

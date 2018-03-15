@@ -26,6 +26,8 @@ class PdaPickReceiptDetailDto : MultiItemEntity {
 
     var isEditEnable: Boolean = false
 
+    var parent: PickReceiptDto? = null
+
     override fun getItemType(): Int {
         return 1
     }
