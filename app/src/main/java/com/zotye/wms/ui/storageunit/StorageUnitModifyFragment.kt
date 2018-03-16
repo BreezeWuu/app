@@ -92,13 +92,32 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
         val dialog = AlertDialog.Builder(context!!).setView(infoView).create()
         infoView.find<Button>(R.id.storageUnitModifyButton).onClick {
             dialog.dismiss()
-            val fragment = QRCodeScannerFragment()
-            fragment.setScannerDelegate(object : ScannerDelegate {
-                override fun succeed(result: String) {
-                    presenter.authStorageUnitNewPositionByQRCode(info, result)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.choose_type).setItems(arrayOf(
+                    getString(R.string.action_input_storage_unit_code),
+                    getString(R.string.action_scanner_storage_unit_code)))
+            { _, which ->
+                when (which) {
+                    0 -> {
+                        val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
+                        val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+                        editText.setHint(R.string.action_input_storage_unit_code)
+                        AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_storage_unit_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                            presenter.authStorageUnitNewPositionByQRCode(info, editText.text.toString())
+                            hideKeyboard(editText)
+                        }.setPositiveButton(R.string.cancel, null).show()
+                        showKeyboard(editText)
+                    }
+                    1 -> {
+                        val fragment = QRCodeScannerFragment()
+                        fragment.setScannerDelegate(object : ScannerDelegate {
+                            override fun succeed(result: String) {
+                                presenter.authStorageUnitNewPositionByQRCode(info, result)
+                            }
+                        })
+                        fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+                    }
                 }
-            })
-            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+            }.show()
         }
         infoView.find<Button>(R.id.cancelButton).onClick {
             dialog.dismiss()
@@ -116,13 +135,32 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
         infoView.find<Button>(R.id.storageUnitModifyButton).onClick {
             dialog.dismiss()
-            val fragment = QRCodeScannerFragment()
-            fragment.setScannerDelegate(object : ScannerDelegate {
-                override fun succeed(result: String) {
-                    presenter.authStorageUnitNewPositionByQRCode(info, result)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.choose_type).setItems(arrayOf(
+                    getString(R.string.action_input_storage_unit_code),
+                    getString(R.string.action_scanner_storage_unit_code)))
+            { _, which ->
+                when (which) {
+                    0 -> {
+                        val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
+                        val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+                        editText.setHint(R.string.action_input_storage_unit_code)
+                        AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_storage_unit_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                            presenter.authStorageUnitNewPositionByQRCode(info, editText.text.toString())
+                            hideKeyboard(editText)
+                        }.setPositiveButton(R.string.cancel, null).show()
+                        showKeyboard(editText)
+                    }
+                    1 -> {
+                        val fragment = QRCodeScannerFragment()
+                        fragment.setScannerDelegate(object : ScannerDelegate {
+                            override fun succeed(result: String) {
+                                presenter.authStorageUnitNewPositionByQRCode(info, result)
+                            }
+                        })
+                        fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+                    }
                 }
-            })
-            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+            }.show()
         }
         infoView.find<Button>(R.id.cancelButton).onClick {
             dialog.dismiss()
