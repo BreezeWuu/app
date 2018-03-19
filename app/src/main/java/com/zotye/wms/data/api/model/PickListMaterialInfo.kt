@@ -15,6 +15,8 @@ class PickListMaterialInfo : MultiItemEntity {
     var materialWRKST: String? = null
     var desc: String? = null
     var unit: String? = null
+    var batchNum: String? = null
+    var offShelfNumber: Long = 0
 
     override fun getItemType(): Int {
         return 1

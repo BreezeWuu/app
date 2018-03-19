@@ -202,4 +202,5 @@
     <string name="action_input_storage_unit_code">输入库位码</string>
     <string name="action_scanner_storage_unit_code">扫描库位码</string>
     <string name="choose_type">选择录入方式</string>
+    <string name="pull_off_shelf_count_format">下架数量：</string>
 </resources>
