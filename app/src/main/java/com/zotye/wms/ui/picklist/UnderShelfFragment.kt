@@ -4,8 +4,6 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Html
-import android.text.InputType
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +13,6 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PickListPullOffShelf
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
