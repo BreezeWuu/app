@@ -17,7 +17,7 @@ class PrMobileConfirmRequest {
             set(value) {
                 field = BigDecimalUtil.formatValue(value)
             }
-            get() = BigDecimalUtil.getValue(field)
+            get() = if (field == null) null else BigDecimalUtil.getValue(field)
 
         var actualOffshelfNum: BigDecimal = BigDecimal.ZERO
             set(value) {
