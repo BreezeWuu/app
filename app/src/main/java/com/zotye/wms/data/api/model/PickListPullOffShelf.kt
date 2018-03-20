@@ -1,5 +1,8 @@
 package com.zotye.wms.data.api.model
 
+import com.zotye.wms.util.BigDecimalUtil
+import java.math.BigDecimal
+
 /**
  * Created by hechuangju on 2018/01/26
  */
@@ -27,7 +30,11 @@ class PickListPullOffShelf {
     /**
      * 数量
      */
-    var totalNum: Long = 0
+    var totalNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 单位
      */
@@ -72,9 +79,17 @@ class PickListPullOffShelf {
     /**
      * 是否已经扫描过包装
      */
-    var checkCount: Long = 0
+    var checkCount: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
-    var actulOffShellNumber: Long = 0
+    var actulOffShellNumber: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 是否已经扫描过包装
      */

@@ -33,6 +33,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onUiThread
+import java.math.BigDecimal
 import javax.inject.Inject
 
 /**
@@ -154,19 +155,19 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 checkDialog?.dismiss()
             }
             codeInputView.find<View>(R.id.okButton).onClick { _ ->
-                val underCount = if (TextUtils.isEmpty(underCountEditText.text.toString())) 0 else underCountEditText.text.toString().toLong()
-                val checkCount = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toLong()
+                val underCount = if (TextUtils.isEmpty(underCountEditText.text.toString())) BigDecimal.ZERO else underCountEditText.text.toString().toBigDecimal()
+                val checkCount = if (TextUtils.isEmpty(editText.text.toString())) BigDecimal.ZERO else editText.text.toString().toBigDecimal()
                 if (underCount > info.totalNumber || underCount > it.totalNum) {
                     codeInputView.findViewById<EditText>(R.id.underShelfNumber).error = getString(R.string.error_under_shelf_count)
                     return@onClick
                 }
-                if (underCount <= 0) {
+                if (underCount <= BigDecimal.ZERO) {
                     codeInputView.findViewById<EditText>(R.id.underShelfNumber).error = getString(R.string.error_under_shelf_count_less_than_zero)
                     return@onClick
                 }
                 it.actulOffShellNumber = underCount
                 if (it.checkFlag) {
-                    if (checkCount != (if ((info.totalNumber - underCount) >= 0) (info.totalNumber - underCount) else 0)) {
+                    if (checkCount != (if ((info.totalNumber - underCount) >= BigDecimal.ZERO) (info.totalNumber - underCount) else 0)) {
                         AlertDialog.Builder(getContext()!!).setTitle(R.string.info).setMessage(R.string.under_shelf_no_match_count)
                                 .setPositiveButton(R.string.ok) { _, _ ->
                                     checkDialog?.show()

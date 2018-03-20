@@ -26,6 +26,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onUiThread
+import java.math.BigDecimal
 import javax.inject.Inject
 
 
@@ -86,8 +87,8 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
             val item = adapter.getItem(position) as StoragePackageMaterialInfo
             val useNumEditText = adapter.getViewByPosition(position, R.id.useNumEditText) as EditText
             if (item.isEditMode) {
-                val useNum = if (TextUtils.isEmpty(useNumEditText.text.toString())) 0 else useNumEditText.text.toString().toLong()
-                if (useNum <= 0) {
+                val useNum: BigDecimal = if (TextUtils.isEmpty(useNumEditText.text.toString())) BigDecimal.ZERO else useNumEditText.text.toString().toBigDecimal()
+                if (useNum <= BigDecimal.ZERO) {
                     useNumEditText.error = getString(R.string.error_use_number)
                     return@setOnItemChildClickListener
                 } else if (useNum > item.availableNum) {

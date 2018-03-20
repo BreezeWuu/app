@@ -1,5 +1,6 @@
 package com.zotye.wms.data.api.model.checkbad
 
+import com.zotye.wms.util.BigDecimalUtil
 import java.math.BigDecimal
 
 /**
@@ -22,11 +23,13 @@ class GetPickReceiptShelfDetailRequestDto {
     /**
      * 下架数量
      */
-    var num: Float = 0f
+    var num: BigDecimal = BigDecimal.ZERO
         set(value) {
-            field = BigDecimal(value.toDouble()).setScale(3, 4).toFloat()
+            field = BigDecimalUtil.formatValue(value)
         }
-    constructor(materialId: String?, storageLocationId: String?, supplierId: String?, num: Float) {
+        get() = BigDecimalUtil.getValue(field)
+
+    constructor(materialId: String?, storageLocationId: String?, supplierId: String?, num: BigDecimal) {
         this.materialId = materialId
         this.storageLocationId = storageLocationId
         this.supplierId = supplierId

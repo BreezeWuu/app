@@ -31,6 +31,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.support.v4.onUiThread
+import java.math.BigDecimal
 import javax.inject.Inject
 
 /**
@@ -93,9 +94,9 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
                 val reciprocalNumString = (adapter.getViewByPosition(position, R.id.reciprocalNumber) as TextView).text.toString()
                 val lackNumberString = (adapter.getViewByPosition(position, R.id.lackNumber) as TextView).text.toString()
                 val unqualifyNumberString = (adapter.getViewByPosition(position, R.id.unqualifyNumber) as TextView).text.toString()
-                item.reciprocalNum = if (reciprocalNumString.isNullOrBlank()) 0 else reciprocalNumString.toLong()
-                item.lackNum = if (lackNumberString.isNullOrBlank()) 0 else lackNumberString.toLong()
-                item.unqualifyNum = if (unqualifyNumberString.isNullOrBlank()) 0 else unqualifyNumberString.toLong()
+                item.reciprocalNum = if (reciprocalNumString.isNullOrBlank()) BigDecimal.ZERO else reciprocalNumString.toBigDecimal()
+                item.lackNum = if (lackNumberString.isNullOrBlank()) BigDecimal.ZERO else lackNumberString.toBigDecimal()
+                item.unqualifyNum = if (unqualifyNumberString.isNullOrBlank()) BigDecimal.ZERO else unqualifyNumberString.toBigDecimal()
                 if ((item.reciprocalNum + item.unqualifyNum + item.lackNum) != item.deliveryCount) {
                     Toast.makeText(context, R.string.delivery_num_error, Toast.LENGTH_SHORT).show()
                     return@setOnItemChildClickListener

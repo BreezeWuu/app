@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_delivery_note_receive.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import java.math.BigDecimal
 import java.util.*
 import javax.inject.Inject
 
@@ -96,9 +97,9 @@ class DeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, DeliveryNot
                         val lackNumberString = (adapter.getViewByPosition(position, R.id.lackNumber) as TextView).text.toString()
                         val unqualifyNumberString = (adapter.getViewByPosition(position, R.id.unqualifyNumber) as TextView).text.toString()
                         item.batchNum = batchNumString
-                        item.receiveNum = if (reciprocalNumString.isNullOrBlank()) 0 else reciprocalNumString.toLong()
-                        item.lackNum = if (lackNumberString.isNullOrBlank()) 0 else lackNumberString.toLong()
-                        item.unqualifyNum = if (unqualifyNumberString.isNullOrBlank()) 0 else unqualifyNumberString.toLong()
+                        item.receiveNum = if (reciprocalNumString.isNullOrBlank()) BigDecimal.ZERO else reciprocalNumString.toBigDecimal()
+                        item.lackNum = if (lackNumberString.isNullOrBlank()) BigDecimal.ZERO else lackNumberString.toBigDecimal()
+                        item.unqualifyNum = if (unqualifyNumberString.isNullOrBlank()) BigDecimal.ZERO else unqualifyNumberString.toBigDecimal()
                         if (item.isBatch!! && TextUtils.isEmpty(batchNumString)) {
                             Toast.makeText(context, R.string.delivery_batch_num_error, Toast.LENGTH_SHORT).show()
                             return@setOnItemChildClickListener

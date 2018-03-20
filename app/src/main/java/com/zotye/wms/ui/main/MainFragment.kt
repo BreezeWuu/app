@@ -30,6 +30,8 @@ import com.zotye.wms.ui.picklist.LoadingCreateFragment
 import com.zotye.wms.ui.picklist.UnderShelfFragment
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.StorageUnitModifyFragment
+import com.zotye.wms.util.BigDecimalUtil
+import com.zotye.wms.util.Log
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.appcompat.v7.coroutines.onMenuItemClick

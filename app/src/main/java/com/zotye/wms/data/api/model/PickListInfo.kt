@@ -3,6 +3,8 @@ package com.zotye.wms.data.api.model
 import android.text.TextUtils
 import com.chad.library.adapter.base.entity.AbstractExpandableItem
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.zotye.wms.util.BigDecimalUtil
+import java.math.BigDecimal
 
 /**
  * Created by hechuangju on 2018/01/25
@@ -14,7 +16,12 @@ class PickListInfo(var code: String? = null) : AbstractExpandableItem<PickListMa
 
     var id: String = ""
 
-    var quantity: Long = 0
+    var quantity: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
+
     var supplierId: String? = null
     /**
      * 供应商代码

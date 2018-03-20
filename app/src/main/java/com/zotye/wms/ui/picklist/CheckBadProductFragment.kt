@@ -35,6 +35,7 @@ import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.collections.forEachByIndex
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import java.math.BigDecimal
 import javax.inject.Inject
 
 /**
@@ -97,8 +98,8 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             editText.setHint(R.string.under_shelf_count)
             editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             AlertDialog.Builder(context!!).setTitle(R.string.action_input_under_shelf_count).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
-                val count: Float = if (TextUtils.isEmpty(editText.text.toString())) 0f else editText.text.toString().toFloat()
-                if (count <= 0) {
+                val count: BigDecimal = if (TextUtils.isEmpty(editText.text.toString())) BigDecimal.ZERO else editText.text.toString().toBigDecimal()
+                if (count <= BigDecimal.ZERO) {
                     showMessage(R.string.under_shelf_count_error)
                 } else {
                     val request = ArrayList<GetPickReceiptShelfDetailRequestDto>()

@@ -225,9 +225,9 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="7"
                         android:gravity="center_vertical"
-                        android:inputType="number"
+                        android:inputType="number|numberDecimal"
                         android:singleLine="true"
-                        android:text="@{String.valueOf(parent.receiveNum*info.componentCount)}"
+                        android:text="@{String.valueOf(parent.receiveNum.multiply(info.componentCount))}"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -256,7 +256,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="7"
                         android:gravity="center_vertical"
-                        android:inputType="number"
+                        android:inputType="number|numberDecimal"
                         android:singleLine="true"
                         android:text="@{String.valueOf(info.batchNum)}"
                         android:textColor="@color/black" />

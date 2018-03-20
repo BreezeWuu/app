@@ -1,5 +1,8 @@
 package com.zotye.wms.data.api.model.checkbad
 
+import com.zotye.wms.util.BigDecimalUtil
+import java.math.BigDecimal
+
 /**
  * Created by hechuangju on 2018/02/05
  */
@@ -24,7 +27,11 @@ class PickReceiptShelfDetail {
     /**
      * 下架数量
      */
-    var num: Long = 0
+    var num: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 是否已经确认
      */

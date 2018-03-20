@@ -1,7 +1,5 @@
 package com.zotye.wms.data.api.model
 
-import android.arch.persistence.room.util.TableInfo.Column
-
 
 /**
  * Created by hechuangju on 2018/02/07

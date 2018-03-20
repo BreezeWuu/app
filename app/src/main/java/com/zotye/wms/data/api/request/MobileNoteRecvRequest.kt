@@ -1,6 +1,8 @@
 package com.zotye.wms.data.api.request
 
 import com.zotye.wms.data.api.model.receipt.ReceiveDetailDto
+import com.zotye.wms.util.BigDecimalUtil
+import java.math.BigDecimal
 
 /**
  * Created by hechuangju on 2018/03/08
@@ -36,11 +38,23 @@ class ReceiveConfirmRequest {
 
     var isBom: Boolean? = null
 
-    var receiveNum: Long = 0
-
     var batchNum: String? = null
 
-    var lackNum: Long = 0
+    var receiveNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
-    var unqualifyNum: Long = 0
+    var lackNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
+
+    var unqualifyNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 }

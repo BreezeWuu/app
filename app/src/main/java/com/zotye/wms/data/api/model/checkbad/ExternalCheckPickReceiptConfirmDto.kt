@@ -1,5 +1,8 @@
 package com.zotye.wms.data.api.model.checkbad
 
+import com.zotye.wms.util.BigDecimalUtil
+import java.math.BigDecimal
+
 /**
  * Created by hechuangju on 2018/02/06
  */
@@ -16,5 +19,9 @@ class ExternalCheckDetailDto {
 
     var storageUnitCode: String? = null
 
-    var count: Long = 0
+    var count: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 }

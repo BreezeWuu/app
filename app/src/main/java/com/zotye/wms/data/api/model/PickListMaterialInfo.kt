@@ -1,6 +1,8 @@
 package com.zotye.wms.data.api.model
 
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.zotye.wms.util.BigDecimalUtil
+import java.math.BigDecimal
 
 /**
  * Created by hechuangju on 2018/01/25
@@ -16,7 +18,11 @@ class PickListMaterialInfo : MultiItemEntity {
     var desc: String? = null
     var unit: String? = null
     var batchNum: String? = null
-    var offShelfNumber: Long = 0
+    var offShelfNumber: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 供应商Id
      */

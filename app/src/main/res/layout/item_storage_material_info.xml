@@ -233,7 +233,7 @@
                     android:layout_weight="7"
                     android:enabled="@{info.editMode}"
                     android:gravity="center_vertical"
-                    android:inputType="number"
+                    android:inputType="number|numberDecimal"
                     android:hint="@string/use_number"
                     android:text="@{String.valueOf(info.useNum)}"
                     android:textColor="@color/black" />

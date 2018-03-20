@@ -1,5 +1,6 @@
 package com.zotye.wms.data.api.model
 
+import com.zotye.wms.util.BigDecimalUtil
 import java.math.BigDecimal
 
 /**
@@ -12,7 +13,11 @@ class LogisticsReceiveInfo {
 
     var eType: String? = null// 托盘  包装
 
-    var receiveNum: BigDecimal? = null//收货数量  组托收货时 为托盘中所有包装的实收数合计 非组托收货时未该包装的收货数量
+    var receiveNum: BigDecimal? = BigDecimal.ZERO//收货数量  组托收货时 为托盘中所有包装的实收数合计 非组托收货时未该包装的收货数量
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
     var batchNum: String? = null
 

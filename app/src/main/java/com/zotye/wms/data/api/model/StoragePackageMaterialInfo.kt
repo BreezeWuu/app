@@ -2,6 +2,8 @@ package com.zotye.wms.data.api.model
 
 import android.text.TextUtils
 import com.google.gson.annotations.Expose
+import com.zotye.wms.util.BigDecimalUtil
+import java.math.BigDecimal
 
 /**
  * Created by hechuangju on 2018/01/25
@@ -27,7 +29,11 @@ class StoragePackageMaterialInfo {
     /**
      * 发货数量
      */
-    var deliveryNum: Long = 0
+    var deliveryNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 发货单位
      */
@@ -56,12 +62,20 @@ class StoragePackageMaterialInfo {
     /**
      * 可用数量
      */
-    var availableNum: Long = 0
+    var availableNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 领用数量
      */
     @Expose
-    var useNum: Long = 0
+    var useNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 是否正在编辑
      */

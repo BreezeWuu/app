@@ -280,7 +280,7 @@
                 android:layout_weight="7"
                 android:enabled="@{info.isEditEnable}"
                 android:gravity="center_vertical"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:singleLine="true"
                 android:text="@{String.valueOf(info.receiveNum)}"
                 android:textColor="@color/black" />

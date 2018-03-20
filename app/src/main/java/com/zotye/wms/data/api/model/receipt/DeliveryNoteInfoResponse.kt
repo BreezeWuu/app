@@ -2,7 +2,9 @@ package com.zotye.wms.data.api.model.receipt
 
 import com.chad.library.adapter.base.entity.AbstractExpandableItem
 import com.chad.library.adapter.base.entity.MultiItemEntity
+import com.zotye.wms.util.BigDecimalUtil
 import java.io.Serializable
+import java.math.BigDecimal
 
 /**
  * Created by hechuangju on 2018/03/07
@@ -47,7 +49,7 @@ class DeliveryNoteInfoDto : AbstractExpandableItem<ReceiveDetailDto>(), MultiIte
     }
 }
 
-class ReceiveDetailDto : MultiItemEntity ,Serializable{
+class ReceiveDetailDto : MultiItemEntity, Serializable {
     companion object {
         const val TYPE_RECEIVE_DETAIL = 1
     }
@@ -70,17 +72,29 @@ class ReceiveDetailDto : MultiItemEntity ,Serializable{
     /**
      * 需求数量
      */
-    var requireNum: Long = 0
+    var requireNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
     /**
      * 单包装数量
      */
-    var packageNum: Long = 0
+    var packageNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
     /**
      * 实收数量
      */
-    var receiveNum: Long = 0
+    var receiveNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
     /**
      * 基本计量单位
@@ -95,7 +109,11 @@ class ReceiveDetailDto : MultiItemEntity ,Serializable{
     /**
      * 子件定额
      */
-    var componentCount: Long = 0
+    var componentCount: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
     /**
      * 父Id
@@ -117,9 +135,17 @@ class ReceiveDetailDto : MultiItemEntity ,Serializable{
      */
     var wrkst: String? = null
 
-    var lackNum: Long = 0
+    var lackNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
-    var unqualifyNum: Long = 0
+    var unqualifyNum: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
     var isEditEnable: Boolean = false
 

@@ -1,6 +1,7 @@
 package com.zotye.wms.data.api.model
 
 import android.text.TextUtils
+import com.zotye.wms.util.BigDecimalUtil
 import java.math.BigDecimal
 
 /**
@@ -38,10 +39,10 @@ class PackageInfo(
             field = if (value == null || value.toInt() < 1) {
                 BigDecimal.valueOf(1)
             } else
-                value
+                BigDecimalUtil.formatValue(value)
         }
         get() {
-            return if (field == null) BigDecimal.valueOf(1) else field
+            return if (field == null) BigDecimal.valueOf(1) else BigDecimalUtil.getValue(field)
         }
     /**
      * 发货数量
@@ -51,10 +52,10 @@ class PackageInfo(
             field = if (value == null || value.toInt() < 1) {
                 BigDecimal.valueOf(1)
             } else
-                value
+                BigDecimalUtil.formatValue(field)
         }
         get() {
-            return if (field == null) BigDecimal.valueOf(1) else field
+            return if (field == null) BigDecimal.valueOf(1) else BigDecimalUtil.getValue(field)
         }
     /**
      * 发货单位
