@@ -34,29 +34,20 @@ class PackageInfo(
     /**
      * 发货数量
      */
-    var deliveryNum: BigDecimal? = BigDecimal.valueOf(1)
+    var deliveryNum: BigDecimal? = BigDecimal.ZERO
         set(value) {
-            field = if (value == null || value.toInt() < 1) {
-                BigDecimal.valueOf(1)
-            } else
-                BigDecimalUtil.formatValue(value)
+            field = BigDecimalUtil.formatValue(value)
+
         }
-        get() {
-            return if (field == null) BigDecimal.valueOf(1) else BigDecimalUtil.getValue(field)
-        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 发货数量
      */
-    var receiveNum: BigDecimal? = BigDecimal.valueOf(1)
+    var receiveNum: BigDecimal? = BigDecimal.ZERO
         set(value) {
-            field = if (value == null || value.toInt() < 1) {
-                BigDecimal.valueOf(1)
-            } else
-                BigDecimalUtil.formatValue(field)
+            field = BigDecimalUtil.formatValue(value)
         }
-        get() {
-            return if (field == null) BigDecimal.valueOf(1) else BigDecimalUtil.getValue(field)
-        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 发货单位
      */

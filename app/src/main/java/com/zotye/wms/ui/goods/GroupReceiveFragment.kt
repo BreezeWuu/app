@@ -204,7 +204,15 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                 }
             }
             val numberText = receiveNumberEditText.text.toString()
-            val receiveNumber = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
+            if (TextUtils.isEmpty(numberText)) {
+                receiveNumberEditText.error = getString(R.string.error_receive_number)
+                return@onClick
+            }
+            val receiveNumber = BigDecimal(numberText)
+            if (receiveNumber.compareTo(BigDecimal.ZERO) < 1) {
+                receiveNumberEditText.error = getString(R.string.error_receive_number)
+                return@onClick
+            }
             if (!packageInfo.isThirdPart()) {
                 if (receiveNumber > packageInfo.deliveryNum) {
                     receiveNumberEditText.error = getString(R.string.not_match_third_part_receive_num)

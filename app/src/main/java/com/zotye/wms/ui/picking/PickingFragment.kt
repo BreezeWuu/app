@@ -88,7 +88,7 @@ class PickingFragment : BaseFragment(), PickingContract.PickingView, ScannerDele
             val useNumEditText = adapter.getViewByPosition(position, R.id.useNumEditText) as EditText
             if (item.isEditMode) {
                 val useNum: BigDecimal = if (TextUtils.isEmpty(useNumEditText.text.toString())) BigDecimal.ZERO else useNumEditText.text.toString().toBigDecimal()
-                if (useNum <= BigDecimal.ZERO) {
+                if (useNum.compareTo(BigDecimal.ZERO)<1) {
                     useNumEditText.error = getString(R.string.error_use_number)
                     return@setOnItemChildClickListener
                 } else if (useNum > item.availableNum) {

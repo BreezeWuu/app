@@ -99,7 +99,7 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             AlertDialog.Builder(context!!).setTitle(R.string.action_input_under_shelf_count).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 val count: BigDecimal = if (TextUtils.isEmpty(editText.text.toString())) BigDecimal.ZERO else editText.text.toString().toBigDecimal()
-                if (count <= BigDecimal.ZERO) {
+                if (count.compareTo(BigDecimal.ZERO)<1) {
                     showMessage(R.string.under_shelf_count_error)
                 } else {
                     val request = ArrayList<GetPickReceiptShelfDetailRequestDto>()

@@ -203,4 +203,5 @@
     <string name="action_scanner_storage_unit_code">扫描库位码</string>
     <string name="choose_type">选择录入方式</string>
     <string name="pull_off_shelf_count_format">下架数量：</string>
+    <string name="error_receive_number">收货数量必须大于0！</string>
 </resources>

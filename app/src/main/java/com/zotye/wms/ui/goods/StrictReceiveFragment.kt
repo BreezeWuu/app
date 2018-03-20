@@ -97,7 +97,7 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
                 item.reciprocalNum = if (reciprocalNumString.isNullOrBlank()) BigDecimal.ZERO else reciprocalNumString.toBigDecimal()
                 item.lackNum = if (lackNumberString.isNullOrBlank()) BigDecimal.ZERO else lackNumberString.toBigDecimal()
                 item.unqualifyNum = if (unqualifyNumberString.isNullOrBlank()) BigDecimal.ZERO else unqualifyNumberString.toBigDecimal()
-                if ((item.reciprocalNum + item.unqualifyNum + item.lackNum) != item.deliveryCount) {
+                if (item.reciprocalNum.add(item.unqualifyNum).add(item.lackNum).compareTo(item.deliveryCount) != 0) {
                     Toast.makeText(context, R.string.delivery_num_error, Toast.LENGTH_SHORT).show()
                     return@setOnItemChildClickListener
                 }

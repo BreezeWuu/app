@@ -158,13 +158,13 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                     codeInputView.findViewById<EditText>(R.id.underShelfNumber).error = getString(R.string.error_under_shelf_count)
                     return@onClick
                 }
-                if (underCount <= BigDecimal.ZERO) {
+                if (underCount.compareTo(BigDecimal.ZERO) < 1) {
                     codeInputView.findViewById<EditText>(R.id.underShelfNumber).error = getString(R.string.error_under_shelf_count_less_than_zero)
                     return@onClick
                 }
                 it.actulOffShellNumber = underCount
                 if (it.checkFlag) {
-                    if (checkCount != (if ((info.totalNumber - underCount) >= BigDecimal.ZERO) (info.totalNumber - underCount) else 0)) {
+                    if (checkCount.compareTo(info.totalNumber.minus(underCount)) != 0) {
                         AlertDialog.Builder(getContext()!!).setTitle(R.string.info).setMessage(R.string.under_shelf_no_match_count)
                                 .setPositiveButton(R.string.ok) { _, _ ->
                                     checkDialog?.show()
