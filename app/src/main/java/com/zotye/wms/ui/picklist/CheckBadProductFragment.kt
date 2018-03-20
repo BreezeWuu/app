@@ -94,15 +94,15 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
             val parentItem = adapter.data[0] as PickListInfo
             val codeInputView = LayoutInflater.from(context).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
-            editText.inputType = InputType.TYPE_CLASS_NUMBER
-            editText.setHint(R.string.count_format)
+            editText.setHint(R.string.under_shelf_count)
+            editText.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
             AlertDialog.Builder(context!!).setTitle(R.string.action_input_under_shelf_count).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
-                val count = if (TextUtils.isEmpty(editText.text.toString())) 0 else editText.text.toString().toInt()
+                val count: Float = if (TextUtils.isEmpty(editText.text.toString())) 0f else editText.text.toString().toFloat()
                 if (count <= 0) {
                     showMessage(R.string.under_shelf_count_error)
                 } else {
                     val request = ArrayList<GetPickReceiptShelfDetailRequestDto>()
-                    val getPickReceiptShelfDetailRequestDto = GetPickReceiptShelfDetailRequestDto(item.materialId, parentItem.outSlId, parentItem.supplierId, count.toLong())
+                    val getPickReceiptShelfDetailRequestDto = GetPickReceiptShelfDetailRequestDto(item.materialId, parentItem.outSlId, item.supplierId, count)
                     request.add(getPickReceiptShelfDetailRequestDto)
                     presenter.getPickReceiptShelfDetail(request)
                 }
@@ -132,7 +132,7 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
         dialog.show()
     }
 
-    override fun externalCheckPickReceiptConfirmFailed(message:String) {
+    override fun externalCheckPickReceiptConfirmFailed(message: String) {
         viewFlipper.showPrevious()
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok, null).create()
         dialog.setCanceledOnTouchOutside(false)
@@ -235,6 +235,7 @@ class CheckBadProductFragment : BaseFragment(), ScannerDelegate, CheckBadProduct
                             expand(helper.adapterPosition)
                         }
                     }
+                    helper.getView<View>(R.id.supplierLayout).visibility = View.GONE
                     helper.getView<Button>(R.id.deleteButton).visibility = View.GONE
                     helper.getView<Button>(R.id.expandButton).setText(if (item.isExpanded) R.string.picklist_material_collapse else R.string.picklist_material_expand)
                 }
