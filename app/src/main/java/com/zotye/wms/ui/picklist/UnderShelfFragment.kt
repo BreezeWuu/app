@@ -142,12 +142,14 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         val pickListPullOffShelf = (pickListRecyclerView.adapter as PickListOffShelfAdapter).getItem(position)
         var checkDialog: AlertDialog? = null
         pickListPullOffShelf?.let { it ->
+            it.lockNumber = info.lockNumber
+            val needCheckCount = it.checkFlag && (it.totalNum == it.lockNumber)
             val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_under_shelf_package, null)
             val editText = codeInputView.findViewById<EditText>(R.id.underShelfEditText)
             val underCountEditText = codeInputView.findViewById<EditText>(R.id.underShelfNumber)
             codeInputView.findViewById<TextView>(R.id.packageCount).text = "${info.totalNumber}"
             codeInputView.findViewById<TextView>(R.id.underShelfNumber).text = "${it.totalNum}"
-            codeInputView.findViewById<View>(R.id.checkLayout).visibility = if (it.checkFlag && (it.totalNum == info.lockNumber)) View.VISIBLE else View.GONE
+            codeInputView.findViewById<View>(R.id.checkLayout).visibility = if (needCheckCount) View.VISIBLE else View.GONE
             codeInputView.find<View>(R.id.cancelButton).onClick {
                 checkDialog?.dismiss()
             }
@@ -163,7 +165,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                     return@onClick
                 }
                 it.actulOffShellNumber = underCount
-                if (it.checkFlag) {
+                if (needCheckCount) {
                     if (checkCount.compareTo(info.totalNumber.minus(underCount)) != 0) {
                         AlertDialog.Builder(getContext()!!).setTitle(R.string.info).setMessage(R.string.under_shelf_no_match_count)
                                 .setPositiveButton(R.string.ok) { _, _ ->

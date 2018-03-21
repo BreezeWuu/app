@@ -35,6 +35,12 @@ class PickListPullOffShelf {
             field = BigDecimalUtil.formatValue(value)
         }
         get() = BigDecimalUtil.getValue(field)
+
+    var lockNumber: BigDecimal = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
     /**
      * 单位
      */
@@ -98,6 +104,6 @@ class PickListPullOffShelf {
     val spDetailId: String? = null
 
     fun isChecked(): Boolean {
-        return checkFlag && isAddedPackage
+        return checkFlag && isAddedPackage && (totalNum == lockNumber)
     }
 }
