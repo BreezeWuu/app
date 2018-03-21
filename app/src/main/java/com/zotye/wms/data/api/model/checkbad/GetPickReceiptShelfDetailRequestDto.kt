@@ -28,11 +28,17 @@ class GetPickReceiptShelfDetailRequestDto {
             field = BigDecimalUtil.formatValue(value)
         }
         get() = BigDecimalUtil.getValue(field)
+    /**
+     * 批次号
+     * @return
+     */
+    var batchNum: String? = null
 
-    constructor(materialId: String?, storageLocationId: String?, supplierId: String?, num: BigDecimal) {
+    constructor(materialId: String?, storageLocationId: String?, supplierId: String?, num: BigDecimal, batchNum: String?) {
         this.materialId = materialId
         this.storageLocationId = storageLocationId
         this.supplierId = supplierId
         this.num = num
+        this.batchNum = batchNum
     }
 }
