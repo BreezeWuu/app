@@ -87,22 +87,24 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         pickListRecyclerView.adapter = adapter
         adapter.setOnItemChildClickListener { _, _, position ->
             val pickListPullOffShelf = adapter.getItem(position)
-            val fragment = BarCodeScannerFragment()
-            fragment.setScannerDelegate(object : ScannerDelegate {
-                override fun succeed(result: String) {
-                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
-                        if (pickListPullOffShelf.checkFlag) {
-                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
+            if (!TextUtils.isEmpty(pickListPullOffShelf?.storageUnitInfoCode)) {
+                val fragment = BarCodeScannerFragment()
+                fragment.setScannerDelegate(object : ScannerDelegate {
+                    override fun succeed(result: String) {
+                        if (pickListPullOffShelf?.storageUnitInfoCode == result) {
+                            if (pickListPullOffShelf.pullOffConfirm) {
+                                presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
+                            } else {
+                                pickListPullOffShelf.isAddedPackage = true
+                                adapter.notifyItemChanged(position)
+                            }
                         } else {
-                            pickListPullOffShelf.isAddedPackage = true
-                            adapter.notifyItemChanged(position)
+                            AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.not_match_under_shelf_package).setNegativeButton(R.string.ok, null).show()
                         }
-                    } else {
-                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.not_match_under_shelf_package).setNegativeButton(R.string.ok, null).show()
                     }
-                }
-            })
-            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+                })
+                fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+            }
         }
         underShelfButton.onClick {
             if (adapter.data.isEmpty()) {
@@ -121,13 +123,11 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                             }
                             return@doAsync
                         }
-                        if (pickListPullOffShelf.pullOffConfirm) {
-                            val prDto = PrMobileConfirmRequest.PrCheckInfoDto()
-                            prDto.id = pickListPullOffShelf.id
-                            prDto.checkNum = if (pickListPullOffShelf.isChecked()) pickListPullOffShelf.checkCount else null
-                            prDto.actualOffshelfNum = pickListPullOffShelf.actulOffShellNumber
-                            request.confirmDetail?.add(prDto)
-                        }
+                        val prDto = PrMobileConfirmRequest.PrCheckInfoDto()
+                        prDto.id = pickListPullOffShelf.id
+                        prDto.checkNum = if (pickListPullOffShelf.isChecked()) pickListPullOffShelf.checkCount else null
+                        prDto.actualOffshelfNum = if (pickListPullOffShelf.pullOffConfirm) pickListPullOffShelf.actulOffShellNumber else pickListPullOffShelf.totalNum
+                        request.confirmDetail?.add(prDto)
                     }
                     onUiThread {
                         hideProgressDialog()
@@ -147,14 +147,14 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             val underCountEditText = codeInputView.findViewById<EditText>(R.id.underShelfNumber)
             codeInputView.findViewById<TextView>(R.id.packageCount).text = "${info.totalNumber}"
             codeInputView.findViewById<TextView>(R.id.underShelfNumber).text = "${it.totalNum}"
-            codeInputView.findViewById<View>(R.id.checkLayout).visibility = if (it.checkFlag && (it.totalNum <= info.lockNumber)) View.VISIBLE else View.GONE
+            codeInputView.findViewById<View>(R.id.checkLayout).visibility = if (it.checkFlag && (it.totalNum == info.lockNumber)) View.VISIBLE else View.GONE
             codeInputView.find<View>(R.id.cancelButton).onClick {
                 checkDialog?.dismiss()
             }
             codeInputView.find<View>(R.id.okButton).onClick { _ ->
                 val underCount = if (TextUtils.isEmpty(underCountEditText.text.toString())) BigDecimal.ZERO else underCountEditText.text.toString().toBigDecimal()
                 val checkCount = if (TextUtils.isEmpty(editText.text.toString())) BigDecimal.ZERO else editText.text.toString().toBigDecimal()
-                if (underCount > info.totalNumber || underCount > it.totalNum) {
+                if (underCount.compareTo(info.totalNumber) == 1 || underCount.compareTo(it.totalNum) == 1) {
                     codeInputView.findViewById<EditText>(R.id.underShelfNumber).error = getString(R.string.error_under_shelf_count)
                     return@onClick
                 }

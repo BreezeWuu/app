@@ -15,7 +15,7 @@ class PrMobileConfirmRequest {
         var id: String? = null//下架明细id
         var checkNum: BigDecimal? = BigDecimal.ZERO//下架后实盘数量
             set(value) {
-                field = BigDecimalUtil.formatValue(value)
+                field = if (value == null) null else BigDecimalUtil.formatValue(value)
             }
             get() = if (field == null) null else BigDecimalUtil.getValue(field)
 
