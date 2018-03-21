@@ -114,7 +114,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 doAsync {
                     adapter.data.forEachByIndex { pickListPullOffShelf ->
                         request.prNo = pickListPullOffShelf.pickListCode
-                        if (pickListPullOffShelf.pullOffConfirm && !pickListPullOffShelf.isAddedPackage) {
+                        if (pickListPullOffShelf.pullOffConfirm && !TextUtils.isEmpty(pickListPullOffShelf.storageUnitInfoCode) && !pickListPullOffShelf.isAddedPackage) {
                             onUiThread {
                                 showMessage(R.string.picklist_pull_off_shelf_no_add_error)
                                 hideProgressDialog()
