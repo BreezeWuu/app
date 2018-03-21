@@ -87,24 +87,22 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         pickListRecyclerView.adapter = adapter
         adapter.setOnItemChildClickListener { _, _, position ->
             val pickListPullOffShelf = adapter.getItem(position)
-            if (!TextUtils.isEmpty(pickListPullOffShelf?.storageUnitInfoCode)) {
-                val fragment = BarCodeScannerFragment()
-                fragment.setScannerDelegate(object : ScannerDelegate {
-                    override fun succeed(result: String) {
-                        if (pickListPullOffShelf?.storageUnitInfoCode == result) {
-                            if (pickListPullOffShelf.pullOffConfirm) {
-                                presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
-                            } else {
-                                pickListPullOffShelf.isAddedPackage = true
-                                adapter.notifyItemChanged(position)
-                            }
+            val fragment = BarCodeScannerFragment()
+            fragment.setScannerDelegate(object : ScannerDelegate {
+                override fun succeed(result: String) {
+                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
+                        if (pickListPullOffShelf.pullOffConfirm) {
+                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
                         } else {
-                            AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.not_match_under_shelf_package).setNegativeButton(R.string.ok, null).show()
+                            pickListPullOffShelf.isAddedPackage = true
+                            adapter.notifyItemChanged(position)
                         }
+                    } else {
+                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.not_match_under_shelf_package).setNegativeButton(R.string.ok, null).show()
                     }
-                })
-                fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
-            }
+                }
+            })
+            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
         underShelfButton.onClick {
             if (adapter.data.isEmpty()) {
@@ -238,7 +236,12 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         override fun convert(helper: BaseViewHolder, item: PickListPullOffShelf) {
             val dataBind = DataBindingUtil.bind<ItemPickListInfoUnderShelfBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
-            helper.addOnClickListener(R.id.packageCodeScanner)
+            if (!TextUtils.isEmpty(item.storageUnitInfoCode)) {
+                helper.getView<View>(R.id.packageCodeScanner).visibility = View.VISIBLE
+                helper.addOnClickListener(R.id.packageCodeScanner)
+            } else {
+                helper.getView<View>(R.id.packageCodeScanner).visibility = View.GONE
+            }
         }
     }
 }
