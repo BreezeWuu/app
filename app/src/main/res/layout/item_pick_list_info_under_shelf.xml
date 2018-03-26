@@ -8,6 +8,8 @@
 
         <import type="android.view.View" />
 
+        <import type="android.text.TextUtils" />
+
         <variable
             name="info"
             type="com.zotye.wms.data.api.model.PickListPullOffShelf" />
@@ -323,7 +325,7 @@
                 android:enabled="@{info.isAddedPackage?false:true}"
                 android:text="@{info.isAddedPackage?@string/added_scanner_package_or_pallet:@string/confirm_package_or_pallet}"
                 android:textSize="22dp"
-                android:visibility="@{info.pullOffConfirm? View.VISIBLE : View.GONE}" />
+                android:visibility="@{(!TextUtils.isEmpty(info.storageUnitInfoCode)&amp;&amp;info.pullOffConfirm)? View.VISIBLE : View.GONE}" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </layout>
