@@ -20,8 +20,8 @@ android {
     buildTypes {
         debug {
             postprocessing {
-//                buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
-                buildConfigField('String', 'API_URL', '\"http://jhwms.zotye.com:7001/wms/mobile_api/\"')
+                buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
+//                buildConfigField('String', 'API_URL', '\"http://jhwms.zotye.com:7001/wms/mobile_api/\"')
 //                buildConfigField('String', 'API_URL', '\"http://10.10.0.61:5678/mobile_api/\"')
             }
         }
@@ -32,8 +32,8 @@ android {
                 obfuscate false
                 optimizeCode false
                 proguardFile 'proguard-rules.pro'
-//                buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
-                buildConfigField('String', 'API_URL', '\"http://jhwms.zotye.com:7001/wms/mobile_api/\"')
+                buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
+//                buildConfigField('String', 'API_URL', '\"http://jhwms.zotye.com:7001/wms/mobile_api/\"')
 //                buildConfigField('String', 'API_URL', '\"http://10.10.0.61:5678/mobile_api/\"')
             }
         }
