@@ -24,7 +24,6 @@ import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.layout_code_scanner.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
-import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
@@ -37,6 +36,16 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
     @Inject
     lateinit var presenter: StorageUnitModifyContract.StorageUnitModifyPresenter
 
+    companion object {
+        fun newInstance(title: String): StorageUnitModifyFragment {
+            val fragment = StorageUnitModifyFragment()
+            val bundle = Bundle()
+            bundle.putString("title", title)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_storage_unit_modify, container, false)
     }
@@ -45,7 +54,7 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
         super.onViewCreated(view, savedInstanceState)
         presenter.onAttach(this)
         toolbar_base.visibility = View.VISIBLE
-        toolbar_base.titleResource = R.string.title_storage_unit_modify
+        toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_storage_unit_modify)
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
         toolbar_base.setNavigationOnClickListener {
             activity?.onBackPressed()

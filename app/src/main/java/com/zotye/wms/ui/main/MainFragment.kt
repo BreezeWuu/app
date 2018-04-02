@@ -105,7 +105,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                             fragment = ReceiveConfirmFragment.newInstance(it.name)
                         }
                         ResourceType.ThreePLADJUST -> {
-                            fragment = StorageUnitModifyFragment()
+                            fragment = StorageUnitModifyFragment.newInstance(it.name)
                         }
                         ResourceType.STRICT_RECV -> {
                             fragment = StrictReceiveFragment.newInstance(it.name)
