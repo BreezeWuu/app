@@ -34,18 +34,22 @@ class ResponseInterceptor @Inject constructor(@ApplicationContext private var co
                 val builder: Response.Builder = response.newBuilder()
                 val responseBody: ResponseBody = response.body() as ResponseBody
                 var responseString = responseBody.string()
-                val retCode = JSONObject(responseString).getInt("retCode")
-                if (retCode == -777) {
-                    val type = object : TypeToken<ApiResponse<AppVersion>>() {}.type
-                    val appVersion = Gson().fromJson<ApiResponse<AppVersion>>(responseString, type).data!!
-                    val intent = Intent(ACTION_APP_VERSION)
-                    val bundle = Bundle()
-                    bundle.putSerializable("appVersion", appVersion)
-                    intent.putExtras(bundle)
-                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+                try{
+                    val retCode = JSONObject(responseString).getInt("retCode")
+                    if (retCode == -777) {
+                        val type = object : TypeToken<ApiResponse<AppVersion>>() {}.type
+                        val appVersion = Gson().fromJson<ApiResponse<AppVersion>>(responseString, type).data!!
+                        val intent = Intent(ACTION_APP_VERSION)
+                        val bundle = Bundle()
+                        bundle.putSerializable("appVersion", appVersion)
+                        intent.putExtras(bundle)
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
+                    }
+                    builder.body(ResponseBody.create(responseBody.contentType(), responseString))
+                    return builder.build()
+                }catch (e:Exception){
+                    throw IOException("Error Response Body")
                 }
-                builder.body(ResponseBody.create(responseBody.contentType(), responseString))
-                return builder.build()
             } else
                 throw IOException("Empty Response Body")
         } else

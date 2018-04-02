@@ -52,12 +52,10 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
         handlerIntent(intent, null)
     }
 
-    public fun handlerIntent(newIntent: Intent, savedInstanceState: Bundle?) {
+    fun handlerIntent(newIntent: Intent, savedInstanceState: Bundle?) {
         Log.i("handlerIntent-->newIntent:$newIntent savedInstanceState:$savedInstanceState")
         if (dataManager.getCurrentUserId() == null) {
-            val loginFragment: Fragment = supportFragmentManager.findFragmentByTag(LoginFragment.TAG)
-                    ?: LoginFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.main_content, loginFragment, LoginFragment.TAG).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.main_content, LoginFragment()).commit()
         } else {
             supportFragmentManager.beginTransaction().replace(R.id.main_content, MainFragment()).commit()
         }
