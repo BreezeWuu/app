@@ -59,7 +59,7 @@ class AppModule {
     @Provides
     @Singleton
     @Named("httpLoggingInterceptor")
-    fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    fun provideHttpLoggingInterceptor(): Interceptor = HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE)
 
     @Provides
     @Singleton
@@ -72,7 +72,7 @@ class AppModule {
                 .connectTimeout(TIMEOUT_IN_SEC.toLong(), TimeUnit.SECONDS)
                 .addInterceptor(headerInterceptor)
                 .addInterceptor(responseInterceptor)
-                .addInterceptor(httpLoggingInterceptor)
+                .addNetworkInterceptor(httpLoggingInterceptor)
                 .build()
     }
 

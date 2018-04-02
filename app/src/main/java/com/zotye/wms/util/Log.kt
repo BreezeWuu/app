@@ -1,7 +1,7 @@
 package com.zotye.wms.util
 
-import android.arch.persistence.room.BuildConfig
 import android.util.Log
+import com.zotye.wms.BuildConfig
 import java.util.*
 
 /**
