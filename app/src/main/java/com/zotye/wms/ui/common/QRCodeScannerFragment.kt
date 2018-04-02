@@ -71,7 +71,7 @@ class QRCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallback
     @AfterPermissionGranted(REQUEST_CODE_QRCODE_PERMISSIONS)
     private fun requestCodeQRCodePermissions() {
         val perms = listOf(Manifest.permission.CAMERA).toTypedArray()
-        if (!EasyPermissions.hasPermissions(context, perms[0])) {
+        if (!EasyPermissions.hasPermissions(context!!, perms[0])) {
             EasyPermissions.requestPermissions(this, "扫描二维码必须打开相机和散光灯的权限", REQUEST_CODE_QRCODE_PERMISSIONS, perms[0])
         } else {
             zbarview.startCamera()
