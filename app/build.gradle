@@ -33,7 +33,7 @@ android {
             versionNameSuffix '_test'
             signingConfig signingConfigs.release
             buildConfigField('String', 'API_URL', '\"http://101.66.172.117:7010/wmsperformancetest/mobile_api/\"')
-            resValue "string", "app_name", "$appName-101test"
+            resValue "string", "app_name", "${appName}(101test)"
         }
         debug {
             debuggable true
@@ -42,7 +42,7 @@ android {
             versionNameSuffix '_debug'
             signingConfig signingConfigs.release
             buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
-            resValue "string", "app_name", "$appName-47"
+            resValue "string", "app_name", "${appName}(47)"
         }
         preview {
             debuggable true
@@ -53,7 +53,7 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField('String', 'API_URL', '\"http://101.66.172.117:7010/wmssaptest/mobile_api/\"')
-            resValue "string", "app_name", "$appName-101"
+            resValue "string", "app_name", "${appName}(101)"
         }
         release {
             debuggable false
