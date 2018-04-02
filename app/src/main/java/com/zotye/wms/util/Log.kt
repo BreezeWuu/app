@@ -9,10 +9,10 @@ import java.util.*
  */
 
 object Log {
-    private val TAG = "HeChuangJu->"
-    private val MATCH = "methodName:[%s]->lineNumber:[%d]->"
+    private const val TAG = "HeChuangJu->"
+    private const val MATCH = "methodName:[%s]->lineNumber:[%d]->"
 
-    private val SWITCH = BuildConfig.DEBUG
+    private const val SWITCH = BuildConfig.DEBUG
 
     private fun buildHeader(): String {
         val stack = Thread.currentThread().stackTrace[4]
