@@ -74,11 +74,11 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
         }
         buttonRecyclerView.layoutManager = GridLayoutManager(context, 3)
         buttonRecyclerView.adapter = HomeButtonAdapter()
-        (buttonRecyclerView.adapter as HomeButtonAdapter).onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, view, position ->
+        (buttonRecyclerView.adapter as HomeButtonAdapter).onItemChildClickListener = BaseQuickAdapter.OnItemChildClickListener { adapter, _, position ->
             if (adapter is HomeButtonAdapter) {
                 val resource = adapter.getItem(position)
                 resource?.let {
-                    var fragment: Fragment? = null
+                    val fragment: Fragment
                     when (ResourceType.fromCode(resource.code)) {
                         ResourceType.PALLETRECV -> {
                             fragment = GroupReceiveFragment.newInstance(true, it.name)
@@ -117,9 +117,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                             return@OnItemChildClickListener
                         }
                     }
-                    fragment?.let {
-                        fragmentManager?.beginTransaction()?.add(R.id.main_content, it)?.addToBackStack(null)?.commit()
-                    }
+                    fragmentManager?.beginTransaction()?.add(R.id.main_content, fragment)?.addToBackStack(null)?.commit()
                 }
             }
         }
