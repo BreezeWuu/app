@@ -46,7 +46,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:textColorHint="@color/gray"
                 app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout">
@@ -69,7 +69,7 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_normal"
                 android:hint="@string/login_pass_word"
                 android:textColorHint="@color/gray"
