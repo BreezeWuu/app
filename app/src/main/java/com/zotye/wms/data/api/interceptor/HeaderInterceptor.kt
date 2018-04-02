@@ -4,7 +4,6 @@ import android.content.Context
 import com.zotye.wms.BuildConfig
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.di.qualifier.ApplicationContext
-import com.zotye.wms.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
@@ -18,7 +17,6 @@ class HeaderInterceptor @Inject constructor(@ApplicationContext private var cont
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
-        Log.e(context.toString())
         request = request.newBuilder()
                 .addHeader("packageName", context.packageName)
                 .addHeader("versionName", BuildConfig.VERSION_NAME)

@@ -10,7 +10,6 @@ import com.zotye.wms.AppConstants.ACTION_APP_VERSION
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.AppVersion
 import com.zotye.wms.di.qualifier.ApplicationContext
-import com.zotye.wms.util.Log
 import okhttp3.Interceptor
 import okhttp3.Response
 import okhttp3.ResponseBody
