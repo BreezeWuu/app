@@ -8,7 +8,7 @@ import com.zotye.wms.data.db.tables.UserDao
 /**
  * Created by hechuangju on 2017/8/4 下午1:27.
  */
-@Database(entities = arrayOf(User::class), version = 1)
+@Database(entities = [(User::class)], version = 1)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun getUserDao(): UserDao

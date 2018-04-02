@@ -14,7 +14,7 @@ import javax.inject.Singleton
  * Created by hechuangju on 2017/7/25.
  */
 @Singleton
-class HeaderInterceptor @Inject constructor(@ApplicationContext private var context: Context,private val preferencesHelper: PreferencesHelper) : Interceptor {
+class HeaderInterceptor @Inject constructor(@ApplicationContext private var context: Context, private val preferencesHelper: PreferencesHelper) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         var request = chain.request()
@@ -23,10 +23,10 @@ class HeaderInterceptor @Inject constructor(@ApplicationContext private var cont
                 .addHeader("packageName", context.packageName)
                 .addHeader("versionName", BuildConfig.VERSION_NAME)
                 .addHeader("versionCode", "${BuildConfig.VERSION_CODE}")
-                .addHeader("Agent", "Android")
+                .addHeader("Agent", BuildConfig.OS)
                 .addHeader("Accept-Language", "zh-CN")
                 .addHeader("Channel", BuildConfig.FLAVOR)
-                .addHeader("factoryCode", preferencesHelper.getDefaultFactoryCode())
+                .addHeader("factoryCode", preferencesHelper.getDefaultFactoryCode() ?: "")
                 .build()
         return chain.proceed(request)
     }

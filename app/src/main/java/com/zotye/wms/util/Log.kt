@@ -12,7 +12,7 @@ object Log {
     private const val TAG = "HeChuangJu->"
     private const val MATCH = "methodName:[%s]->lineNumber:[%d]->"
 
-    private const val SWITCH = BuildConfig.DEBUG
+    private var SWITCH = BuildConfig.DEBUG
 
     private fun buildHeader(): String {
         val stack = Thread.currentThread().stackTrace[4]
