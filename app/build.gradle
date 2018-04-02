@@ -7,6 +7,14 @@ def today = new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
 def appName = "WMS"
 
 android {
+    signingConfigs {
+        release {
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+        }
+    }
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
@@ -18,24 +26,43 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        develop {
+            debuggable true
+            minifyEnabled false
+            applicationIdSuffix ".test"
+            versionNameSuffix '_test'
+            signingConfig signingConfigs.release
+            buildConfigField('String', 'API_URL', '\"http://101.66.172.117:7010/wmsperformancetest/mobile_api/\"')
+            resValue "string", "app_name", "$appName-101test"
+        }
         debug {
-            postprocessing {
-                buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
-//                buildConfigField('String', 'API_URL', '\"http://jhwms.zotye.com:7001/wms/mobile_api/\"')
-//                buildConfigField('String', 'API_URL', '\"http://10.10.0.61:5678/mobile_api/\"')
-            }
+            debuggable true
+            minifyEnabled false
+            applicationIdSuffix ".debug"
+            versionNameSuffix '_debug'
+            signingConfig signingConfigs.release
+            buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
+            resValue "string", "app_name", "$appName-47"
+        }
+        preview {
+            debuggable true
+            minifyEnabled true
+            shrinkResources true
+            applicationIdSuffix ".preview"
+            versionNameSuffix '_preview'
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField('String', 'API_URL', '\"http://101.66.172.117:7010/wmssaptest/mobile_api/\"')
+            resValue "string", "app_name", "$appName-101"
         }
         release {
-            postprocessing {
-                removeUnusedCode false
-                removeUnusedResources false
-                obfuscate false
-                optimizeCode false
-                proguardFile 'proguard-rules.pro'
-                buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/wms/mobile_api/\"')
-//                buildConfigField('String', 'API_URL', '\"http://jhwms.zotye.com:7001/wms/mobile_api/\"')
-//                buildConfigField('String', 'API_URL', '\"http://10.10.0.61:5678/mobile_api/\"')
-            }
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField('String', 'API_URL', '\"http://jhwms.zotye.com:7001/wms/mobile_api/\"')
+            resValue "string", "app_name", appName
         }
     }
     dataBinding {
@@ -48,7 +75,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             if (variant.buildType.name) {
-                outputFileName = "${appName}_${variant.flavorName}_${today}_${rootProject.ext.git_version_name}_${variant.versionName}_${variant.buildType.name}.apk"
+                outputFileName = "${appName}_${variant.flavorName}_${today}_${rootProject.ext.git_version_name}_${variant.versionName}.apk"
                 println "Change output apk name ${outputFileName}"
             }
         }
@@ -91,11 +118,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation("com.squareup.retrofit2:converter-simplexml:$retrofit_version") {
-        exclude module: 'stax-api'
-        exclude module: 'stax'
-        exclude module: 'xpp3'
-    }
 
     //RxAndroid
     implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"

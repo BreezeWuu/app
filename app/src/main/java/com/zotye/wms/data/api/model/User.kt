@@ -5,7 +5,6 @@ import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 import com.zotye.wms.data.db.Converters
-import org.simpleframework.xml.Root
 
 
 /**
@@ -13,8 +12,6 @@ import org.simpleframework.xml.Root
  */
 @Entity
 @TypeConverters(Converters::class)
-@Root(strict = false)
-
 data class User(
         @PrimaryKey
         @SerializedName("userId") var userId: String = "", //819e5d46-1547-4be5-82a1-b6bc2cde312e
