@@ -2,21 +2,16 @@ package com.zotye.wms.ui.goods
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.api.model.receipt.ReceiveDetailDto
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemDeliveryNoteMaterialInfoBinding
-import com.zotye.wms.databinding.ItemDeliveryNoteReceiptMaterialInfoBinding
-import com.zotye.wms.databinding.ItemGoodsPackageBinding
 import com.zotye.wms.ui.common.BaseFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.simple_recycler_view.*
