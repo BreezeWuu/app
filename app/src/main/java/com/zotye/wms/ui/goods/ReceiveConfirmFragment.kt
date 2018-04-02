@@ -15,7 +15,6 @@ import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.api.model.PickListInfo
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemPickListInfoBinding
-import com.zotye.wms.databinding.ItemPickReceiptInfoBinding
 import com.zotye.wms.databinding.ItemUnReceivePackageBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
