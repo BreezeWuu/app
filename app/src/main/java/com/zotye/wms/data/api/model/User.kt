@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
+import com.zotye.wms.R
 import com.zotye.wms.data.db.Converters
 
 
@@ -19,7 +20,7 @@ data class User(
         @SerializedName("resources") var resources: List<Resource> = listOf()
 )
 
-data class Resource(
+class Resource(
         @SerializedName("name") var name: String = "", //部门信息维护
         @SerializedName("code") var code: String = "", //ORG-MAINTAIN
         @SerializedName("type") var type: String = "", //menu
@@ -30,7 +31,48 @@ data class Resource(
         @SerializedName("url") var url: String = "", //org/init
         @SerializedName("method") var method: String = "", //get
         @SerializedName("leaf") var leaf: Boolean = false //true
-)
+) {
+    fun getResourceDrawable(): Int {
+        return when (ResourceType.fromCode(code)) {
+            ResourceType.PALLETRECV -> {
+                R.drawable.ic_group_receipt
+            }
+            ResourceType.PACKAGERECV -> {
+                R.drawable.ic_package_receipt
+            }
+            ResourceType.STQUERY -> {
+                R.drawable.ic_package_query
+            }
+            ResourceType.ThreePLDELIVERY -> {
+                R.drawable.ic_loading_list
+            }
+            ResourceType.ThreePLPRCREATE -> {
+                R.drawable.ic_check_bad
+            }
+            ResourceType.ThreePLSOLDOUT -> {
+                R.drawable.ic_under_shell_confirm
+            }
+            ResourceType.PRODUCE_ANDROID -> {
+                R.drawable.ic_get_product
+            }
+            ResourceType.ThreePLRECVCONFIRM -> {
+                R.drawable.ic_receipt_confirm
+            }
+            ResourceType.ThreePLADJUST -> {
+                R.drawable.ic_unit_modify
+            }
+            ResourceType.STRICT_RECV -> {
+                R.drawable.ic_loading_list_receipt
+            }
+            ResourceType.NORMAL_RECV -> {
+                R.drawable.ic_delivery_note_receipt
+            }
+            else -> {
+                R.mipmap.ic_launcher_round
+            }
+        }
+    }
+}
 
 enum class ResourceType(val code: String) {
     PALLETRECV("PALLETRECV"),//组托收货

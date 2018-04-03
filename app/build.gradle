@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 def today = new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
-def appName = "WMS"
+def appName = "仓储管理系统"
 
 android {
     signingConfigs {
@@ -62,7 +62,7 @@ android {
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField('String', 'API_URL', '\"http://jhwms.zotye.com:7001/wms/mobile_api/\"')
-            resValue "string", "app_name", "${appName}仓储管理系统"
+            resValue "string", "app_name", "${appName}"
         }
     }
     dataBinding {
