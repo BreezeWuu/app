@@ -33,7 +33,16 @@ android {
             versionNameSuffix '_test'
             signingConfig signingConfigs.release
             buildConfigField('String', 'API_URL', '\"http://101.66.172.117:7010/wmsperformancetest/mobile_api/\"')
-            resValue "string", "app_name", "${appName}(101test)"
+            resValue "string", "app_name", "${appName}(101performancetest)"
+        }
+        performancetest {
+            debuggable true
+            minifyEnabled false
+            applicationIdSuffix ".performancetest"
+            versionNameSuffix '_performancetest'
+            signingConfig signingConfigs.release
+            buildConfigField('String', 'API_URL', '\"http://172.20.82.7:7001/wmsperformancetest/mobile_api/\"')
+            resValue "string", "app_name", "${appName}(172performancetest)"
         }
         debug {
             debuggable true

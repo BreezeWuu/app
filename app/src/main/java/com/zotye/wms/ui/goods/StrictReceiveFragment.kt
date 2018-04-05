@@ -177,7 +177,7 @@ class StrictReceiveFragment : BaseFragment(), ScannerDelegate, StrictReceiveCont
 
         init {
             addItemType(PickListInfo.TYPE_PICK_LIST, R.layout.item_pick_receipt_info)
-            addItemType(PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO, R.layout.item_pick_receipt_material_info);
+            addItemType(PickListMaterialInfo.TYPE_PICK_LIST_MATERIAL_INFO, R.layout.item_pick_receipt_material_info)
         }
 
         override fun convert(helper: BaseViewHolder, item: MultiItemEntity) {
