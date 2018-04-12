@@ -141,7 +141,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         //版本在7.0以上是不能直接通过uri访问的
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-            val apkUri = FileProvider.getUriForFile(context, "com.zotye.wms.fileProvider", file)
+            val apkUri = FileProvider.getUriForFile(context, "${BuildConfig.APPLICATION_ID}.fileProvider", file)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.setDataAndType(apkUri, "application/vnd.android.package-archive")
         } else {
