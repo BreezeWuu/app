@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.databinding.DataBindingUtil.bind
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +35,7 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
 
 
     override fun showDiaLog(msg: String?) {
-        AlertDialog.Builder(getContext()!!).setTitle(R.string.loading_info).setMessage(msg).setNegativeButton(R.string.ok,null) .show()
+        AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setMessage(msg).setNegativeButton(R.string.ok,null) .show()
     }
 
     @Inject
@@ -94,15 +95,13 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
     }
 
     override fun getBadGoodsNewsInfo(data: OutBoundBadNewsDto?,outBouncCheck:OutBoundCheckDto) {
-
         val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.outbound_check_bad_news, null)
         val badNum = codeInputView.findViewById<EditText>(R.id.badNum)
         val badNews = codeInputView.findViewById<EditText>(R.id.badNews)
         badNum.setText(data?.num)
         badNews.setText(data?.reason)
-        AlertDialog.Builder(getContext()!!).setTitle(R.string.bad_goods_info).setView(codeInputView)
+        AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setView(codeInputView)
                 .setNegativeButton(R.string.ok) { app, _ ->
-
                     if(badNum.text.toString().toInt()<outBouncCheck.totalNum!!.toInt() && badNum.text.toString().toInt() >= 0){
                         presenter.poerBadGoodsNewsInfo(outBouncCheck,badNum.text.toString(),badNews.text.toString())
                     } else {
@@ -113,15 +112,7 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
                     }
         }.setNeutralButton("删除"){
             _, _ ->
-                    if(badNum.text.toString().toInt() < outBouncCheck.totalNum!!.toInt() && badNum.text.toString().toInt() > 0){
-                        presenter.delBadGoodsNewsInfo(outBouncCheck)
-                    } else {
-                        var dialog:AlertDialog.Builder
-                        dialog = AlertDialog.Builder(context)
-                        dialog.setMessage("不良品数量有误,请重新输入!!!")
-                        dialog.setPositiveButton(R.string.ok,null).show()
-                    }
-
+                    presenter.delBadGoodsNewsInfo(outBouncCheck)
         }.setPositiveButton(R.string.cancel, null).show()
         showKeyboard(badNum)
         showKeyboard(badNews)
