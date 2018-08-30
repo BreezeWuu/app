@@ -95,7 +95,7 @@ enum class ResourceType(val code: String) {
     STRICT_RECV("STRICT_RECV"),//装车单收货
     NORMAL_RECV("NORMAL_RECV"),//交货单收货
     OUTBOUND_CHECK("OUTBOUND_CHECK"),//出库确认
-    TEST_RECV("TEST_RECV"),//不知道为毛就是改不了 先做实现功能吧
+    TEST_RECV("TEST_RECV"),//测试
     Unknown("");
 
 
