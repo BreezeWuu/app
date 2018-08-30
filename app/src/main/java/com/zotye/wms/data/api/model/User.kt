@@ -6,6 +6,7 @@ import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 import com.zotye.wms.R
 import com.zotye.wms.data.db.Converters
+import com.zotye.wms.util.Log
 
 
 /**
@@ -67,6 +68,12 @@ class Resource(
             ResourceType.NORMAL_RECV -> {
                 R.drawable.ic_delivery_note_receipt
             }
+            ResourceType.TEST_RECV -> {
+                R.mipmap.ic_launcher_round
+            }
+            ResourceType.OUTBOUND_CHECK -> {
+                R.mipmap.ic_launcher_round
+            }
             else -> {
                 R.mipmap.ic_launcher_round
             }
@@ -87,6 +94,8 @@ enum class ResourceType(val code: String) {
     STQUERY("STQUERY"),//包装查询
     STRICT_RECV("STRICT_RECV"),//装车单收货
     NORMAL_RECV("NORMAL_RECV"),//交货单收货
+    OUTBOUND_CHECK("OUTBOUND_CHECK"),//出库确认
+    TEST_RECV("TEST_RECV"),//不知道为毛就是改不了 先做实现功能吧
     Unknown("");
 
 

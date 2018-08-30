@@ -203,4 +203,14 @@
     <string name="choose_type">选择录入方式</string>
     <string name="pull_off_shelf_count_format">下架数量：</string>
     <string name="error_receive_number">收货数量必须大于0！</string>
+    <!--捡配单详情-->
+    <string name="pick_code">捡配单号:</string>
+    <string name="pick_num">数量：</string>
+    <string name="pick_news">捡配单信息为空</string>
+    <string name="loading_query_pick_info">正在查询捡配单信息&#8230;</string>
+    <string name="bad_goods_info">不良品信息</string>
+    <string name="bad_goods_num">不良品数量:</string>
+    <string name="bad_goods_news">不良品原因:</string>
+    <string name="loading_query_pick_Bad_info">正在查询不良品信息&#8230;</string>
+    <string name="loading_info">信息</string>
 </resources>

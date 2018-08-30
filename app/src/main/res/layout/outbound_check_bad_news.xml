@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="com.zotye.wms.R" />
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="info"
+            type="com.zotye.wms.data.api.model.outcheck.OutBoundBadNewsDto" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center_vertical|right"
+                android:text="@string/bad_goods_num"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/badNum"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="7"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:singleLine="true"
+                android:inputType="number"
+                android:text="@{info.num}"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:gravity="center_vertical|right"
+                android:text="@string/bad_goods_news"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/badNews"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="7"
+                android:maxLength="300"
+                android:gravity="center_vertical"
+                android:layout_width="0dp"
+                android:singleLine="true"
+                android:text="@{info.reason}"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

@@ -20,10 +20,7 @@ import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemHomeButtonBinding
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
-import com.zotye.wms.ui.goods.DeliveryNoteReceiveFragment
-import com.zotye.wms.ui.goods.GroupReceiveFragment
-import com.zotye.wms.ui.goods.ReceiveConfirmFragment
-import com.zotye.wms.ui.goods.StrictReceiveFragment
+import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.LoadingCreateFragment
@@ -112,6 +109,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         }
                         ResourceType.NORMAL_RECV -> {
                             fragment = DeliveryNoteReceiveFragment.newInstance(it.name)
+                        }
+                        ResourceType.OUTBOUND_CHECK -> {
+                            fragment = OutBoundCheckFragment.newInstance(it.name)
                         }
                         else -> {
                             return@OnItemChildClickListener
