@@ -1,18 +1,14 @@
 package com.zotye.wms.ui.goods
 
-import android.app.AlertDialog
-import android.content.Context
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.SimpleAjaxResult
 import com.zotye.wms.data.api.model.outcheck.OutBoundBadNewsDto
 import com.zotye.wms.data.api.model.outcheck.OutBoundCheckDto
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
-import com.zotye.wms.util.Log
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
