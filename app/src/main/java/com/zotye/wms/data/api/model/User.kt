@@ -69,13 +69,13 @@ class Resource(
                 R.drawable.ic_delivery_note_receipt
             }
             ResourceType.TEST_RECV -> {
-                R.mipmap.ic_launcher_round
+                R.mipmap.ic_launcher
             }
             ResourceType.OUTBOUND_CHECK -> {
-                R.mipmap.ic_launcher_round
+                R.drawable.ic_launcher
             }
             else -> {
-                R.mipmap.ic_launcher_round
+                R.mipmap.ic_launcher
             }
         }
     }
