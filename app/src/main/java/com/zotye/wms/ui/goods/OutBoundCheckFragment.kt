@@ -114,8 +114,8 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
             _, _ ->
                     presenter.delBadGoodsNewsInfo(outBouncCheck)
         }.setPositiveButton(R.string.cancel, null).show()
-        showKeyboard(badNum)
         showKeyboard(badNews)
+        showKeyboard(badNum)
     }
 
     class outBoundCheckAdapter(var pre:OutBoundCheckContract.OutBoundCheckPresenter): BaseQuickAdapter<OutBoundCheckDto, BaseViewHolder>(R.layout.outbound_check_info){
