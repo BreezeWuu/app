@@ -211,6 +211,7 @@
     <string name="bad_goods_info">不良品信息</string>
     <string name="bad_goods_num">不良品数量:</string>
     <string name="bad_goods_news">不良品原因:</string>
+    <string name="pick_news_list">捡配单信息列表:</string>
     <string name="loading_query_pick_Bad_info">正在查询不良品信息&#8230;</string>
     <string name="loading_info">信息</string>
 </resources>
