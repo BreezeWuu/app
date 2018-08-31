@@ -72,7 +72,7 @@ class Resource(
                 R.mipmap.ic_launcher
             }
             ResourceType.OUTBOUND_CHECK -> {
-                R.drawable.ic_launcher
+                R.drawable.ic_outbound
             }
             else -> {
                 R.mipmap.ic_launcher
