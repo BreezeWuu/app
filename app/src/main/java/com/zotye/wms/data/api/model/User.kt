@@ -69,7 +69,7 @@ class Resource(
                 R.drawable.ic_delivery_note_receipt
             }
             ResourceType.OUTBOUND_CHECK -> {
-                R.drawable.ic_outbound
+                R.drawable.ic_launcher
             }
             ResourceType.TEST_RECV -> {
                 R.mipmap.ic_launcher
