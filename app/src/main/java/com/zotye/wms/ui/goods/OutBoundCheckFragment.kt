@@ -102,7 +102,7 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
         badNews.setText(data?.reason)
         AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setView(codeInputView)
                 .setNegativeButton(R.string.ok) { app, _ ->
-                    if(badNum.text.toString().toInt()<outBouncCheck.totalNum!!.toInt() && badNum.text.toString().toInt() >= 0){
+                    if(badNum.text.toString().toInt()<outBouncCheck.totalNum!!.toInt() && badNum.text.toString().toInt() >= 0 && badNum.text.toString() != null && badNum.text.toString() != ""){
                         presenter.poerBadGoodsNewsInfo(outBouncCheck,badNum.text.toString(),badNews.text.toString())
                     } else {
                         var dialog:AlertDialog.Builder
