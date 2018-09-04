@@ -33,9 +33,6 @@ import com.zotye.wms.data.api.model.outcheck.OutBoundBadNewsDto
  */
 class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContract.OutBoundCheckView {
 
-
-
-
     @Inject
     lateinit var presenter : OutBoundCheckContract.OutBoundCheckPresenter
 
