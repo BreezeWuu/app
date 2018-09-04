@@ -133,16 +133,6 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
         }
     }
 
-    class badGoodsNewsAdapter: BaseQuickAdapter<OutBoundBadNewsDto, BaseViewHolder>(R.layout.outbound_check_bad_news){
-        //初始化FragmentDataBindingComponent
-        private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
-        override fun convert(helper: BaseViewHolder, item: OutBoundBadNewsDto) {
-            val dataBind = bind<OutboundCheckBadNewsBinding>(helper.itemView, fragmentDataBindingComponent)
-            //绑定数据
-            dataBind?.info = item
-        }
-    }
-
     override fun onDestroyView() {
         presenter.onDetach()
         super.onDestroyView()
