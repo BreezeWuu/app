@@ -34,9 +34,7 @@ import com.zotye.wms.data.api.model.outcheck.OutBoundBadNewsDto
 class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContract.OutBoundCheckView {
 
 
-    override fun showDiaLog(msg: String?) {
-        AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setMessage(msg).setNegativeButton(R.string.ok,null) .show()
-    }
+
 
     @Inject
     lateinit var presenter : OutBoundCheckContract.OutBoundCheckPresenter
@@ -49,6 +47,10 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
             fragment.arguments = bundle
             return fragment
         }
+    }
+
+    override fun showDiaLog(msg: String?) {
+        AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setMessage(msg).setNegativeButton(R.string.ok,null) .show()
     }
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
