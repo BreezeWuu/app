@@ -100,7 +100,7 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
         val badNews = codeInputView.findViewById<EditText>(R.id.badNews)
         badNum.setText(data?.num)
         badNews.setText(data?.reason)
-        AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setView(codeInputView)
+        AlertDialog.Builder(getContext()!!).setTitle(R.string.bad_goods_info).setView(codeInputView)
                 .setNegativeButton(R.string.ok) { app, _ ->
                     if(badNum.text.toString().toInt()<outBouncCheck.totalNum!!.toInt() && badNum.text.toString().toInt() >= 0 && badNum.text.toString() != null && badNum.text.toString() != ""){
                         presenter.poerBadGoodsNewsInfo(outBouncCheck,badNum.text.toString(),badNews.text.toString())
