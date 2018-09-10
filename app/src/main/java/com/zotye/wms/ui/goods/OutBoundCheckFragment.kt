@@ -47,7 +47,7 @@ class OutBoundCheckFragment: BaseFragment(), ScannerDelegate, OutBoundCheckContr
     }
 
     override fun showDiaLog(msg: String?) {
-        AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setMessage(msg).setNegativeButton(R.string.ok,null) .show()
+        AlertDialog.Builder(getContext()!!).setTitle(R.string.loading_info).setMessage(msg).setNegativeButton(R.string.ok,null) .show()
     }
 
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
