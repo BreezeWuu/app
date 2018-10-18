@@ -278,7 +278,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="7"
-                android:enabled="@{info.isEditEnable}"
+                android:enabled='@{"0".equals(info.modifyNumFlag)?false:true}'
                 android:gravity="center_vertical"
                 android:inputType="number|numberDecimal"
                 android:singleLine="true"

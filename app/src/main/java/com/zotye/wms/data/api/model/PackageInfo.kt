@@ -12,6 +12,10 @@ class PackageInfo(
         var code: String = "") {
 
     /**
+     * 修改表示0：不可以修改 1：可以修改
+     */
+    var modifyNumFlag: String? = null
+    /**
      * 是否是托盘
      */
     var isPallet: Boolean = false
