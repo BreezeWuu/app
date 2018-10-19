@@ -301,8 +301,9 @@
                 android:layout_width="0dp"
                 android:layout_height="56dp"
                 android:layout_weight="1"
+                android:enabled='@{info.isEditEnable?true:("0".equals(info.modifyNumFlag)?false:true)}'
                 android:text="@{info.isEditEnable?@string/save:@string/edit}"
-                android:textColor="@color/fb"
+                android:textColor='@{"0".equals(info.modifyNumFlag)?@color/ban:@color/fb}'
                 android:textSize="@dimen/font_large" />
 
             <android.support.v7.widget.AppCompatButton
