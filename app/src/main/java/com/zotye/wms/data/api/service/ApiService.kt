@@ -5,6 +5,8 @@ import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
+import com.zotye.wms.data.api.model.outcheck.OutBoundBadNewsDto
+import com.zotye.wms.data.api.model.outcheck.OutBoundCheckDto
 import com.zotye.wms.data.api.model.receipt.GoodsReceiveResponse
 import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.picking.PickReceiptDto
@@ -115,5 +117,26 @@ interface ApiService {
 
     @POST("bar_code/DeliveryNoteReceipt/normalNoteReceive")
     fun normalNoteReceive(@Body recvInfo: MobileNoteRecvRequest): Call<ApiResponse<ReceiveConfirmResponse>>
+
+    //新增获取捡配单信息
+    @FormUrlEncoded
+    @POST("bar_code/outboundInspection/getDataByCode")
+    fun getPickInfo(@Field("userId") userId: String, @Field("code") barCode: String): Call<ApiResponse<List<OutBoundCheckDto>>>
+
+    //获取物料不良品信息
+    @FormUrlEncoded
+    @POST("bar_code/outboundInspection/getFailedInfo")
+    fun getBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String,@Field("materialId") materialId: String,@Field("supplierId") supplierId: String,@Field("batchNum") batchNum: String):Call<ApiResponse<OutBoundBadNewsDto>>
+
+    //更新不良品信息
+    @FormUrlEncoded
+    @POST("bar_code/outboundInspection/operFailedInfo")
+    fun operBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String,@Field("materialId") materialId: String,@Field("supplierId") supplierId: String,@Field("batchNum") batchNum: String,@Field("num") num: String,@Field("reason") reason: String):Call<ApiResponse<String>>
+
+    //删除不良品信息
+    @FormUrlEncoded
+    @POST("bar_code/outboundInspection/delFailedInfo")
+    fun delBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String,@Field("materialId") materialId: String,@Field("supplierId") supplierId: String,@Field("batchNum") batchNum: String):Call<ApiResponse<String>>
+
 
 }

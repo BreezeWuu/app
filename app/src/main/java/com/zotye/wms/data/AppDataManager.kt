@@ -14,6 +14,7 @@ import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
 import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
+import com.zotye.wms.data.api.response.ReceiveConfirmResponse
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
 import retrofit2.Call
@@ -74,6 +75,18 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun getSlInfoForDeliveryNote(userId: String, noteCode: String) = apiHelper.getSlInfoForDeliveryNote(userId, noteCode)
 
     override fun normalNoteReceive(recvInfo: MobileNoteRecvRequest) = apiHelper.normalNoteReceive(recvInfo)
+
+    //新增捡配单信息
+    override fun getPickInfo(userId: String, barCode: String) = apiHelper.getPickInfo(userId,barCode)
+    //新增获取不良品信息
+    override fun getBadGoodsNews(userId: String, barCode: String, materialId:String,supplierId:String,batchNum:String) = apiHelper.getBadGoodsNews(userId,barCode,materialId,supplierId,batchNum)
+    //新增更新不良品信息
+    override fun operBadGoodsNews(userId: String,barCode: String,materialId: String,supplierId: String,batchNum: String,num: String, reason: String) = apiHelper.operBadGoodsNews(userId, barCode, materialId,supplierId,batchNum,num,reason)
+    //新增删除不良品信息
+    override fun delBadGoodsNews(userId: String, barCode: String, materialId:String,supplierId:String,batchNum:String) = apiHelper.delBadGoodsNews(userId,barCode,materialId,supplierId,batchNum)
+
+
+
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 

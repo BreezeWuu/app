@@ -1,9 +1,6 @@
 package com.zotye.wms.di.module
 
-import com.zotye.wms.ui.goods.DeliveryNoteReceiveContract
-import com.zotye.wms.ui.goods.GroupReceiveContract
-import com.zotye.wms.ui.goods.ReceiveConfirmContract
-import com.zotye.wms.ui.goods.StrictReceiveContract
+import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.main.MainContract
 import com.zotye.wms.ui.picking.ChooseCostCenterContract
 import com.zotye.wms.ui.picking.PickingContract
@@ -61,4 +58,7 @@ class PresenterModule {
     @Provides
     fun provideDeliveryNoteReceivePresenter(presenter: DeliveryNoteReceiveContract.DeliveryNoteReceivePresenterImpl): DeliveryNoteReceiveContract.DeliveryNoteReceivePresenter = presenter
 
+    //新增Presenter
+    @Provides
+    fun provideOutBoundCheckPresenter(presenter: OutBoundCheckContract.OutBoundCheckPresenterImpl): OutBoundCheckContract.OutBoundCheckPresenter = presenter
 }
