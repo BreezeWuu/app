@@ -138,5 +138,14 @@ interface ApiService {
     @POST("bar_code/outboundInspection/delFailedInfo")
     fun delBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String,@Field("materialId") materialId: String,@Field("supplierId") supplierId: String,@Field("batchNum") batchNum: String):Call<ApiResponse<String>>
 
+    //上架确认
+    @FormUrlEncoded
+    @POST("bar_code/checkStSlInfo")
+    fun checkStSlInfo(@Field("spCode") spCode: String, @Field("stCode") stCode: String):Call<ApiResponse<String>>
+
+    //上线确认
+    @FormUrlEncoded
+    @POST("bar_code/checkPickStationInfo")
+    fun checkPickStationInfo(@Field("pickCode") pickCode: String, @Field("stationCode") stationCode: String):Call<ApiResponse<String>>
 
 }

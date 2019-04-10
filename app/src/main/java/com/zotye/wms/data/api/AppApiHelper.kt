@@ -71,14 +71,17 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     //新增获取捡配单信息
     override fun getPickInfo(userId: String, barCode: String) = apiService.getPickInfo(userId, barCode)
+
     //新增不良品信息
-    override fun getBadGoodsNews(userId: String, barCode: String, materialId:String,supplierId:String,batchNum:String) = apiService.getBadGoodsNews(userId,barCode,materialId,supplierId,batchNum)
+    override fun getBadGoodsNews(userId: String, barCode: String, materialId: String, supplierId: String, batchNum: String) = apiService.getBadGoodsNews(userId, barCode, materialId, supplierId, batchNum)
+
     //新增更新不良品信息
-    override fun operBadGoodsNews(userId: String,barCode: String,materialId: String,supplierId: String,batchNum: String,num: String, reason: String) = apiService.operBadGoodsNews(userId, barCode, materialId,supplierId,batchNum,num,reason)
+    override fun operBadGoodsNews(userId: String, barCode: String, materialId: String, supplierId: String, batchNum: String, num: String, reason: String) = apiService.operBadGoodsNews(userId, barCode, materialId, supplierId, batchNum, num, reason)
+
     //新增删除不良品信息
-    override fun delBadGoodsNews(userId: String, barCode: String, materialId:String,supplierId:String,batchNum:String) = apiService.delBadGoodsNews(userId,barCode,materialId,supplierId,batchNum)
+    override fun delBadGoodsNews(userId: String, barCode: String, materialId: String, supplierId: String, batchNum: String) = apiService.delBadGoodsNews(userId, barCode, materialId, supplierId, batchNum)
 
+    override fun checkStSlInfo(spCode: String, stCode: String) = apiService.checkStSlInfo(spCode, stCode)
 
-
-
+    override fun checkPickStationInfo(pickCode: String, stationCode: String) = apiService.checkPickStationInfo(pickCode, stationCode)
 }
