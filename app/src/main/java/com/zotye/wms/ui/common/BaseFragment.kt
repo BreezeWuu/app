@@ -2,7 +2,6 @@ package com.zotye.wms.ui.common
 
 import android.app.ProgressDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment

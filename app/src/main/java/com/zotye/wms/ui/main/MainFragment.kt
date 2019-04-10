@@ -128,7 +128,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                 }
             }
         }
-        swipeRefreshLayout.onRefresh {
+        swipeRefreshLayout.setOnRefreshListener {
             presenter.updateUserResources()
         }
     }
