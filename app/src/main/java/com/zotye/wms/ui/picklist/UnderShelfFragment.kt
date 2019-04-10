@@ -170,14 +170,14 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                                     checkDialog?.show()
                                 }.setNegativeButton(R.string.cancel) { _, _ ->
                                     it.isAddedPackage = true
-                                    pickListRecyclerView.adapter.notifyItemChanged(position)
+                                    pickListRecyclerView.adapter?.notifyItemChanged(position)
                                 }.show()
                     } else
                         it.isAddedPackage = true
                 } else
                     it.isAddedPackage = true
                 it.checkCount = checkCount
-                pickListRecyclerView.adapter.notifyItemChanged(position)
+                pickListRecyclerView.adapter?.notifyItemChanged(position)
                 hideKeyboard(editText)
                 checkDialog?.dismiss()
             }
