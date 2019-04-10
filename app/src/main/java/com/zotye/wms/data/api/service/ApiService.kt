@@ -126,26 +126,26 @@ interface ApiService {
     //获取物料不良品信息
     @FormUrlEncoded
     @POST("bar_code/outboundInspection/getFailedInfo")
-    fun getBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String,@Field("materialId") materialId: String,@Field("supplierId") supplierId: String,@Field("batchNum") batchNum: String):Call<ApiResponse<OutBoundBadNewsDto>>
+    fun getBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String, @Field("materialId") materialId: String, @Field("supplierId") supplierId: String, @Field("batchNum") batchNum: String): Call<ApiResponse<OutBoundBadNewsDto>>
 
     //更新不良品信息
     @FormUrlEncoded
     @POST("bar_code/outboundInspection/operFailedInfo")
-    fun operBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String,@Field("materialId") materialId: String,@Field("supplierId") supplierId: String,@Field("batchNum") batchNum: String,@Field("num") num: String,@Field("reason") reason: String):Call<ApiResponse<String>>
+    fun operBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String, @Field("materialId") materialId: String, @Field("supplierId") supplierId: String, @Field("batchNum") batchNum: String, @Field("num") num: String, @Field("reason") reason: String): Call<ApiResponse<String>>
 
     //删除不良品信息
     @FormUrlEncoded
     @POST("bar_code/outboundInspection/delFailedInfo")
-    fun delBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String,@Field("materialId") materialId: String,@Field("supplierId") supplierId: String,@Field("batchNum") batchNum: String):Call<ApiResponse<String>>
+    fun delBadGoodsNews(@Field("userId") userId: String, @Field("code") barCode: String, @Field("materialId") materialId: String, @Field("supplierId") supplierId: String, @Field("batchNum") batchNum: String): Call<ApiResponse<String>>
 
-    //上架确认
+    /**上架确认*/
     @FormUrlEncoded
     @POST("bar_code/checkStSlInfo")
-    fun checkStSlInfo(@Field("spCode") spCode: String, @Field("stCode") stCode: String):Call<ApiResponse<String>>
+    fun checkStSlInfo(@Field("spCode") spCode: String, @Field("stCode") stCode: String): Call<ApiResponse<String>>
 
-    //上线确认
+    /**上线确认*/
     @FormUrlEncoded
     @POST("bar_code/checkPickStationInfo")
-    fun checkPickStationInfo(@Field("pickCode") pickCode: String, @Field("stationCode") stationCode: String):Call<ApiResponse<String>>
+    fun checkPickStationInfo(@Field("pickCode") pickCode: String, @Field("stationCode") stationCode: String): Call<ApiResponse<String>>
 
 }
