@@ -95,6 +95,11 @@ class StorageUnitOnlineFragment : BaseFragment(), StorageUnitOnlineContract.Stor
         }
     }
 
+    override fun onlineConfirmSucceed() {
+        pickListCode.text = ""
+        stCode.text = ""
+    }
+
     override fun onDestroyView() {
         presenter.onDetach()
         super.onDestroyView()

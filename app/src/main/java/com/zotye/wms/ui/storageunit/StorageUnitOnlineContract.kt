@@ -19,7 +19,7 @@ import javax.inject.Inject
 object StorageUnitOnlineContract {
 
     interface StorageUnitOnlineView : MvpView {
-//        fun getStorageUnitInfo(barCodeInfo: BarcodeInfo)
+        fun onlineConfirmSucceed()
     }
 
     interface StorageUnitOnlinePresenter : MvpPresenter<StorageUnitOnlineView> {
@@ -42,6 +42,7 @@ object StorageUnitOnlineContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed() && it.data != null) {
+                                        mvpView?.onlineConfirmSucceed()
                                         mvpView?.showMessage(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
