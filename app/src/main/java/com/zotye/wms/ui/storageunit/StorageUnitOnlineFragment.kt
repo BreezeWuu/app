@@ -61,6 +61,7 @@ class StorageUnitOnlineFragment : BaseFragment(), StorageUnitOnlineContract.Stor
             val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
             editText.setHint(R.string.picklist_code)
+            editText.setText(pickListCode.text)
             AlertDialog.Builder(context!!).setTitle(R.string.action_input_picklist_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 pickListCode.text = (editText.text.toString())
                 hideKeyboard(editText)
@@ -80,6 +81,7 @@ class StorageUnitOnlineFragment : BaseFragment(), StorageUnitOnlineContract.Stor
             val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
             editText.setHint(R.string.st_code)
+            editText.setText(stCode.text)
             AlertDialog.Builder(context!!).setTitle(R.string.action_input_station_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 stCode.text = (editText.text.toString())
                 hideKeyboard(editText)
