@@ -24,6 +24,7 @@ import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.LoadingCreateFragment
+import com.zotye.wms.ui.picklist.ShelfConfirmFragment
 import com.zotye.wms.ui.picklist.UnderShelfFragment
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.StorageUnitModifyFragment
@@ -114,7 +115,7 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                             fragment = OutBoundCheckFragment.newInstance(it.name)
                         }
                         ResourceType.STSLINFO_CHECK -> {
-                            fragment = StorageUnitOnlineFragment.newInstance(it.name)
+                            fragment = ShelfConfirmFragment.newInstance(it.name)
                         }
                         ResourceType.PICKSTATIONINFO_CHECK -> {
                             fragment = StorageUnitOnlineFragment.newInstance(it.name)

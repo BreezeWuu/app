@@ -6,6 +6,7 @@ import com.zotye.wms.ui.picking.ChooseCostCenterFragment
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.LoadingCreateFragment
+import com.zotye.wms.ui.picklist.ShelfConfirmFragment
 import com.zotye.wms.ui.picklist.UnderShelfFragment
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.StorageUnitModifyFragment
@@ -66,4 +67,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeStorageUnitOnlineFragment(): StorageUnitOnlineFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeShelfConfirmFragment(): ShelfConfirmFragment
 }

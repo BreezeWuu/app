@@ -6,6 +6,7 @@ import com.zotye.wms.ui.picking.ChooseCostCenterContract
 import com.zotye.wms.ui.picking.PickingContract
 import com.zotye.wms.ui.picklist.CheckBadProductContract
 import com.zotye.wms.ui.picklist.LoadingCreateContract
+import com.zotye.wms.ui.picklist.ShelfConfirmContract
 import com.zotye.wms.ui.picklist.UnderShelfContract
 import com.zotye.wms.ui.storageunit.StorageUnitInfoContract
 import com.zotye.wms.ui.storageunit.StorageUnitModifyContract
@@ -66,5 +67,7 @@ class PresenterModule {
     @Provides
     fun provideStorageUnitOnlinePresenter(presenter: StorageUnitOnlineContract.StorageUnitOnlinePresenterImpl): StorageUnitOnlineContract.StorageUnitOnlinePresenter = presenter
 
+    @Provides
+    fun provideShelfConfirmPresenter(presenter: ShelfConfirmContract.ShelfConfirmPresenterImpl): ShelfConfirmContract.ShelfConfirmPresenter = presenter
 
 }

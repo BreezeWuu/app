@@ -200,7 +200,10 @@
     <string name="child_material_detail">子附件详情</string>
     <string name="delivery_note_receive_succeed">交货单收货成功！</string>
     <string name="error_no_available_delivery_note_info">交货单信息为空，请先扫描交货单单！</string>
+    <string name="storage_unit_code">库位码</string>
+    <string name="storage_unit_code_format">库位码：</string>
     <string name="action_input_storage_unit_code">输入库位码</string>
+    <string name="action_input_storage_unit_code_title">请输入库位码</string>
     <string name="action_scanner_storage_unit_code">扫描库位码</string>
     <string name="choose_type">选择录入方式</string>
     <string name="pull_off_shelf_count_format">下架数量：</string>
@@ -222,4 +225,9 @@
     <string name="action_storage_unit_online">上线确认</string>
     <string name="loading_submit_online_confirm">正在进行上线确认……</string>
     <string name="st_code">工位码</string>
+    <string name="input_package_code">输入包装单号</string>
+    <string name="action_scanner_package_code">扫描包装单号</string>
+    <string name="title_shelf_confirm">上架确认</string>
+    <string name="error_empty_package">包装单号为空，请先扫描包装单号！</string>
+    <string name="error_empty_st_code">库位码信息为空，请先扫描库位码！</string>
 </resources>
