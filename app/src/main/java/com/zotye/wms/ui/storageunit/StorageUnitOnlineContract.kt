@@ -41,7 +41,7 @@ object StorageUnitOnlineContract {
                             override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
-                                    if (it.isSucceed() && it.data != null) {
+                                    if (it.isSucceed()) {
                                         mvpView?.onlineConfirmSucceed()
                                         mvpView?.showMessage(it.message)
                                     } else {

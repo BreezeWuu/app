@@ -141,7 +141,7 @@ interface ApiService {
     /**上架确认*/
     @FormUrlEncoded
     @POST("bar_code/checkStSlInfo")
-    fun checkStSlInfo(@Field("spCode") spCode: String, @Field("stCode") stCode: String): Call<ApiResponse<String>>
+    fun checkStSlInfo(@Field("stCode") stCode: String,@Field("spCode") spCode: String): Call<ApiResponse<String>>
 
     /**上线确认*/
     @FormUrlEncoded

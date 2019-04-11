@@ -11,10 +11,8 @@ import com.zotye.wms.R
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
-import com.zotye.wms.ui.storageunit.StorageUnitOnlineContract
-import com.zotye.wms.ui.storageunit.StorageUnitOnlineFragment
 import kotlinx.android.synthetic.main.fragment_base.*
-import kotlinx.android.synthetic.main.fragment_storage_unit_online.*
+import kotlinx.android.synthetic.main.fragment_shelf_confirm.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import javax.inject.Inject
 
@@ -45,7 +43,7 @@ class ShelfConfirmFragment : BaseFragment(), ShelfConfirmContract.ShelfConfirmVi
         presenter.onAttach(this)
         toolbar_base.visibility = View.VISIBLE
         toolbar_base.title = arguments?.getString("title")
-                ?: getString(R.string.action_storage_unit_online)
+                ?: getString(R.string.title_shelf_confirm)
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
         toolbar_base.setNavigationOnClickListener {
             activity?.onBackPressed()
