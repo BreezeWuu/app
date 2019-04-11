@@ -214,4 +214,9 @@
     <string name="pick_news_list">捡配单信息列表:</string>
     <string name="loading_query_pick_Bad_info">正在查询不良品信息&#8230;</string>
     <string name="loading_info">信息</string>
+    <string name="st_code_format">工位码：</string>
+    <string name="action_input_st_code">输入工位码</string>
+    <string name="action_scanner_st_code">扫描工位码</string>
+    <string name="action_storage_unit_online">上线确认</string>
+    <string name="loading_submit_online_confirm">正在进行上线确认……</string>
 </resources>

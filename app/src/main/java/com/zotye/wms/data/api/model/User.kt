@@ -96,8 +96,8 @@ enum class ResourceType(val code: String) {
     NORMAL_RECV("NORMAL_RECV"),//交货单收货
     OUTBOUND_CHECK("OUTBOUND_CHECK"),//出库确认
 
-    STSLINFO_CHECK("STSLINFO_CHECK"),//上架确认
-    PICKSTATIONINFO_CHECK("OUTBOUND_CHECK"),//上线确认
+    STSLINFO_CHECK("sjqr"),//上架确认
+    PICKSTATIONINFO_CHECK("sxqr"),//上线确认
     TEST_RECV("TEST_RECV"),//测试
     Unknown("");
 

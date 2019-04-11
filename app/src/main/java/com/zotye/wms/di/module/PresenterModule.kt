@@ -9,6 +9,7 @@ import com.zotye.wms.ui.picklist.LoadingCreateContract
 import com.zotye.wms.ui.picklist.UnderShelfContract
 import com.zotye.wms.ui.storageunit.StorageUnitInfoContract
 import com.zotye.wms.ui.storageunit.StorageUnitModifyContract
+import com.zotye.wms.ui.storageunit.StorageUnitOnlineContract
 import com.zotye.wms.ui.user.LoginContract
 import dagger.Module
 import dagger.Provides
@@ -61,4 +62,9 @@ class PresenterModule {
     //新增Presenter
     @Provides
     fun provideOutBoundCheckPresenter(presenter: OutBoundCheckContract.OutBoundCheckPresenterImpl): OutBoundCheckContract.OutBoundCheckPresenter = presenter
+
+    @Provides
+    fun provideStorageUnitOnlinePresenter(presenter: StorageUnitOnlineContract.StorageUnitOnlinePresenterImpl): StorageUnitOnlineContract.StorageUnitOnlinePresenter = presenter
+
+
 }
