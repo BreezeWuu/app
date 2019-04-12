@@ -21,6 +21,7 @@ import com.zotye.wms.databinding.ItemHomeButtonBinding
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.*
+import com.zotye.wms.ui.manualboard.ManualBoardOutFragment
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.LoadingCreateFragment
@@ -119,6 +120,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         }
                         ResourceType.PICKSTATIONINFO_CHECK -> {
                             fragment = StorageUnitOnlineFragment.newInstance(it.name)
+                        }
+                        ResourceType.MANUAL_BOARD_OUT -> {
+                            fragment = ManualBoardOutFragment.newInstance(it.name)
                         }
                         else -> {
                             return@OnItemChildClickListener

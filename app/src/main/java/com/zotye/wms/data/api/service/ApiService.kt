@@ -157,6 +157,6 @@ interface ApiService {
     /**手工看板出库*/
     @FormUrlEncoded
     @POST("/ManualBoard/saveManualBoardOut")
-    fun saveManualBoardOut(@Field("pickCode") pickCode: String, @Field("stationCode") stationCode: String): Call<ApiResponse<List<MaterialPullResult>>>
+    fun saveManualBoardOut(@Body manualBoardDeliveryDto: List<ManualBoardDeliveryDto>): Call<ApiResponse<List<MaterialPullResult>>>
 
 }

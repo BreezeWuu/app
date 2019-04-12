@@ -12,6 +12,16 @@ import com.zotye.wms.ui.common.BaseFragment
  */
 class ManualBoardOutFragment : BaseFragment() {
 
+    companion object {
+        fun newInstance(title: String): ManualBoardOutFragment {
+            val fragment = ManualBoardOutFragment()
+            val bundle = Bundle()
+            bundle.putString("title", title)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+
     override fun onCreateContentView(inflater: LayoutInflater, container: ViewGroup, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_manual_board_out, container, false)
     }
