@@ -83,7 +83,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             if (variant.buildType.name) {
-                outputFileName = "${appName}_${variant.flavorName}_${today}_${rootProject.ext.git_version_name}_${variant.versionName}.apk"
+                outputFileName = "${appName}_${variant.flavorName}_${today}_${rootProject.ext.git_branch_name}_${rootProject.ext.git_version_name}_${variant.versionName}.apk"
                 println "Change output apk name ${outputFileName}"
             }
         }
