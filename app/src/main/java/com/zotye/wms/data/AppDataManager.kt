@@ -85,8 +85,9 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     //新增删除不良品信息
     override fun delBadGoodsNews(userId: String, barCode: String, materialId:String,supplierId:String,batchNum:String) = apiHelper.delBadGoodsNews(userId,barCode,materialId,supplierId,batchNum)
 
+    override fun checkStSlInfo(spCode: String, stCode: String)=apiHelper.checkStSlInfo(spCode, stCode)
 
-
+    override fun checkPickStationInfo(pickCode: String, stationCode: String)=apiHelper.checkPickStationInfo(pickCode, stationCode)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 

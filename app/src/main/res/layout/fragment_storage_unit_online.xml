@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/picklist_code_format" />
+
+            <TextView
+                android:id="@+id/pickListCode"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/codeInput"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_normal"
+            android:text="@string/action_input_picklist"
+            android:textSize="22dp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/codeScanner"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_height="@dimen/button_height_normal"
+            android:text="@string/action_scanner_pick_list_code"
+            android:textSize="22dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/st_code_format" />
+
+            <TextView
+                android:id="@+id/stCode"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/stCodeInput"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_normal"
+            android:text="@string/action_input_st_code"
+            android:textSize="22dp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/stCodeScanner"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_normal"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/action_scanner_st_code"
+            android:textSize="22dp" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/onlineSubmit"
+        style="@style/Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/button_height_normal"
+        android:layout_margin="@dimen/spacing_small"
+        android:text="@string/action_storage_unit_online"
+        android:textSize="22dp" />
+</LinearLayout>

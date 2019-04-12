@@ -24,14 +24,15 @@ import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.CheckBadProductFragment
 import com.zotye.wms.ui.picklist.LoadingCreateFragment
+import com.zotye.wms.ui.picklist.ShelfConfirmFragment
 import com.zotye.wms.ui.picklist.UnderShelfFragment
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.StorageUnitModifyFragment
+import com.zotye.wms.ui.storageunit.StorageUnitOnlineFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.jetbrains.anko.appcompat.v7.coroutines.onMenuItemClick
 import org.jetbrains.anko.appcompat.v7.titleResource
-import org.jetbrains.anko.support.v4.onRefresh
 import javax.inject.Inject
 
 /**
@@ -112,6 +113,12 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         }
                         ResourceType.OUTBOUND_CHECK -> {
                             fragment = OutBoundCheckFragment.newInstance(it.name)
+                        }
+                        ResourceType.STSLINFO_CHECK -> {
+                            fragment = ShelfConfirmFragment.newInstance(it.name)
+                        }
+                        ResourceType.PICKSTATIONINFO_CHECK -> {
+                            fragment = StorageUnitOnlineFragment.newInstance(it.name)
                         }
                         else -> {
                             return@OnItemChildClickListener
