@@ -6,6 +6,8 @@ import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
+import com.zotye.wms.data.api.model.MaterialPullResult
 import com.zotye.wms.data.api.model.ValidSlInfoDto
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
@@ -77,17 +79,24 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun normalNoteReceive(recvInfo: MobileNoteRecvRequest) = apiHelper.normalNoteReceive(recvInfo)
 
     //新增捡配单信息
-    override fun getPickInfo(userId: String, barCode: String) = apiHelper.getPickInfo(userId,barCode)
+    override fun getPickInfo(userId: String, barCode: String) = apiHelper.getPickInfo(userId, barCode)
+
     //新增获取不良品信息
-    override fun getBadGoodsNews(userId: String, barCode: String, materialId:String,supplierId:String,batchNum:String) = apiHelper.getBadGoodsNews(userId,barCode,materialId,supplierId,batchNum)
+    override fun getBadGoodsNews(userId: String, barCode: String, materialId: String, supplierId: String, batchNum: String) = apiHelper.getBadGoodsNews(userId, barCode, materialId, supplierId, batchNum)
+
     //新增更新不良品信息
-    override fun operBadGoodsNews(userId: String,barCode: String,materialId: String,supplierId: String,batchNum: String,num: String, reason: String) = apiHelper.operBadGoodsNews(userId, barCode, materialId,supplierId,batchNum,num,reason)
+    override fun operBadGoodsNews(userId: String, barCode: String, materialId: String, supplierId: String, batchNum: String, num: String, reason: String) = apiHelper.operBadGoodsNews(userId, barCode, materialId, supplierId, batchNum, num, reason)
+
     //新增删除不良品信息
-    override fun delBadGoodsNews(userId: String, barCode: String, materialId:String,supplierId:String,batchNum:String) = apiHelper.delBadGoodsNews(userId,barCode,materialId,supplierId,batchNum)
+    override fun delBadGoodsNews(userId: String, barCode: String, materialId: String, supplierId: String, batchNum: String) = apiHelper.delBadGoodsNews(userId, barCode, materialId, supplierId, batchNum)
 
-    override fun checkStSlInfo(spCode: String, stCode: String)=apiHelper.checkStSlInfo(spCode, stCode)
+    override fun checkStSlInfo(spCode: String, stCode: String) = apiHelper.checkStSlInfo(spCode, stCode)
 
-    override fun checkPickStationInfo(pickCode: String, stationCode: String)=apiHelper.checkPickStationInfo(pickCode, stationCode)
+    override fun checkPickStationInfo(pickCode: String, stationCode: String) = apiHelper.checkPickStationInfo(pickCode, stationCode)
+
+    override fun getManualBoardLis(code: String, materialNum: String) = apiHelper.getManualBoardLis(code, materialNum)
+
+    override fun saveManualBoardOut(manualBoardDeliveryDto: List<ManualBoardDeliveryDto>) = apiHelper.saveManualBoardOut(manualBoardDeliveryDto)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 

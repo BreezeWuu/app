@@ -1,15 +1,13 @@
 package com.zotye.wms.data.api
 
-import com.zotye.wms.data.api.model.ValidSlInfoDto
+import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
-import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
-import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
+import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
 import com.zotye.wms.data.api.service.ApiService
-import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -84,4 +82,8 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun checkStSlInfo(spCode: String, stCode: String) = apiService.checkStSlInfo(spCode, stCode)
 
     override fun checkPickStationInfo(pickCode: String, stationCode: String) = apiService.checkPickStationInfo(pickCode, stationCode)
+
+    override fun getManualBoardLis(code: String, materialNum: String)=apiService.getManualBoardLis(code, materialNum)
+
+    override fun saveManualBoardOut(manualBoardDeliveryDto: List<ManualBoardDeliveryDto>)=apiService.saveManualBoardOut(manualBoardDeliveryDto)
 }
