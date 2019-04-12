@@ -43,6 +43,15 @@ android {
             buildConfigField('String', 'API_URL', '\"http://172.20.82.7:7001/wmsperformancetest/mobile_api/\"')
             resValue "string", "app_name", "${appName}(172performancetest)"
         }
+        local {
+            debuggable true
+            minifyEnabled false
+            applicationIdSuffix ".local"
+            versionNameSuffix '_local'
+            signingConfig signingConfigs.release
+            buildConfigField('String', 'API_URL', '\"http://192.168.43.103:8080/les/mobile_api/\"')
+            resValue "string", "app_name", "${appName}(local)"
+        }
         debug {
             debuggable true
             minifyEnabled false
@@ -54,14 +63,13 @@ android {
         }
         preview {
             debuggable true
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
             applicationIdSuffix ".preview"
             versionNameSuffix '_preview'
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            buildConfigField('String', 'API_URL', '\"http://101.66.172.117:7010/wmssaptest/mobile_api/\"')
-            resValue "string", "app_name", "${appName}(101)"
+            buildConfigField('String', 'API_URL', '\"http://10.230.69.34:8080/wms/mobile_api/\"')
+            resValue "string", "app_name", "${appName}(10)"
         }
         release {
             debuggable false
