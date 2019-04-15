@@ -151,12 +151,12 @@ interface ApiService {
 
     /**获取手工看板信息*/
     @FormUrlEncoded
-    @POST("/ManualBoard/getManualBoardLis")
+    @POST("bar_code/ManualBoard/getManualBoardList")
     fun getManualBoardLis(@Field("code") code: String,@Field("materialNum") materialNum: String): Call<ApiResponse<List<ManualBoardDeliveryDto>>>
 
     /**手工看板出库*/
     @FormUrlEncoded
-    @POST("/ManualBoard/saveManualBoardOut")
+    @POST("bar_code/ManualBoard/saveManualBoardOut")
     fun saveManualBoardOut(@Body manualBoardDeliveryDto: List<ManualBoardDeliveryDto>): Call<ApiResponse<List<MaterialPullResult>>>
 
 }
