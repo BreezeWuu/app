@@ -22,7 +22,7 @@ object ManualBoardOutContract {
 
     interface ManualBoardOutView : MvpView {
         fun getManualBoardList(manualBoardList: List<ManualBoardDeliveryDto>)
-        fun saveManualBoardOutSucceed(result: List<MaterialPullResult>)
+        fun saveManualBoardOutSucceed(message:String,result: List<MaterialPullResult>)
     }
 
     interface ManualBoardOutPresenter : MvpPresenter<ManualBoardOutView> {
@@ -72,10 +72,10 @@ object ManualBoardOutContract {
                             override fun onResponse(call: Call<ApiResponse<List<MaterialPullResult>>>?, response: Response<ApiResponse<List<MaterialPullResult>>>) {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
-                                    if (it.isSucceed() && it.data != null) {
-                                        mvpView?.saveManualBoardOutSucceed(it.data!!)
+                                    if (it.isSucceed()) {
+                                        mvpView?.saveManualBoardOutSucceed(it.message,it.data!!)
                                     } else {
-                                        mvpView?.showMessage(it.message)
+                                        mvpView?.showMessage("手工看板出库失败！")
                                     }
                                 }
                             }

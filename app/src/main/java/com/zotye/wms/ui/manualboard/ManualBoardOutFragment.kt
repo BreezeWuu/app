@@ -1,9 +1,12 @@
 package com.zotye.wms.ui.manualboard
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +29,8 @@ import kotlinx.android.synthetic.main.fragment_manual_board_out.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -92,7 +97,21 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
             showKeyboard(editText)
         }
         outConfirm.setOnClickListener {
-            presenter.saveManualBoardOut((manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data)
+            val calendar = Calendar.getInstance()
+            val dateDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                val dialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                    val selectDate = Date(year - 1900, month, dayOfMonth, hourOfDay, minute)
+                    val endTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(selectDate).toString()
+                    (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data.apply {
+                        forEach {
+                            it.demandTime = endTime
+                        }
+                        presenter.saveManualBoardOut(this)
+                    }
+                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
+                dialog.show()
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+            dateDialog.show()
         }
     }
 
@@ -104,8 +123,9 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
         (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).addData(manualBoardList)
     }
 
-    override fun saveManualBoardOutSucceed(result: List<MaterialPullResult>) {
-
+    override fun saveManualBoardOutSucceed(message: String, result: List<MaterialPullResult>) {
+        showMessage(message)
+        (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(listOf())
     }
 
     class ManualBoardInfoAdapter : BaseQuickAdapter<ManualBoardDeliveryDto, BaseViewHolder>(R.layout.item_manual_board) {
@@ -113,7 +133,11 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
         override fun convert(helper: BaseViewHolder, item: ManualBoardDeliveryDto) {
             val dataBind = DataBindingUtil.bind<ItemManualBoardBinding>(helper.itemView)
             dataBind?.info = item
-            helper.addOnClickListener(R.id.deleteButton)
+            helper.getView<View>(R.id.deleteButton).setOnClickListener {
+                AlertDialog.Builder(it.context).setTitle(R.string.delete_item_confirm).setNegativeButton(R.string.ok) { _, _ ->
+                    this@ManualBoardInfoAdapter.remove(helper.adapterPosition)
+                }.setPositiveButton(R.string.cancel, null).show()
+            }
         }
     }
 }

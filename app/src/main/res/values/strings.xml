@@ -246,4 +246,5 @@
     <string name="manual_board_empty">看板信息为空～</string>
     <string name="kan_ban_id">看板卡号</string>
     <string name="material_code">物料号</string>
+    <string name="delete_item_confirm">确定从列表中删除该项目？</string>
 </resources>

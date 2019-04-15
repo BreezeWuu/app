@@ -98,5 +98,5 @@ class ManualBoardDeliveryDto {
     /**
      * 新增需求时间
      */
-     val demandTime: String? = null
+    var demandTime: String? = null
 }
