@@ -152,7 +152,7 @@
                     android:layout_weight="7"
                     android:gravity="center_vertical"
                     android:singleLine="true"
-                    android:text="@{String.valueOf(info.materialNum)}"
+                    android:text="@{String.valueOf(info.requiredQuantity)}"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -178,7 +178,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="7"
                     android:gravity="center_vertical"
-                    android:text="@{info.pickTime}"
+                    android:text="@{String.valueOf(info.pickTime)}"
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -204,7 +204,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="7"
                     android:gravity="center_vertical"
-                    android:text="@{info.bufferTime}"
+                    android:text="@{String.valueOf(info.bufferTime)}"
                     android:textColor="@color/black" />
             </LinearLayout>
             <LinearLayout
@@ -304,7 +304,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="7"
                     android:gravity="center_vertical"
-                    android:text="@{info.currentNum}"
+                    android:text="@{String.valueOf(info.currentNum)}"
                     android:textColor="@color/black" />
             </LinearLayout>
             <android.support.v7.widget.AppCompatButton

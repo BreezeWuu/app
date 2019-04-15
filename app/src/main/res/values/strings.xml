@@ -235,7 +235,7 @@
     <string name="action_scanner_kan_ban_id">扫描看板ID</string>
     <string name="action_input_material_id">输入物料号</string>
     <string name="action_out_confirm">确认出库</string>
-    <string name="kan_ban_id_format">看板卡号</string>
+    <string name="kan_ban_id_format">看板卡号：</string>
     <string name="gong_wei_format">工位：</string>
     <string name="station_format">工位：</string>
     <string name="pick_time_format">拣配时间：</string>
