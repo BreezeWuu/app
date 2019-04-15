@@ -1,20 +1,30 @@
 package com.zotye.wms.ui.manualboard
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.TextView
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
 import com.zotye.wms.data.api.model.MaterialPullResult
+import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
+import com.zotye.wms.databinding.ItemManualBoardBinding
+import com.zotye.wms.databinding.ItemStorageMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
+import com.zotye.wms.ui.picking.PickingFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_manual_board_out.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import javax.inject.Inject
 
@@ -50,6 +60,12 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
         toolbar_base.setNavigationOnClickListener {
             activity?.onBackPressed()
         }
+        manualBoardRecyclerView.layoutManager = LinearLayoutManager(context)
+        val adapter = ManualBoardInfoAdapter()
+        val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
+        emptyView.find<TextView>(R.id.text_error).text = getString(R.string.manual_board_empty)
+        adapter.emptyView = emptyView
+        manualBoardRecyclerView.adapter = adapter
         kbCodeScanner.onClick {
             val fragment = BarCodeScannerFragment()
             fragment.setScannerDelegate(this@ManualBoardOutFragment)
@@ -82,10 +98,19 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
     }
 
     override fun getManualBoardList(manualBoardList: List<ManualBoardDeliveryDto>) {
-
+        (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).addData(manualBoardList)
     }
 
     override fun saveManualBoardOutSucceed(result: List<MaterialPullResult>) {
 
+    }
+
+    class ManualBoardInfoAdapter : BaseQuickAdapter<ManualBoardDeliveryDto, BaseViewHolder>(R.layout.item_manual_board) {
+
+        override fun convert(helper: BaseViewHolder, item: ManualBoardDeliveryDto) {
+            val dataBind = DataBindingUtil.bind<ItemManualBoardBinding>(helper.itemView)
+            dataBind?.info = item
+            helper.addOnClickListener(R.id.deleteButton)
+        }
     }
 }
