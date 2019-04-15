@@ -74,8 +74,8 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
         kbCodeInput.onClick {
             val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
-            editText.setHint(R.string.picklist_code)
-            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+            editText.setHint(R.string.kan_ban_id)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_kan_ban_id).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 succeed(editText.text.toString())
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
@@ -84,12 +84,15 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
         materialIdInput.onClick {
             val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
-            editText.setHint(R.string.picklist_code)
-            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_picklist_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+            editText.setHint(R.string.material_code)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_material_id).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
                 presenter.getManualBoardList("", editText.text.toString())
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
+        }
+        outConfirm.setOnClickListener {
+            presenter.saveManualBoardOut((manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data)
         }
     }
 
