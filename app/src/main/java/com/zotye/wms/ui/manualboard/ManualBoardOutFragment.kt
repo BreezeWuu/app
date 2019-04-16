@@ -120,7 +120,7 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
     }
 
     override fun getManualBoardList(manualBoardList: List<ManualBoardDeliveryDto>) {
-        (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).addData(manualBoardList)
+        (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
     }
 
     override fun saveManualBoardOutSucceed(message: String, result: List<MaterialPullResult>) {
