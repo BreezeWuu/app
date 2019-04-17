@@ -31,8 +31,8 @@ android {
             applicationIdSuffix ".test"
             versionNameSuffix '_test'
             signingConfig signingConfigs.release
-            buildConfigField('String', 'API_URL', '\"http://101.66.172.117:7010/wmsperformancetest/mobile_api/\"')
-            resValue "string", "app_name", "${appName}(101performancetest)"
+            buildConfigField('String', 'API_URL', '\"http://47.93.160.236:7001/les/mobile_api/\"')
+            resValue "string", "app_name", "${appName}(47devTest)"
         }
         performancetest {
             debuggable true
@@ -40,7 +40,7 @@ android {
             applicationIdSuffix ".performancetest"
             versionNameSuffix '_performancetest'
             signingConfig signingConfigs.release
-            buildConfigField('String', 'API_URL', '\"http://172.20.82.7:7001/wmsperformancetest/mobile_api/\"')
+            buildConfigField('String', 'API_URL', '\"http://172.32.0.30:8080/les/mobile_api/\"')
             resValue "string", "app_name", "${appName}(172performancetest)"
         }
         local {
