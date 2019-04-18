@@ -190,8 +190,12 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         val infoView = LayoutInflater.from(context).inflate(R.layout.item_goods_package, null)
         val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(infoView, fragmentDataBindingComponent)
         val receiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
+        val noReceiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.noReceiveNumberText)
+        val badReceiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.badNumberText)
         val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
         infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
+        infoView.findViewById<View>(R.id.noReceiveNumberLayout).visibility = if (isGroupReceive) View.GONE else View.VISIBLE
+        infoView.findViewById<View>(R.id.badNumberLayout).visibility = if (isGroupReceive) View.GONE else View.VISIBLE
         packageInfo.receiveNum = packageInfo.deliveryNum
         dataBind?.info = packageInfo
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
@@ -213,9 +217,13 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                 receiveNumberEditText.error = getString(R.string.error_receive_number)
                 return@onClick
             }
-            if (!packageInfo.isThirdPart()) {
-                if (receiveNumber > packageInfo.deliveryNum) {
-                    receiveNumberEditText.error = getString(R.string.not_match_third_part_receive_num)
+            val noReceiveString = noReceiveNumberEditText.text.toString()
+            val noReceiveNumber = if (TextUtils.isEmpty(noReceiveString)) BigDecimal.ZERO else BigDecimal(noReceiveString)
+            val badReceiveString = badReceiveNumberEditText.text.toString()
+            val badReceiveNumber = if (TextUtils.isEmpty(badReceiveString)) BigDecimal.ZERO else BigDecimal(badReceiveString)
+            if (!isGroupReceive) {
+                if (receiveNumber + noReceiveNumber + badReceiveNumber != packageInfo.deliveryNum) {
+                    receiveNumberEditText.error = getString(R.string.not_match_deliver_num)
                     return@onClick
                 }
             }
@@ -256,6 +264,8 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
                         logisticsReceiveInfo.code = packageInfo.code
                         logisticsReceiveInfo.eType = "${BarCodeType.Package.type}"
                         logisticsReceiveInfo.receiveNum = receiveNumber
+                        logisticsReceiveInfo.noReceiveNum = noReceiveNumber
+                        logisticsReceiveInfo.badNum = badReceiveNumber
                         logisticsReceiveInfo.batchNum = batchNumberEditText.text.toString()
                         onUiThread {
                             presenter.submitReceiveInfo(logisticsReceiveInfo)

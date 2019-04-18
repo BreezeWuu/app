@@ -45,7 +45,25 @@ class PackageInfo(
         }
         get() = BigDecimalUtil.getValue(field)
     /**
-     * 发货数量
+     * 少收数量
+     */
+    var noReceiveNum: BigDecimal? = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
+
+    /**
+     * 质量问题
+     */
+    var badNum: BigDecimal? = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
+
+    /**
+     * 收货数量
      */
     var receiveNum: BigDecimal? = BigDecimal.ZERO
         set(value) {

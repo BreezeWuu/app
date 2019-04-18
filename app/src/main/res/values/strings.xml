@@ -247,4 +247,7 @@
     <string name="kan_ban_id">看板卡号</string>
     <string name="material_code">物料号</string>
     <string name="delete_item_confirm">确定从列表中删除该项目？</string>
+    <string name="no_receive_num_format">少收数量：</string>
+    <string name="bad_receive_num_format">质量问题：</string>
+    <string name="not_match_deliver_num">实收、少收、质量问题数量之和必须与发货数量一致！</string>
 </resources>

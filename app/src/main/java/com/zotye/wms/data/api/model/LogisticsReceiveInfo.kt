@@ -18,6 +18,23 @@ class LogisticsReceiveInfo {
             field = BigDecimalUtil.formatValue(value)
         }
         get() = BigDecimalUtil.getValue(field)
+    /**
+     * 少收数量
+     */
+    var noReceiveNum: BigDecimal? = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
+
+    /**
+     * 质量问题
+     */
+    var badNum: BigDecimal? = BigDecimal.ZERO
+        set(value) {
+            field = BigDecimalUtil.formatValue(value)
+        }
+        get() = BigDecimalUtil.getValue(field)
 
     var batchNum: String? = null
 
