@@ -38,6 +38,7 @@ buildscript {
     ext.git_user_name = 'git config user.name'.execute().text.trim()
     ext.git_version = 'git rev-parse --short HEAD'.execute().text.trim()
     ext.git_version_name = "r${ext.git_version}"
+    ext.git_branch_name = 'git rev-parse --abbrev-ref HEAD'.execute().text.trim()
 
     ext.base_adapter_version = '1.0'
 
