@@ -2,6 +2,7 @@ package com.zotye.wms.di.module
 
 import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.main.MainContract
+import com.zotye.wms.ui.manualboard.ManualBoardOutContract
 import com.zotye.wms.ui.picking.ChooseCostCenterContract
 import com.zotye.wms.ui.picking.PickingContract
 import com.zotye.wms.ui.picklist.CheckBadProductContract
@@ -69,5 +70,8 @@ class PresenterModule {
 
     @Provides
     fun provideShelfConfirmPresenter(presenter: ShelfConfirmContract.ShelfConfirmPresenterImpl): ShelfConfirmContract.ShelfConfirmPresenter = presenter
+
+    @Provides
+    fun provideManualBoardOutPresenter(presenter: ManualBoardOutContract.ManualBoardOutPresenterImpl): ManualBoardOutContract.ManualBoardOutPresenter = presenter
 
 }

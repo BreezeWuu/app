@@ -148,4 +148,14 @@ interface ApiService {
     @POST("bar_code/checkPickStationInfo")
     fun checkPickStationInfo(@Field("pickCode") pickCode: String, @Field("stationCode") stationCode: String): Call<ApiResponse<String>>
 
+
+    /**获取手工看板信息*/
+    @FormUrlEncoded
+    @POST("bar_code/ManualBoard/getManualBoardList")
+    fun getManualBoardLis(@Field("code") code: String,@Field("materialNum") materialNum: String): Call<ApiResponse<List<ManualBoardDeliveryDto>>>
+
+    /**手工看板出库*/
+    @POST("bar_code/ManualBoard/saveManualBoardOut")
+    fun saveManualBoardOut(@Body manualBoardDeliveryDto: List<ManualBoardDeliveryDto>): Call<ApiResponse<List<MaterialPullResult>>>
+
 }

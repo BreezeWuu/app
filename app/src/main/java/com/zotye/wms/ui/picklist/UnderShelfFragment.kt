@@ -90,7 +90,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             val fragment = BarCodeScannerFragment()
             fragment.setScannerDelegate(object : ScannerDelegate {
                 override fun succeed(result: String) {
-                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
+                    /**拆分出包装号*/
+                    if (pickListPullOffShelf?.storageUnitInfoCode == result.split(",")[1]) {
                         if (pickListPullOffShelf.pullOffConfirm) {
                             presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
                         } else {
