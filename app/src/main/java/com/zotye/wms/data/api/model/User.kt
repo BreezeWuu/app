@@ -6,6 +6,10 @@ import android.arch.persistence.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 import com.zotye.wms.R
 import com.zotye.wms.data.db.Converters
+import com.zotye.wms.ui.manualboard.ManualBoardOutFragment
+import com.zotye.wms.ui.picklist.ShelfConfirmFragment
+import com.zotye.wms.ui.picklist.StoragePositionInfoFragment
+import com.zotye.wms.ui.storageunit.StorageUnitOnlineFragment
 import com.zotye.wms.util.Log
 
 
@@ -73,6 +77,18 @@ class Resource(
             }
             ResourceType.TEST_RECV -> {
                 R.mipmap.ic_launcher
+            }
+            ResourceType.STSLINFO_CHECK -> {
+                R.drawable.ic_under_shell_confirm
+            }
+            ResourceType.PICKSTATIONINFO_CHECK -> {
+                R.drawable.ic_receipt_confirm
+            }
+            ResourceType.MANUAL_BOARD_OUT -> {
+                R.drawable.ic_get_product
+            }
+            ResourceType.SJXXCX->{
+                R.drawable.ic_package_query
             }
             else -> {
                 R.mipmap.ic_launcher

@@ -90,7 +90,7 @@ class StoragePositionInfoFragment : BaseFragment(), StoragePositionInfoContract.
     }
 
     override fun getStoragePositionInfo(list: List<PutAwayInfo>?) {
-
+        (spRecyclerView.adapter as PutAwayInfoAdapter).setNewData(list)
     }
 
     override fun onDestroyView() {
