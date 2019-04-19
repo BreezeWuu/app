@@ -5,10 +5,7 @@ import com.zotye.wms.ui.main.MainContract
 import com.zotye.wms.ui.manualboard.ManualBoardOutContract
 import com.zotye.wms.ui.picking.ChooseCostCenterContract
 import com.zotye.wms.ui.picking.PickingContract
-import com.zotye.wms.ui.picklist.CheckBadProductContract
-import com.zotye.wms.ui.picklist.LoadingCreateContract
-import com.zotye.wms.ui.picklist.ShelfConfirmContract
-import com.zotye.wms.ui.picklist.UnderShelfContract
+import com.zotye.wms.ui.picklist.*
 import com.zotye.wms.ui.storageunit.StorageUnitInfoContract
 import com.zotye.wms.ui.storageunit.StorageUnitModifyContract
 import com.zotye.wms.ui.storageunit.StorageUnitOnlineContract
@@ -73,5 +70,8 @@ class PresenterModule {
 
     @Provides
     fun provideManualBoardOutPresenter(presenter: ManualBoardOutContract.ManualBoardOutPresenterImpl): ManualBoardOutContract.ManualBoardOutPresenter = presenter
+
+    @Provides
+    fun provideStoragePositionInfoPresenter(presenter: StoragePositionInfoContract.StoragePositionInfoPresenterImpl): StoragePositionInfoContract.StoragePositionInfoPresenter = presenter
 
 }

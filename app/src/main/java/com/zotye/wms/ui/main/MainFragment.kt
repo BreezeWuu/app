@@ -23,10 +23,7 @@ import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.manualboard.ManualBoardOutFragment
 import com.zotye.wms.ui.picking.PickingFragment
-import com.zotye.wms.ui.picklist.CheckBadProductFragment
-import com.zotye.wms.ui.picklist.LoadingCreateFragment
-import com.zotye.wms.ui.picklist.ShelfConfirmFragment
-import com.zotye.wms.ui.picklist.UnderShelfFragment
+import com.zotye.wms.ui.picklist.*
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.StorageUnitModifyFragment
 import com.zotye.wms.ui.storageunit.StorageUnitOnlineFragment
@@ -123,6 +120,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         }
                         ResourceType.MANUAL_BOARD_OUT -> {
                             fragment = ManualBoardOutFragment.newInstance(it.name)
+                        }
+                        ResourceType.SJXXCX->{
+                            fragment = StoragePositionInfoFragment.newInstance(it.name)
                         }
                         else -> {
                             return@OnItemChildClickListener

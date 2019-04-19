@@ -250,4 +250,5 @@
     <string name="no_receive_num_format">少收数量：</string>
     <string name="bad_receive_num_format">质量问题：</string>
     <string name="not_match_deliver_num">实收、少收、质量问题数量之和必须与发货数量一致！</string>
+    <string name="title_storage_position_info">上架信息查询</string>
 </resources>

@@ -5,10 +5,7 @@ import com.zotye.wms.ui.main.MainFragment
 import com.zotye.wms.ui.manualboard.ManualBoardOutFragment
 import com.zotye.wms.ui.picking.ChooseCostCenterFragment
 import com.zotye.wms.ui.picking.PickingFragment
-import com.zotye.wms.ui.picklist.CheckBadProductFragment
-import com.zotye.wms.ui.picklist.LoadingCreateFragment
-import com.zotye.wms.ui.picklist.ShelfConfirmFragment
-import com.zotye.wms.ui.picklist.UnderShelfFragment
+import com.zotye.wms.ui.picklist.*
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
 import com.zotye.wms.ui.storageunit.StorageUnitModifyFragment
 import com.zotye.wms.ui.storageunit.StorageUnitOnlineFragment
@@ -74,4 +71,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeManualBoardOutFragment(): ManualBoardOutFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeStoragePositionInfoFragment(): StoragePositionInfoFragment
 }

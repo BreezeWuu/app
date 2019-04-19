@@ -99,6 +99,7 @@ enum class ResourceType(val code: String) {
     STSLINFO_CHECK("sjqr"),//上架确认
     PICKSTATIONINFO_CHECK("sxqr"),//上线确认
     MANUAL_BOARD_OUT("sgkbckapp"),//手工看板出库
+    SJXXCX("sjxxcx"),//上架信息查询
     TEST_RECV("TEST_RECV"),//测试
     Unknown("");
 
