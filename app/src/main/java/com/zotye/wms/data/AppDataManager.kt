@@ -1,14 +1,11 @@
 package com.zotye.wms.data
 
 import android.content.Context
-import com.zotye.wms.data.api.model.User
 import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
-import com.zotye.wms.data.api.model.MaterialPullResult
-import com.zotye.wms.data.api.model.ValidSlInfoDto
+import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
@@ -97,6 +94,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun getManualBoardLis(code: String, materialNum: String) = apiHelper.getManualBoardLis(code, materialNum)
 
     override fun saveManualBoardOut(manualBoardDeliveryDto: List<ManualBoardDeliveryDto>) = apiHelper.saveManualBoardOut(manualBoardDeliveryDto)
+
+    override fun getStoragePositionInfoByCode(code: String)=apiHelper.getStoragePositionInfoByCode(code)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 

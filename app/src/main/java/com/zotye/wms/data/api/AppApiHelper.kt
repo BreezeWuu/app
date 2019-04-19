@@ -86,4 +86,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun getManualBoardLis(code: String, materialNum: String)=apiService.getManualBoardLis(code, materialNum)
 
     override fun saveManualBoardOut(manualBoardDeliveryDto: List<ManualBoardDeliveryDto>)=apiService.saveManualBoardOut(manualBoardDeliveryDto)
+
+    override fun getStoragePositionInfoByCode(code: String)=apiService.getStoragePositionInfoByCode(code)
 }
