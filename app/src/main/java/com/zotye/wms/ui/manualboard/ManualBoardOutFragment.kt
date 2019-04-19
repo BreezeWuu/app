@@ -97,21 +97,25 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
             showKeyboard(editText)
         }
         outConfirm.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val dateDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                val dialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
-                    val selectDate = Date(year - 1900, month, dayOfMonth, hourOfDay, minute)
-                    val endTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(selectDate).toString()
-                    (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data.apply {
-                        forEach {
-                            it.demandTime = endTime
+            if((manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data.size==0) {
+                showMessage("请先添加看板！")
+            }else {
+                val calendar = Calendar.getInstance()
+                val dateDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
+                    val dialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hourOfDay, minute ->
+                        val selectDate = Date(year - 1900, month, dayOfMonth, hourOfDay, minute)
+                        val endTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(selectDate).toString()
+                        (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data.apply {
+                            forEach {
+                                it.demandTime = endTime
+                            }
+                            presenter.saveManualBoardOut(this)
                         }
-                        presenter.saveManualBoardOut(this)
-                    }
-                }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
-                dialog.show()
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-            dateDialog.show()
+                    }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
+                    dialog.show()
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+                dateDialog.show()
+            }
         }
     }
 
