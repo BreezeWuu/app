@@ -45,7 +45,7 @@ class Resource(
             ResourceType.PACKAGERECV -> {
                 R.drawable.ic_package_receipt
             }
-            ResourceType.STQUERY -> {
+            ResourceType.STQUERY, ResourceType.CKPCD, ResourceType.SJXXCX -> {
                 R.drawable.ic_package_query
             }
             ResourceType.ThreePLDELIVERY -> {
@@ -87,9 +87,6 @@ class Resource(
             ResourceType.MANUAL_BOARD_OUT -> {
                 R.drawable.ic_get_product
             }
-            ResourceType.SJXXCX->{
-                R.drawable.ic_package_query
-            }
             else -> {
                 R.mipmap.ic_launcher
             }
@@ -116,6 +113,7 @@ enum class ResourceType(val code: String) {
     PICKSTATIONINFO_CHECK("sxqr"),//上线确认
     MANUAL_BOARD_OUT("sgkbckapp"),//手工看板出库
     SJXXCX("sjxxcx"),//上架信息查询
+    CKPCD("ckpcd1"),//查看配车单
     TEST_RECV("TEST_RECV"),//测试
     Unknown("");
 
