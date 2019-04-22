@@ -1,6 +1,7 @@
 package com.zotye.wms.data.api
 
 import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
+import com.zotye.wms.data.api.model.VehicleReceiptFilterInfo
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
@@ -8,6 +9,7 @@ import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
 import com.zotye.wms.data.api.service.ApiService
+import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -88,4 +90,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun saveManualBoardOut(manualBoardDeliveryDto: List<ManualBoardDeliveryDto>)=apiService.saveManualBoardOut(manualBoardDeliveryDto)
 
     override fun getStoragePositionInfoByCode(code: String)=apiService.getStoragePositionInfoByCode(code)
+
+    override fun viewVehicleReceiptFilterInfo(userId: String)=apiService.viewVehicleReceiptFilterInfo(userId)
 }

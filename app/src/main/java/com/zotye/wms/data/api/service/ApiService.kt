@@ -153,6 +153,11 @@ interface ApiService {
     @POST("bar_code/getStoragePositionInfoByCode")
     fun getStoragePositionInfoByCode(@Field("code") code: String): Call<ApiResponse<List<PutAwayInfo>>>
 
+    /**获取库位信息*/
+    @FormUrlEncoded
+    @POST("bar_code/viewVehicleReceiptFilterInfo")
+    fun viewVehicleReceiptFilterInfo(@Field("userId") userId: String): Call<ApiResponse<VehicleReceiptFilterInfo>>
+
 
     /**获取手工看板信息*/
     @FormUrlEncoded

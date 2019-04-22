@@ -97,6 +97,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getStoragePositionInfoByCode(code: String)=apiHelper.getStoragePositionInfoByCode(code)
 
+    override fun viewVehicleReceiptFilterInfo(userId: String)=apiHelper.viewVehicleReceiptFilterInfo(userId)
+
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
