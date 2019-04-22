@@ -46,6 +46,15 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             fragment.arguments = bundle
             return fragment
         }
+
+        fun newInstance(title: String, pickCode: String): UnderShelfFragment {
+            val fragment = UnderShelfFragment()
+            val bundle = Bundle()
+            bundle.putString("title", title)
+            bundle.putString("pickCode", pickCode)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     @Inject
@@ -63,6 +72,13 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
         toolbar_base.setNavigationOnClickListener {
             activity?.onBackPressed()
+        }
+        arguments?.getString("pickCode", "")?.apply {
+            if (!isNullOrBlank()) {
+                pickListScanner.visibility = View.GONE
+                pickListInput.visibility = View.GONE
+                succeed(this)
+            }
         }
         pickListScanner.onClick {
             val fragment = BarCodeScannerFragment()
@@ -200,7 +216,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
     private fun updateTitle() {
         when (viewFlipper.displayedChild) {
             0 -> {
-                toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_storage_unit_info)
+                toolbar_base.title = arguments?.getString("title")
+                        ?: getString(R.string.title_storage_unit_info)
             }
             1 -> {
                 toolbar_base.titleResource = R.string.title_pick_list_add_package

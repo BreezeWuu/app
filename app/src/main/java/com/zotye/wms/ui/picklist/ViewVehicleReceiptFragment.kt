@@ -118,7 +118,7 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                     setNewData(data)
                     setOnItemChildClickListener { _, _, position ->
                         get(position).apply {
-
+                            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_content, UnderShelfFragment.newInstance(getString(R.string.title_under_shelf),this.no))?.addToBackStack(null)?.commit()
                         }
                     }
                 }
