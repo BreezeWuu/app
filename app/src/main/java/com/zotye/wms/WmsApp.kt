@@ -2,6 +2,7 @@ package com.zotye.wms
 
 import android.app.Activity
 import android.app.Application
+import android.support.multidex.MultiDexApplication
 import android.support.v7.app.AppCompatDelegate
 import com.zotye.wms.di.AppInjector
 import dagger.android.AndroidInjector
@@ -12,7 +13,7 @@ import javax.inject.Inject
 /**
  * Created by hechuangju on 2017/8/20 下午10:11.
  */
-class WmsApp : Application(), HasActivityInjector {
+class WmsApp : MultiDexApplication(), HasActivityInjector {
     @Inject lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
 
     companion object {

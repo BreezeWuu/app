@@ -1,7 +1,9 @@
 package com.zotye.wms.data.api
 
 import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
+import com.zotye.wms.data.api.model.VehicleReceiptDto
 import com.zotye.wms.data.api.model.VehicleReceiptFilterInfo
+import com.zotye.wms.data.api.model.VehicleReceiptParamsDto
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
@@ -92,4 +94,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun getStoragePositionInfoByCode(code: String)=apiService.getStoragePositionInfoByCode(code)
 
     override fun viewVehicleReceiptFilterInfo(userId: String)=apiService.viewVehicleReceiptFilterInfo(userId)
+
+    override fun searchVehicleReceipt(dto: VehicleReceiptParamsDto)=apiService.searchVehicleReceipt(dto)
 }

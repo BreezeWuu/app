@@ -141,7 +141,7 @@ interface ApiService {
     /**上架确认*/
     @FormUrlEncoded
     @POST("bar_code/checkStSlInfo")
-    fun checkStSlInfo(@Field("stCode") stCode: String,@Field("spCode") spCode: String): Call<ApiResponse<String>>
+    fun checkStSlInfo(@Field("stCode") stCode: String, @Field("spCode") spCode: String): Call<ApiResponse<String>>
 
     /**上线确认*/
     @FormUrlEncoded
@@ -158,11 +158,14 @@ interface ApiService {
     @POST("bar_code/viewVehicleReceiptFilterInfo")
     fun viewVehicleReceiptFilterInfo(@Field("userId") userId: String): Call<ApiResponse<VehicleReceiptFilterInfo>>
 
+    /**获取库位信息*/
+    @POST("bar_code/searchVehicleReceipt")
+    fun searchVehicleReceipt(@Body dto: VehicleReceiptParamsDto): Call<ApiResponse<List<VehicleReceiptDto>>>
 
     /**获取手工看板信息*/
     @FormUrlEncoded
     @POST("bar_code/ManualBoard/getManualBoardList")
-    fun getManualBoardLis(@Field("code") code: String,@Field("materialNum") materialNum: String): Call<ApiResponse<List<ManualBoardDeliveryDto>>>
+    fun getManualBoardLis(@Field("code") code: String, @Field("materialNum") materialNum: String): Call<ApiResponse<List<ManualBoardDeliveryDto>>>
 
     /**手工看板出库*/
     @POST("bar_code/ManualBoard/saveManualBoardOut")

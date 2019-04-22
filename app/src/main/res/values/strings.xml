@@ -256,4 +256,7 @@
     <string name="line_format">线路：</string>
     <string name="out_sto_format">出库库存地点：</string>
     <string name="actionQuery">查询</string>
+    <string name="pc_code_format">配车单号：</string>
+    <string name="create_time_format">创建时间：</string>
+    <string name="creator_format">创建人：</string>
 </resources>

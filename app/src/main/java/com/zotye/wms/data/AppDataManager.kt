@@ -95,9 +95,11 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun saveManualBoardOut(manualBoardDeliveryDto: List<ManualBoardDeliveryDto>) = apiHelper.saveManualBoardOut(manualBoardDeliveryDto)
 
-    override fun getStoragePositionInfoByCode(code: String)=apiHelper.getStoragePositionInfoByCode(code)
+    override fun getStoragePositionInfoByCode(code: String) = apiHelper.getStoragePositionInfoByCode(code)
 
-    override fun viewVehicleReceiptFilterInfo(userId: String)=apiHelper.viewVehicleReceiptFilterInfo(userId)
+    override fun viewVehicleReceiptFilterInfo(userId: String) = apiHelper.viewVehicleReceiptFilterInfo(userId)
+
+    override fun searchVehicleReceipt(dto: VehicleReceiptParamsDto) = apiHelper.searchVehicleReceipt(dto)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 

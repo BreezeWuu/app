@@ -4,8 +4,9 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.PutAwayInfo
+import com.zotye.wms.data.api.model.VehicleReceiptDto
 import com.zotye.wms.data.api.model.VehicleReceiptFilterInfo
+import com.zotye.wms.data.api.model.VehicleReceiptParamsDto
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -21,10 +22,12 @@ object ViewVehicleReceiptContract {
 
     interface ViewVehicleReceiptView : MvpView {
         fun getViewVehicleReceiptFilterInfo(vehicleReceiptFilterInfo: VehicleReceiptFilterInfo?)
+        fun getVehicleReceipt(data: List<VehicleReceiptDto>?)
     }
 
     interface ViewVehicleReceiptPresenter : MvpPresenter<ViewVehicleReceiptView> {
         fun getViewVehicleReceiptFilterInfo()
+        fun searchVehicleReceipt(dto: VehicleReceiptParamsDto)
     }
 
     class ViewVehicleReceiptPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<ViewVehicleReceiptView>(), ViewVehicleReceiptPresenter {
@@ -44,6 +47,33 @@ object ViewVehicleReceiptContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getViewVehicleReceiptFilterInfo(it.data)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun searchVehicleReceipt(dto: VehicleReceiptParamsDto) {
+            mvpView?.showProgressDialog(R.string.loading)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.searchVehicleReceipt(dto).enqueue(object : Callback<ApiResponse<List<VehicleReceiptDto>>> {
+                            override fun onFailure(call: Call<ApiResponse<List<VehicleReceiptDto>>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<List<VehicleReceiptDto>>>?, response: Response<ApiResponse<List<VehicleReceiptDto>>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.getVehicleReceipt(it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

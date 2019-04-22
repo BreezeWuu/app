@@ -1,15 +1,19 @@
 package com.zotye.wms.ui.picklist
 
+import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import com.chad.library.adapter.base.BaseQuickAdapter
+import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
-import com.zotye.wms.data.api.model.LineBean
-import com.zotye.wms.data.api.model.StorageLocationDto
-import com.zotye.wms.data.api.model.TransportGroup
-import com.zotye.wms.data.api.model.VehicleReceiptFilterInfo
+import com.zotye.wms.data.api.model.*
+import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
+import com.zotye.wms.databinding.ItemStorageUnitInfoMaterialBinding
+import com.zotye.wms.databinding.ItemVehicleReceiptBinding
 import com.zotye.wms.ui.common.BaseFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_viewvehiclereceipt.*
@@ -49,6 +53,21 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
             activity?.onBackPressed()
         }
         presenter.getViewVehicleReceiptFilterInfo()
+        searchButton.setOnClickListener {
+            VehicleReceiptParamsDto().apply {
+                start = 0
+                length = Int.MAX_VALUE
+                val lineBean = lineSpinner.selectedItem as LineBean
+                line = if (lineSpinner.selectedItemPosition == 0) "" else lineBean.lineDesc
+
+                val storageLocationDto = spSpinner.selectedItem as StorageLocationDto
+//                code = if (spSpinner.selectedItemPosition == 0) "" else storageLocationDto.code
+
+                val transportGroup = peisongSpinner.selectedItem as TransportGroup
+                slId = if (peisongSpinner.selectedItemPosition == 0) "" else transportGroup.slId
+                presenter.searchVehicleReceipt(this)
+            }
+        }
     }
 
     override fun getViewVehicleReceiptFilterInfo(vehicleReceiptFilterInfo: VehicleReceiptFilterInfo?) {
@@ -71,6 +90,36 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                 })
                 spSpinner.adapter = ArrayAdapter<StorageLocationDto>(context!!, android.R.layout.simple_spinner_dropdown_item, storageLocations)
             }
+        }
+    }
+
+    override fun getVehicleReceipt(data: List<VehicleReceiptDto>?) {
+        if (data?.isNotEmpty() == true) {
+            data.apply {
+                viewFlipper.displayedChild = 1
+                PCRecyclerView.layoutManager = LinearLayoutManager(context)
+                PCRecyclerView.adapter = PCadapter().apply {
+                    setNewData(data)
+                }
+            }
+        }else{
+            showMessage("未找到相应的结果！")
+        }
+    }
+
+    override fun canBackPressed(): Boolean {
+        return if (viewFlipper.displayedChild != 0) {
+            viewFlipper.displayedChild = viewFlipper.displayedChild - 1
+            false
+        } else
+            super.canBackPressed()
+    }
+
+    class PCadapter : BaseQuickAdapter<VehicleReceiptDto, BaseViewHolder>(R.layout.item_vehicle_receipt) {
+
+        override fun convert(helper: BaseViewHolder, item: VehicleReceiptDto) {
+            val dataBind = DataBindingUtil.bind<ItemVehicleReceiptBinding>(helper.itemView)
+            dataBind?.info = item
         }
     }
 }
