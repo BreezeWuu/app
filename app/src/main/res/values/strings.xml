@@ -209,7 +209,7 @@
     <string name="pull_off_shelf_count_format">下架数量：</string>
     <string name="error_receive_number">收货数量必须大于0！</string>
     <!--捡配单详情-->
-    <string name="pick_code">捡配单号:</string>
+    <string name="pick_code">拣配单号:</string>
     <string name="pick_num">数量：</string>
     <string name="pick_news">捡配单信息为空</string>
     <string name="loading_query_pick_info">正在查询捡配单信息&#8230;</string>
@@ -259,4 +259,6 @@
     <string name="pc_code_format">配车单号：</string>
     <string name="create_time_format">创建时间：</string>
     <string name="creator_format">创建人：</string>
+    <string name="dao_kou_format">道口：</string>
+    <string name="need_time_format">需求时间：</string>
 </resources>

@@ -162,6 +162,11 @@ interface ApiService {
     @POST("bar_code/searchVehicleReceipt")
     fun searchVehicleReceipt(@Body dto: VehicleReceiptParamsDto): Call<ApiResponse<List<VehicleReceiptDto>>>
 
+    /**获取库位信息*/
+    @FormUrlEncoded
+    @POST("bar_code/getMesPickReceiptListById")
+    fun getMesPickReceiptListById(@Field("id") id: String): Call<ApiResponse<List<MESPickReceiptDto>>>
+
     /**获取手工看板信息*/
     @FormUrlEncoded
     @POST("bar_code/ManualBoard/getManualBoardList")

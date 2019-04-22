@@ -11,8 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.*
-import com.zotye.wms.data.api.model.checkbad.PickReceiptShelfDetail
-import com.zotye.wms.databinding.ItemStorageUnitInfoMaterialBinding
+import com.zotye.wms.databinding.ItemMesPickReceiptBinding
 import com.zotye.wms.databinding.ItemVehicleReceiptBinding
 import com.zotye.wms.ui.common.BaseFragment
 import kotlinx.android.synthetic.main.fragment_base.*
@@ -58,7 +57,7 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                 start = 0
                 length = Int.MAX_VALUE
                 val lineBean = lineSpinner.selectedItem as LineBean
-                line = if (lineSpinner.selectedItemPosition == 0) "" else lineBean.lineDesc
+                line = if (lineSpinner.selectedItemPosition == 0) "" else lineBean.id+"("+lineBean.lineDesc+")"
 
                 val storageLocationDto = spSpinner.selectedItem as StorageLocationDto
 //                code = if (spSpinner.selectedItemPosition == 0) "" else storageLocationDto.code
@@ -100,6 +99,28 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                 PCRecyclerView.layoutManager = LinearLayoutManager(context)
                 PCRecyclerView.adapter = PCadapter().apply {
                     setNewData(data)
+                    setOnItemChildClickListener { _, _, position ->
+                        presenter.getMesPickReceiptListById(get(position).id)
+                    }
+                }
+            }
+        }else{
+            showMessage("未找到相应的结果！")
+        }
+    }
+
+    override fun getMesPickReceiptList(data: List<MESPickReceiptDto>?) {
+        if (data?.isNotEmpty() == true) {
+            data.apply {
+                viewFlipper.displayedChild = 2
+                mesPickReceiptRecyclerView.layoutManager = LinearLayoutManager(context)
+                mesPickReceiptRecyclerView.adapter = JPadapter().apply {
+                    setNewData(data)
+                    setOnItemChildClickListener { _, _, position ->
+                        get(position).apply {
+
+                        }
+                    }
                 }
             }
         }else{
@@ -120,6 +141,17 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
         override fun convert(helper: BaseViewHolder, item: VehicleReceiptDto) {
             val dataBind = DataBindingUtil.bind<ItemVehicleReceiptBinding>(helper.itemView)
             dataBind?.info = item
+            helper.addOnClickListener(R.id.layout)
+        }
+    }
+
+
+    class JPadapter : BaseQuickAdapter<MESPickReceiptDto, BaseViewHolder>(R.layout.item_mes_pick_receipt) {
+
+        override fun convert(helper: BaseViewHolder, item: MESPickReceiptDto) {
+            val dataBind = DataBindingUtil.bind<ItemMesPickReceiptBinding>(helper.itemView)
+            dataBind?.info = item
+            helper.addOnClickListener(R.id.underShelfButton)
         }
     }
 }

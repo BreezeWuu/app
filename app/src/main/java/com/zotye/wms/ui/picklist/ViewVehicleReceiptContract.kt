@@ -4,6 +4,7 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.model.MESPickReceiptDto
 import com.zotye.wms.data.api.model.VehicleReceiptDto
 import com.zotye.wms.data.api.model.VehicleReceiptFilterInfo
 import com.zotye.wms.data.api.model.VehicleReceiptParamsDto
@@ -23,11 +24,13 @@ object ViewVehicleReceiptContract {
     interface ViewVehicleReceiptView : MvpView {
         fun getViewVehicleReceiptFilterInfo(vehicleReceiptFilterInfo: VehicleReceiptFilterInfo?)
         fun getVehicleReceipt(data: List<VehicleReceiptDto>?)
+        fun getMesPickReceiptList(data: List<MESPickReceiptDto>?)
     }
 
     interface ViewVehicleReceiptPresenter : MvpPresenter<ViewVehicleReceiptView> {
         fun getViewVehicleReceiptFilterInfo()
         fun searchVehicleReceipt(dto: VehicleReceiptParamsDto)
+        fun getMesPickReceiptListById(id: String)
     }
 
     class ViewVehicleReceiptPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<ViewVehicleReceiptView>(), ViewVehicleReceiptPresenter {
@@ -74,6 +77,34 @@ object ViewVehicleReceiptContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getVehicleReceipt(it.data)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+
+        override fun getMesPickReceiptListById(id: String) {
+            mvpView?.showProgressDialog(R.string.loading)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.getMesPickReceiptListById(id).enqueue(object : Callback<ApiResponse<List<MESPickReceiptDto>>> {
+                            override fun onFailure(call: Call<ApiResponse<List<MESPickReceiptDto>>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<List<MESPickReceiptDto>>>?, response: Response<ApiResponse<List<MESPickReceiptDto>>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.getMesPickReceiptList(it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }
