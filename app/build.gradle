@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 def today = new Date().format("yyyyMMddHHmm", TimeZone.getDefault())
-def appName = "仓储管理系统"
+def appName = "物流执行系统"
 
 android {
     signingConfigs {
