@@ -28,6 +28,7 @@ import javax.inject.Inject
 object UnderShelfContract {
     interface UnderShelfView : MvpView {
         fun getPickListPullOffShelfList(pickListPullOffShelfList: List<PickListPullOffShelf>)
+        fun getPickListPullOffShelfListFailed()
         fun getStorageUnitMaterialTotalNumber(position: Int, info: SUMaterialInfo)
         fun underShelfSucceed()
     }
@@ -48,6 +49,7 @@ object UnderShelfContract {
                             override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
+                                mvpView?.getPickListPullOffShelfListFailed()
                             }
 
                             override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
@@ -59,7 +61,10 @@ object UnderShelfContract {
                                         }.type)
                                         mvpView?.getPickListPullOffShelfList(list)
                                     } else {
+
                                         mvpView?.showMessage(it.message)
+
+                                        mvpView?.getPickListPullOffShelfListFailed()
                                     }
                                 }
                             }

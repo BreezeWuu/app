@@ -208,6 +208,11 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         presenter.getPickListInfoByCode(result)
     }
 
+    override fun getPickListPullOffShelfListFailed() {
+        if (arguments?.containsKey("pickCode") == true)
+            activity?.onBackPressed()
+    }
+
     override fun onDestroyView() {
         presenter.onDetach()
         super.onDestroyView()
