@@ -74,4 +74,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeStoragePositionInfoFragment(): StoragePositionInfoFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeViewVehicleReceiptFragment(): ViewVehicleReceiptFragment
 }

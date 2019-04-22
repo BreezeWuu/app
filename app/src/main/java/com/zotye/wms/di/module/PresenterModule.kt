@@ -74,4 +74,7 @@ class PresenterModule {
     @Provides
     fun provideStoragePositionInfoPresenter(presenter: StoragePositionInfoContract.StoragePositionInfoPresenterImpl): StoragePositionInfoContract.StoragePositionInfoPresenter = presenter
 
+    @Provides
+    fun provideViewVehicleReceiptPresenter(presenter: ViewVehicleReceiptContract.ViewVehicleReceiptPresenterImpl): ViewVehicleReceiptContract.ViewVehicleReceiptPresenter = presenter
+
 }
