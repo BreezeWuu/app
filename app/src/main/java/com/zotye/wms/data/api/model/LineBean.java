@@ -35,6 +35,12 @@ public class LineBean {
      * 厂内卸车时间
      */
     private Integer downTime;
+
+    @Override
+    public String toString() {
+        return lineDesc;
+    }
+
     public String getId() {
         return id;
     }

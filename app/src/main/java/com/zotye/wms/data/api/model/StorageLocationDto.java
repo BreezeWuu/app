@@ -1,5 +1,7 @@
 package com.zotye.wms.data.api.model;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -22,6 +24,12 @@ public class StorageLocationDto implements Serializable {
     private boolean open;
 
     private boolean checked;
+
+    @NonNull
+    @Override
+    public String toString() {
+        return name;
+    }
 
     public String getId() {
         return id;

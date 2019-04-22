@@ -124,6 +124,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         ResourceType.SJXXCX->{
                             fragment = StoragePositionInfoFragment.newInstance(it.name)
                         }
+                        ResourceType.CKPCD->{
+                            fragment = ViewVehicleReceiptFragment.newInstance(it.name)
+                        }
                         else -> {
                             return@OnItemChildClickListener
                         }

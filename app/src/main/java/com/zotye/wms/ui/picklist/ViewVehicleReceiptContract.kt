@@ -29,18 +29,18 @@ object ViewVehicleReceiptContract {
 
     class ViewVehicleReceiptPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<ViewVehicleReceiptView>(), ViewVehicleReceiptPresenter {
         override fun getViewVehicleReceiptFilterInfo() {
-            mvpView?.showProgressDialog(R.string.loading_submit_online_confirm)
+            mvpView?.showLoading(R.string.loading)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
                         dataManager.viewVehicleReceiptFilterInfo(it.userId).enqueue(object : Callback<ApiResponse<VehicleReceiptFilterInfo>> {
                             override fun onFailure(call: Call<ApiResponse<VehicleReceiptFilterInfo>>?, t: Throwable) {
-                                mvpView?.hideProgressDialog()
+                                mvpView?.showContent()
                                 t.message?.let { mvpView?.showMessage(it) }
                             }
 
                             override fun onResponse(call: Call<ApiResponse<VehicleReceiptFilterInfo>>?, response: Response<ApiResponse<VehicleReceiptFilterInfo>>) {
-                                mvpView?.hideProgressDialog()
+                                mvpView?.showContent()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getViewVehicleReceiptFilterInfo(it.data)

@@ -30,6 +30,11 @@ public class TransportGroup {
      */
     private Boolean delFlg;
 
+    @Override
+    public String toString() {
+        return eDesc;
+    }
+
     public String getSlId() {
         return slId;
     }

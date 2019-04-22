@@ -251,4 +251,9 @@
     <string name="bad_receive_num_format">质量问题：</string>
     <string name="not_match_deliver_num">实收、少收、质量问题数量之和必须与发货数量一致！</string>
     <string name="title_storage_position_info">上架信息查询</string>
+    <string name="title_view_vehicle_receipt">查看配车单</string>
+    <string name="peisongzu_format">配送组：</string>
+    <string name="line_format">线路：</string>
+    <string name="out_sto_format">出库库存地点：</string>
+    <string name="actionQuery">查询</string>
 </resources>
