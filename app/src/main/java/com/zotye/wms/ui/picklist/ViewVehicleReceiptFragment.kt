@@ -60,7 +60,7 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                 line = if (lineSpinner.selectedItemPosition == 0) "" else lineBean.id+"("+lineBean.lineDesc+")"
 
                 val storageLocationDto = spSpinner.selectedItem as StorageLocationDto
-//                code = if (spSpinner.selectedItemPosition == 0) "" else storageLocationDto.code
+                slId = if (spSpinner.selectedItemPosition == 0) "" else storageLocationDto.id
 
                 val transportGroup = peisongSpinner.selectedItem as TransportGroup
                 slId = if (peisongSpinner.selectedItemPosition == 0) "" else transportGroup.slId
