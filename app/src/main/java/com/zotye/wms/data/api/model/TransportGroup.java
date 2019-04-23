@@ -9,7 +9,7 @@ public class TransportGroup {
      *
      */
     private static final long serialVersionUID = 867775615434030466L;
-
+    private String id;
     /**
      * 库存地点id
      */
@@ -33,6 +33,14 @@ public class TransportGroup {
     @Override
     public String toString() {
         return eDesc;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSlId() {
