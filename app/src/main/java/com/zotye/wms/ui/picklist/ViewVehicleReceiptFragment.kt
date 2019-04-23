@@ -63,7 +63,7 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                 slId = if (spSpinner.selectedItemPosition == 0) "" else storageLocationDto.id
 
                 val transportGroup = peisongSpinner.selectedItem as TransportGroup
-                slId = if (peisongSpinner.selectedItemPosition == 0) "" else transportGroup.slId
+                transportGroupId = if (peisongSpinner.selectedItemPosition == 0) "" else transportGroup.transportCode
                 presenter.searchVehicleReceipt(this)
             }
         }
