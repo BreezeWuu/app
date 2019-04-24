@@ -19,6 +19,7 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.textResource
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
+import java.lang.Exception
 
 
 /**
@@ -94,7 +95,11 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
 
     override fun onScanQRCodeSuccess(result: String) {
         vibrate()
-        zbarview.stopSpot()
+        try {
+            zbarview.stopSpot()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
         scannerDelegate?.let {
             it.succeed(result)
         }
