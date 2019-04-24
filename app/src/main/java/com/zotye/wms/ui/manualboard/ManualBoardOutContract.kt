@@ -59,7 +59,7 @@ object ManualBoardOutContract {
         }
 
         override fun saveManualBoardOut(manualBoardList: List<ManualBoardDeliveryDto>) {
-            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
+            mvpView?.showProgressDialog(R.string.submiting)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {

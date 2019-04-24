@@ -261,4 +261,5 @@
     <string name="creator_format">创建人：</string>
     <string name="dao_kou_format">道口：</string>
     <string name="need_time_format">需求时间：</string>
+    <string name="submiting">正在提交数据……</string>
 </resources>
