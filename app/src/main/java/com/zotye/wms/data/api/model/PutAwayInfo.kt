@@ -1,7 +1,5 @@
 package com.zotye.wms.data.api.model
 
-import java.math.BigDecimal
-
 
 /**
  * Created by hechuangju on 2019/04/19

@@ -107,7 +107,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             fragment.setScannerDelegate(object : ScannerDelegate {
                 override fun succeed(result: String) {
                     /**拆分出包装号*/
-                    if (pickListPullOffShelf?.storageUnitInfoCode == result.split(",")[1]) {
+                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
                         if (pickListPullOffShelf.pullOffConfirm) {
                             presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
                         } else {
