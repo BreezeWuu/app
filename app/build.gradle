@@ -160,6 +160,7 @@ dependencies {
     implementation "cn.bingoogolapple:bga-qrcode-zxing:$qrcode_version"
     implementation "cn.bingoogolapple:bga-qrcode-zbar:$qrcode_version"
     implementation "pub.devrel:easypermissions:$easypermissions_version"
+    implementation 'com.github.citux:datetimepicker:0.3.0'
 }
 kotlin {
     experimental {

@@ -113,8 +113,10 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
                         }
                     }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true)
                     dialog.show()
+                    dialog.setCanceledOnTouchOutside(false)
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
                 dateDialog.show()
+                dateDialog.setCanceledOnTouchOutside(false)
             }
         }
     }
