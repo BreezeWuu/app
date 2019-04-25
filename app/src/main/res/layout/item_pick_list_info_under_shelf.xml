@@ -64,7 +64,7 @@
                     android:layout_weight="4"
                     android:gravity="center_vertical|right"
                     android:singleLine="true"
-                    android:text="@string/under_shelf_package_or_pallet_code"
+                    android:text="@{TextUtils.isEmpty(info.parentStorageUnitInfoCode)?@string/under_shelf_package_or_pallet_code:@string/under_shelf_package_have_parent}"
                     android:textColor="@color/black" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -77,7 +77,32 @@
                     android:text="@{info.storageUnitInfoCode}"
                     android:textColor="@color/black" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{TextUtils.isEmpty(info.parentStorageUnitInfoCode)?View.VISIBLE:View.GONE}"
+                android:orientation="horizontal">
 
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical|right"
+                    android:singleLine="true"
+                    android:text="@string/under_shelf_parent_package"
+                    android:textColor="@color/black" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="7"
+                    android:gravity="center_vertical"
+                    android:text="@{info.parentStorageUnitInfoCode}"
+                    android:textColor="@color/black" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -121,7 +121,8 @@
     <string name="under_shelf_check_count_format">盘点数量：</string>
     <string name="picklist_pull_off_shelf_empty_error">下架明细列表为空，请先扫描拣配单！</string>
     <string name="picklist_pull_off_shelf_no_add_error">下架明细列表未全部确认！</string>
-    <string name="under_shelf_package_or_pallet_code">包装/托盘号：</string>
+    <string name="under_shelf_package_or_pallet_code">包装号：</string>
+    <string name="under_shelf_package_have_parent">供线包装号：</string>
     <string name="package_count_format">包装总数：</string>
     <string name="under_shelf_count_format">下架数量：</string>
     <string name="under_shelf_package_or_pallet_info">下架包装详情</string>
@@ -262,4 +263,5 @@
     <string name="dao_kou_format">道口：</string>
     <string name="need_time_format">需求时间：</string>
     <string name="submiting">正在提交数据……</string>
+    <string name="under_shelf_parent_package">原包装号：</string>
 </resources>

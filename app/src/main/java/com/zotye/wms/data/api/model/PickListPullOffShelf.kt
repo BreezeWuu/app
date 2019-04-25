@@ -75,6 +75,10 @@ class PickListPullOffShelf {
     var storageUnitInfoCode: String? = null
 
     /**
+     * 父库位code
+     */
+    var parentStorageUnitInfoCode: String? = null
+    /**
      * 是否需要下架盘点
      */
     var checkFlag: Boolean = false
