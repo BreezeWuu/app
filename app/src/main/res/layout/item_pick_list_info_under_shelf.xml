@@ -39,6 +39,9 @@
                     android:gravity="center_vertical|right"
                     android:singleLine="true"
                     android:text="@string/picklist_code_format"
+                    app:autoSizeMaxTextSize="@dimen/font_large"
+                    app:autoSizeMinTextSize="@dimen/font_smallest"
+                    app:autoSizeTextType="uniform"
                     android:textColor="@color/black" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -61,6 +64,9 @@
                     style="@style/TextAppearance.AppCompat.Medium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    app:autoSizeMaxTextSize="@dimen/font_large"
+                    app:autoSizeMinTextSize="@dimen/font_smallest"
+                    app:autoSizeTextType="uniform"
                     android:layout_weight="4"
                     android:gravity="center_vertical|right"
                     android:singleLine="true"
@@ -80,7 +86,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{TextUtils.isEmpty(info.parentStorageUnitInfoCode)?View.VISIBLE:View.GONE}"
+                android:visibility="@{TextUtils.isEmpty(info.parentStorageUnitInfoCode)?View.GONE:View.VISIBLE}"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.AppCompatTextView
@@ -89,6 +95,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:gravity="center_vertical|right"
+                    app:autoSizeMaxTextSize="@dimen/font_large"
+                    app:autoSizeMinTextSize="@dimen/font_smallest"
+                    app:autoSizeTextType="uniform"
                     android:singleLine="true"
                     android:text="@string/under_shelf_parent_package"
                     android:textColor="@color/black" />
@@ -300,6 +309,9 @@
                     android:layout_weight="4"
                     android:gravity="center_vertical|right"
                     android:text="@string/storage_unit_area_format"
+                    app:autoSizeMaxTextSize="@dimen/font_large"
+                    app:autoSizeMinTextSize="@dimen/font_smallest"
+                    app:autoSizeTextType="uniform"
                     android:textColor="@color/black" />
 
                 <android.support.v7.widget.AppCompatTextView
@@ -327,6 +339,9 @@
                     android:layout_weight="4"
                     android:gravity="center_vertical|right"
                     android:text="@string/under_shelf_check_count_format"
+                    app:autoSizeMaxTextSize="@dimen/font_large"
+                    app:autoSizeMinTextSize="@dimen/font_smallest"
+                    app:autoSizeTextType="uniform"
                     android:textColor="@color/black" />
 
                 <android.support.v7.widget.AppCompatTextView

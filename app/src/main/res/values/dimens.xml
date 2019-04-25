@@ -5,6 +5,7 @@
     <dimen name="font_normal">16sp</dimen>
     <dimen name="font_small">14sp</dimen>
     <dimen name="font_smaller">12sp</dimen>
+    <dimen name="font_smallest">8sp</dimen>
 
     <!-- typical spacing between two views -->
     <dimen name="spacing_larger">24dp</dimen>
