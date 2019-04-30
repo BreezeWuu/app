@@ -92,6 +92,8 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun viewVehicleReceiptFilterInfo(userId: String)=apiService.viewVehicleReceiptFilterInfo(userId)
 
+    override fun getVehicleReceiptByCode(code: String)=apiService.getVehicleReceiptByCode(code)
+
     override fun searchVehicleReceipt(dto: VehicleReceiptParamsDto)=apiService.searchVehicleReceipt(dto)
 
     override fun getMesPickReceiptListById(id: String)=apiService.getMesPickReceiptListById(id)

@@ -37,7 +37,7 @@ import javax.inject.Singleton
 class AppModule {
 
     companion object {
-        const val TIMEOUT_IN_SEC = 25
+        const val TIMEOUT_IN_SEC = 20
     }
 
     @Provides

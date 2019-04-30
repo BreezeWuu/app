@@ -30,6 +30,7 @@ object ViewVehicleReceiptContract {
     interface ViewVehicleReceiptPresenter : MvpPresenter<ViewVehicleReceiptView> {
         fun getViewVehicleReceiptFilterInfo()
         fun searchVehicleReceipt(dto: VehicleReceiptParamsDto)
+        fun getVehicleReceiptByCode(code:String)
         fun getMesPickReceiptListById(id: String)
     }
 
@@ -50,6 +51,33 @@ object ViewVehicleReceiptContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getViewVehicleReceiptFilterInfo(it.data)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun getVehicleReceiptByCode(code: String) {
+            mvpView?.showProgressDialog(R.string.loading)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.getVehicleReceiptByCode(code).enqueue(object : Callback<ApiResponse<List<VehicleReceiptDto>>> {
+                            override fun onFailure(call: Call<ApiResponse<List<VehicleReceiptDto>>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<List<VehicleReceiptDto>>>?, response: Response<ApiResponse<List<VehicleReceiptDto>>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.getVehicleReceipt(it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

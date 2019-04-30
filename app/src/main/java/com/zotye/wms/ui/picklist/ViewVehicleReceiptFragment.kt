@@ -77,7 +77,7 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
             editText.setHint(R.string.pc_code)
             AlertDialog.Builder(context!!).setTitle(R.string.action_input_pc_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
-                succeed(editText.text.toString())
+                presenter.getVehicleReceiptByCode(editText.text.toString())
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
@@ -86,15 +86,11 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
             val fragment = QRCodeScannerFragment()
             fragment.setScannerDelegate(object : ScannerDelegate {
                 override fun succeed(result: String) {
-                    succeed(result)
+                    presenter.getVehicleReceiptByCode(result)
                 }
             })
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
-    }
-
-    fun succeed(pcCode:String){
-
     }
 
     override fun getViewVehicleReceiptFilterInfo(vehicleReceiptFilterInfo: VehicleReceiptFilterInfo?) {
