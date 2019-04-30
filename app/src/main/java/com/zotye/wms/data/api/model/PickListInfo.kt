@@ -53,6 +53,8 @@ class PickListInfo(var code: String? = null) : AbstractExpandableItem<PickListMa
      */
     var outSlId: String? = null
 
+    var state: Int = -1
+
     var materialInfoList: List<PickListMaterialInfo>? = null
 
     override fun getItemType(): Int {

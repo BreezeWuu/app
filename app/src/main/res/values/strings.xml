@@ -267,4 +267,6 @@
     <string name="action_input_pc_code">输入配车单</string>
     <string name="action_scanner_pc_code">扫描配车单</string>
     <string name="pc_code">配车单</string>
+    <string name="un_receive_list">未收详情</string>
+    <string name="total_receive_format">交货单货物总数：%1$d ，已收：%2$d </string>
 </resources>

@@ -54,7 +54,8 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
         super.onViewCreated(view, savedInstanceState)
         presenter.onAttach(this)
         toolbar_base.visibility = View.VISIBLE
-        toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_receive_confirm)
+        toolbar_base.title = arguments?.getString("title")
+                ?: getString(R.string.title_receive_confirm)
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
         toolbar_base.setNavigationOnClickListener {
             activity?.onBackPressed()
@@ -95,7 +96,12 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
         recyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = PackageAdapter()
         recyclerView.adapter = adapter
-        adapter.setNewData(packageInfoList)
+        totalFormatTextView.text = getString(R.string.total_receive_format, packageInfoList.size, packageInfoList.filter {
+            it.eState == "2"
+        }.size)
+        adapter.setNewData(packageInfoList.filter {
+            it.eState != "2"
+        })
     }
 
     override fun getUnReceivePickInfoList(pickInfoList: List<PickListInfo>) {
@@ -104,12 +110,18 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
         recyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = PickInfoAdapter()
         recyclerView.adapter = adapter
-        adapter.setNewData(pickInfoList)
+        totalFormatTextView.text = getString(R.string.total_receive_format, pickInfoList.size, pickInfoList.filter {
+            it.state != 1
+        }.size)
+        adapter.setNewData(pickInfoList.filter {
+            it.state == 1
+        })
     }
 
     override fun packageReceiveSucceed(message: String) {
         viewSwitcher.showPrevious()
-        toolbar_base.title = arguments?.getString("title") ?: getString(R.string.title_receive_confirm)
+        toolbar_base.title = arguments?.getString("title")
+                ?: getString(R.string.title_receive_confirm)
         AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok, null).show()
     }
 
