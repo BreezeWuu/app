@@ -120,6 +120,8 @@ class PackageInfo(
      */
     var storageAreaInfoName: String? = null
 
+    var eState: String? = null
+
     var isEditEnable = false
     override fun equals(other: Any?): Boolean {
         return if (other !is PackageInfo)
