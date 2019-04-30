@@ -2,18 +2,23 @@ package com.zotye.wms.ui.picklist
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.*
 import com.zotye.wms.databinding.ItemMesPickReceiptBinding
 import com.zotye.wms.databinding.ItemVehicleReceiptBinding
+import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
+import com.zotye.wms.ui.common.QRCodeScannerFragment
+import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_viewvehiclereceipt.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
@@ -57,7 +62,7 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                 start = 0
                 length = Int.MAX_VALUE
                 val lineBean = lineSpinner.selectedItem as LineBean
-                line = if (lineSpinner.selectedItemPosition == 0) "" else lineBean.id+"("+lineBean.lineDesc+")"
+                line = if (lineSpinner.selectedItemPosition == 0) "" else lineBean.id + "(" + lineBean.lineDesc + ")"
 
                 val storageLocationDto = spSpinner.selectedItem as StorageLocationDto
                 slId = if (spSpinner.selectedItemPosition == 0) "" else storageLocationDto.id
@@ -67,6 +72,29 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                 presenter.searchVehicleReceipt(this)
             }
         }
+        pcCodeInput.setOnClickListener {
+            val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_pda_code_input, null)
+            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+            editText.setHint(R.string.pc_code)
+            AlertDialog.Builder(context!!).setTitle(R.string.action_input_pc_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                succeed(editText.text.toString())
+                hideKeyboard(editText)
+            }.setPositiveButton(R.string.cancel, null).show()
+            showKeyboard(editText)
+        }
+        pcCodeScanner.setOnClickListener {
+            val fragment = QRCodeScannerFragment()
+            fragment.setScannerDelegate(object : ScannerDelegate {
+                override fun succeed(result: String) {
+                    succeed(result)
+                }
+            })
+            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+        }
+    }
+
+    fun succeed(pcCode:String){
+
     }
 
     override fun getViewVehicleReceiptFilterInfo(vehicleReceiptFilterInfo: VehicleReceiptFilterInfo?) {
@@ -104,7 +132,7 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                     }
                 }
             }
-        }else{
+        } else {
             showMessage("未找到相应的结果！")
         }
     }
@@ -118,12 +146,12 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                     setNewData(data)
                     setOnItemChildClickListener { _, _, position ->
                         get(position).apply {
-                            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_content, UnderShelfFragment.newInstance(getString(R.string.title_under_shelf),this.no))?.addToBackStack(null)?.commit()
+                            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_content, UnderShelfFragment.newInstance(getString(R.string.title_under_shelf), this.no))?.addToBackStack(null)?.commit()
                         }
                     }
                 }
             }
-        }else{
+        } else {
             showMessage("未找到相应的结果！")
         }
     }

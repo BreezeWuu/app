@@ -264,4 +264,7 @@
     <string name="need_time_format">需求时间：</string>
     <string name="submiting">正在提交数据……</string>
     <string name="under_shelf_parent_package">原包装号：</string>
+    <string name="action_input_pc_code">输入配车单</string>
+    <string name="action_scanner_pc_code">扫描配车单</string>
+    <string name="pc_code">配车单</string>
 </resources>
