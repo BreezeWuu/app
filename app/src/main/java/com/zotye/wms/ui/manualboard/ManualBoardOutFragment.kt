@@ -101,12 +101,24 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
             if ((manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data.size == 0) {
                 showMessage("请先添加看板！")
             } else {
-                (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data.apply {
-                    forEach {
-                        it.demandTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Date()).toString()
+                AlertDialog.Builder(context!!).setTitle(R.string.is_urgent_out).setNegativeButton(R.string.`is`) { _, _ ->
+                    (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data.apply {
+                        forEach {
+                            it.demandTime = endTime
+                            it.urgentFlag = "1"
+                        }
+                        presenter.saveManualBoardOut(this)
                     }
-                    presenter.saveManualBoardOut(this)
-                }
+                }.setPositiveButton(R.string.isnot) { _, _ ->
+                    (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).data.apply {
+                        forEach {
+                            it.demandTime = endTime
+                            it.urgentFlag = "0"
+                        }
+                        presenter.saveManualBoardOut(this)
+                    }
+                }.show()
+
 //                val calendar = Calendar.getInstance()
 //                var dateDialog = DatePickerDialog(context, DatePickerDialog.OnDateSetListener { dateDialogView, year, month, dayOfMonth ->
 //                    if(dateDialogView.isShown) {

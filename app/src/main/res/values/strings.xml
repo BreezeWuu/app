@@ -27,6 +27,8 @@
     <string name="submit_receive_info_succeed">包装收货成功！</string>
     <string name="submit_group_receive_info_succeed">组托收货成功！\n交货单号：%1$s</string>
     <string name="ok">确定</string>
+    <string name="is">是</string>
+    <string name="isnot">否</string>
     <string name="delete">删除</string>
     <string name="edit">修改</string>
     <string name="cancel">取消</string>
@@ -269,4 +271,5 @@
     <string name="pc_code">配车单</string>
     <string name="un_receive_list">未收详情</string>
     <string name="total_receive_format">交货单货物总数：%1$d ，已收：%2$d </string>
+    <string name="is_urgent_out">是否为紧急出库？</string>
 </resources>
