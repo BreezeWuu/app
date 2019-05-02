@@ -51,7 +51,7 @@ class Resource(
             ResourceType.ThreePLDELIVERY -> {
                 R.drawable.ic_loading_list
             }
-            ResourceType.ThreePLPRCREATE -> {
+            ResourceType.ThreePLPRCREATE, ResourceType.CB001 -> {
                 R.drawable.ic_check_bad
             }
             ResourceType.ThreePLSOLDOUT -> {
@@ -115,6 +115,7 @@ enum class ResourceType(val code: String) {
     SJXXCX("sjxxcx"),//上架信息查询
     CKPCD("ckpcd1"),//查看配车单
     TEST_RECV("TEST_RECV"),//测试
+    CB001("CB001"),//拆包
     Unknown("");
 
 

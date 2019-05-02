@@ -127,6 +127,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         ResourceType.CKPCD->{
                             fragment = ViewVehicleReceiptFragment.newInstance(it.name)
                         }
+                        ResourceType.CB001->{
+                            fragment = UnPackageFragment.newInstance(it.name)
+                        }
                         else -> {
                             return@OnItemChildClickListener
                         }

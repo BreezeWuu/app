@@ -77,4 +77,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeViewVehicleReceiptFragment(): ViewVehicleReceiptFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeUnPackageFragment(): UnPackageFragment
 }

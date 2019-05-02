@@ -272,4 +272,5 @@
     <string name="un_receive_list">未收详情</string>
     <string name="total_receive_format">交货单货物总数：%1$d ，已收：%2$d </string>
     <string name="is_urgent_out">是否为紧急出库？</string>
+    <string name="title_un_package">拆包</string>
 </resources>
