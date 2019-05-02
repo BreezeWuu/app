@@ -3,6 +3,7 @@ package com.zotye.wms.ui.goods
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,17 +14,20 @@ import com.zotye.wms.R
 import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PackageInfo
+import com.zotye.wms.data.api.model.UnpackingDto
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemInfoUppackageBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import com.zotye.wms.ui.storageunit.StorageUnitModifyContract
+import kotlinx.android.synthetic.main.dialog_under_shelf_package.*
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.layout_code_scanner.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.find
-import org.jetbrains.anko.sdk25.coroutines.onClick
+import java.lang.Exception
+import java.math.BigDecimal
 import javax.inject.Inject
 
 /**
@@ -94,14 +98,27 @@ class UnPackageFragment : BaseFragment(), ScannerDelegate, StorageUnitModifyCont
             dialog.dismiss()
             val codeInputView = LayoutInflater.from(it.context).inflate(R.layout.dialog_pda_code_input, null)
             val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
-            editText.setHint(R.string.action_input_storage_unit_code)
-            AlertDialog.Builder(it.context).setTitle(R.string.action_input_storage_unit_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
-                presenter.authStorageUnitNewPositionByQRCode(info, editText.text.toString())
+            editText.setHint(R.string.un_package_number)
+            editText.inputType = InputType.TYPE_CLASS_NUMBER
+            AlertDialog.Builder(it.context).setTitle(R.string.action_input_un_package_number).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                val unpackingDto = UnpackingDto().apply {
+                    sourceCode = packageInfo.code
+                    num = try {
+                        editText.text.toString().toBigDecimal()
+                    } catch (e: Exception) {
+                        BigDecimal.ZERO
+                    }
+                }
+                if (unpackingDto.num == BigDecimal.ZERO || unpackingDto.num!! > packageInfo.deliveryNum) {
+                    showMessage(R.string.error_un_packing_number)
+                } else {
+                    presenter.unPacking(unpackingDto)
+                }
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
         }
-        infoView.find<Button>(R.id.cancelButton).onClick {
+        infoView.find<Button>(R.id.cancelButton).setOnClickListener {
             dialog.dismiss()
         }
         val dataBind = DataBindingUtil.bind<ItemInfoUppackageBinding>(infoView, fragmentDataBindingComponent)
@@ -117,5 +134,7 @@ class UnPackageFragment : BaseFragment(), ScannerDelegate, StorageUnitModifyCont
     override fun storageUnitModifySucceed(message: String) {
     }
 
-
+    override fun unPackingSucceed(message: String) {
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok,null).show()
+    }
 }

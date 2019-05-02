@@ -99,11 +99,13 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun viewVehicleReceiptFilterInfo(userId: String) = apiHelper.viewVehicleReceiptFilterInfo(userId)
 
-    override fun getVehicleReceiptByCode(code: String)=apiHelper.getVehicleReceiptByCode(code)
+    override fun getVehicleReceiptByCode(code: String) = apiHelper.getVehicleReceiptByCode(code)
 
     override fun searchVehicleReceipt(dto: VehicleReceiptParamsDto) = apiHelper.searchVehicleReceipt(dto)
 
     override fun getMesPickReceiptListById(id: String) = apiHelper.getMesPickReceiptListById(id)
+
+    override fun unpacking(unpackingDto: UnpackingDto) = apiHelper.unpacking(unpackingDto)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 

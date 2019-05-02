@@ -209,6 +209,10 @@ class StorageUnitModifyFragment : BaseFragment(), StorageUnitModifyContract.Stor
         dialog.show()
     }
 
+    override fun unPackingSucceed(message: String) {
+
+    }
+
     override fun onDestroyView() {
         presenter.onDetach()
         super.onDestroyView()

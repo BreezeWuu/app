@@ -5,6 +5,7 @@ import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarcodeInfo
+import com.zotye.wms.data.api.model.UnpackingDto
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -21,12 +22,14 @@ object StorageUnitModifyContract {
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
         fun getNewStorageUnitPosition(info: BarcodeInfo, qrCode: String)
         fun storageUnitModifySucceed(message: String)
+        fun unPackingSucceed(message: String)
     }
 
     interface StorageUnitModifyPresenter : MvpPresenter<StorageUnitModifyView> {
         fun getStorageUnitInfoByCode(barCode: String)
         fun authStorageUnitNewPositionByQRCode(info: BarcodeInfo, qrCode: String)
         fun storageUnitModify(code: String, newStoragePositionCode: String)
+        fun unPacking(unpackingDto:UnpackingDto)
     }
 
     class StorageUnitModifyPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<StorageUnitModifyView>(), StorageUnitModifyPresenter {
@@ -101,6 +104,33 @@ object StorageUnitModifyContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.storageUnitModifySucceed(it.message)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun unPacking(unpackingDto: UnpackingDto) {
+            mvpView?.showProgressDialog(R.string.submiting)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.unpacking(unpackingDto).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.unPackingSucceed(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

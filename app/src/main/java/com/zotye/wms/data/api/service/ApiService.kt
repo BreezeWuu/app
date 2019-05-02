@@ -180,4 +180,7 @@ interface ApiService {
     @POST("bar_code/ManualBoard/saveManualBoardOut")
     fun saveManualBoardOut(@Body manualBoardDeliveryDto: List<ManualBoardDeliveryDto>): Call<ApiResponse<List<MaterialPullResult>>>
 
+    /**拆包*/
+    @POST("bar_code/unpacking")
+    fun unpacking(@Body unpackingDto: UnpackingDto): Call<ApiResponse<String>>
 }

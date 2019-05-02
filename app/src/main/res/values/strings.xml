@@ -273,4 +273,7 @@
     <string name="total_receive_format">交货单货物总数：%1$d ，已收：%2$d </string>
     <string name="is_urgent_out">是否为紧急出库？</string>
     <string name="title_un_package">拆包</string>
+    <string name="action_input_un_package_number">输入拆包数量</string>
+    <string name="un_package_number">拆包数量</string>
+    <string name="error_un_packing_number">拆包数量必须大于0，小于可用包装数！</string>
 </resources>
