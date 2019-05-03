@@ -39,7 +39,7 @@ class Resource(
 ) {
     fun getResourceDrawable(): Int {
         return when (ResourceType.fromCode(code)) {
-            ResourceType.PALLETRECV -> {
+            ResourceType.PALLETRECV,ResourceType.APPHB -> {
                 R.drawable.ic_group_receipt
             }
             ResourceType.PACKAGERECV -> {
