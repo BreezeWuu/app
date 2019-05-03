@@ -134,6 +134,7 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
 
     private fun getPackageInfo(packageInfo: PackageInfo) {
         packageInfo.isEditEnable = true
+        packageInfo.materialBatchFlag = "X"
         val infoView = LayoutInflater.from(context).inflate(R.layout.item_goods_package, null)
         val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(infoView, fragmentDataBindingComponent)
         val receiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
