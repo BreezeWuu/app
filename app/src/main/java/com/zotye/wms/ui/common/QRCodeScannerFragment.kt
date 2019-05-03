@@ -11,7 +11,10 @@ import android.widget.Button
 import cn.bingoogolapple.qrcode.core.QRCodeView
 import com.zotye.wms.R
 import kotlinx.android.synthetic.main.fragment_base.*
+import kotlinx.android.synthetic.main.fragment_code_scanner.*
 import kotlinx.android.synthetic.main.fragment_qr_code_scanner.*
+import kotlinx.android.synthetic.main.fragment_qr_code_scanner.toggleLightButton
+import kotlinx.android.synthetic.main.fragment_qr_code_scanner.zbarview
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -90,7 +93,7 @@ class QRCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallback
 
     override fun onScanQRCodeSuccess(result: String) {
         vibrate()
-        zbarview.stopSpot()
+//        zbarview.startSpot()
         scannerDelegate?.let {
             it.succeed(result)
         }
@@ -101,13 +104,21 @@ class QRCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallback
         showMessage(R.string.error_open_camera)
     }
 
+    override fun onCameraAmbientBrightnessChanged(isDark: Boolean) {
+
+    }
+
     private fun vibrate() {
         val vibrator = activity?.getSystemService(VIBRATOR_SERVICE)
         (vibrator as? Vibrator)?.vibrate(200)
     }
 
-    override fun onDestroyView() {
+    override fun onStop() {
+        super.onStop()
         zbarview.stopCamera()
+
+    }
+    override fun onDestroyView() {
         zbarview.onDestroy()
         super.onDestroyView()
     }

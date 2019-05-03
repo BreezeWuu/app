@@ -93,13 +93,13 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
         }
     }
 
+    override fun onCameraAmbientBrightnessChanged(isDark: Boolean) {
+
+    }
+
     override fun onScanQRCodeSuccess(result: String) {
         vibrate()
-        try {
-            zbarview.stopSpot()
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
+//        zbarview.startSpot()
         scannerDelegate?.let {
             it.succeed(result)
         }
@@ -115,8 +115,13 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
         (vibrator as? Vibrator)?.vibrate(200)
     }
 
-    override fun onDestroyView() {
+    override fun onStop() {
+        super.onStop()
         zbarview.stopCamera()
+
+    }
+
+    override fun onDestroyView() {
         zbarview.onDestroy()
         super.onDestroyView()
     }
