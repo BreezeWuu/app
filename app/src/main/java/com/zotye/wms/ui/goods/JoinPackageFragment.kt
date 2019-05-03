@@ -17,7 +17,6 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.DataManager
-import com.zotye.wms.data.api.model.BarCodeType
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
@@ -141,52 +140,53 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
         val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
         infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
         infoView.findViewById<View>(R.id.noReceiveNumberLayout).visibility = View.GONE
+        infoView.findViewById<View>(R.id.receiveNumberLayout).visibility = View.GONE
         infoView.findViewById<View>(R.id.badNumberLayout).visibility = View.GONE
         packageInfo.receiveNum = packageInfo.deliveryNum
         dataBind?.info = packageInfo
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
         infoView.findViewById<AppCompatButton>(R.id.okButton).textResource = R.string.add
-        infoView.findViewById<View>(R.id.okButton).onClick {
+        infoView.findViewById<View>(R.id.okButton).setOnClickListener {
             if (packageInfo.isBatchMaterialEditable()) {
                 if (batchNumberEditText.text.isNullOrBlank()) {
                     batchNumberEditText.error = getString(R.string.batch_number_empty_error)
-                    return@onClick
+                    return@setOnClickListener
                 }
             }
-            val numberText = receiveNumberEditText.text.toString()
-            if (TextUtils.isEmpty(numberText)) {
-                receiveNumberEditText.error = getString(R.string.error_receive_number)
-                return@onClick
-            }
-            val receiveNumber = BigDecimal(numberText)
-            if (receiveNumber.compareTo(BigDecimal.ZERO) < 1) {
-                receiveNumberEditText.error = getString(R.string.error_receive_number)
-                return@onClick
-            }
-            packageInfo.receiveNum = receiveNumber
+//            val numberText = receiveNumberEditText.text.toString()
+//            if (TextUtils.isEmpty(numberText)) {
+//                receiveNumberEditText.error = getString(R.string.error_receive_number)
+//                return@onClick
+//            }
+//            val receiveNumber = BigDecimal(numberText)
+//            if (receiveNumber.compareTo(BigDecimal.ZERO) < 1) {
+//                receiveNumberEditText.error = getString(R.string.error_receive_number)
+//                return@onClick
+//            }
+//            packageInfo.receiveNum = receiveNumber
             packageInfo.batchNum = batchNumberEditText.text.toString()
             val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
             if (adapter.data.isNotEmpty()) {
                 val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
                 if (lastPackage.materialNum != packageInfo.materialNum) {
                     showSnackBar(infoView, getString(R.string.not_match_material_id))
-                    return@onClick
+                    return@setOnClickListener
                 }
                 if (lastPackage.supplierCode != packageInfo.supplierCode) {
                     showSnackBar(infoView, getString(R.string.not_match_supplier_info))
-                    return@onClick
+                    return@setOnClickListener
                 }
                 if (lastPackage.slCode != packageInfo.slCode) {
                     showSnackBar(infoView, getString(R.string.not_match_sl_code))
-                    return@onClick
+                    return@setOnClickListener
                 }
                 if (lastPackage.batchNum != packageInfo.batchNum) {
                     batchNumberEditText.error = getString(R.string.not_match_batch_num)
-                    return@onClick
+                    return@setOnClickListener
                 }
                 if (lastPackage.deliveryNoteCode != packageInfo.deliveryNoteCode) {
                     batchNumberEditText.error = getString(R.string.not_match_delivery_note_code)
-                    return@onClick
+                    return@setOnClickListener
                 }
             }
             packageInfo.isEditEnable = false
@@ -206,7 +206,7 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
         if ((packageRecyclerView.adapter as GoodsPackageAdapter).data.contains(PackageInfo(result))) {
             showMessage(R.string.repeat_package_code_warn)
         } else
-            presenter.getPackageInfo(true, result)
+            presenter.getJoinPackageInfo(result)
     }
 
     override fun submitReceiveInfoSucceed(message: String) {
@@ -225,6 +225,7 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
             val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
             helper.itemView.findViewById<View>(R.id.actionLayout).visibility = View.VISIBLE
+            helper.itemView.findViewById<View>(R.id.receiveNumberLayout).visibility = View.GONE
             helper.addOnClickListener(R.id.deleteButton)
             helper.addOnClickListener(R.id.editButton)
         }

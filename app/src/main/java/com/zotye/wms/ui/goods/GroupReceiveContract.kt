@@ -27,6 +27,7 @@ object GroupReceiveContract {
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
         fun getPackageInfo(isGroupReceive: Boolean, packageId: String)
+        fun getJoinPackageInfo(packageId: String)
         fun submitReceiveInfo(logisticsReceiveInfo: LogisticsReceiveInfo)
     }
 
@@ -48,6 +49,33 @@ object GroupReceiveContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.submitReceiveInfoSucceed(it.message)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun getJoinPackageInfo(packageId: String) {
+            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.joinPackageInfo(it.userId, packageId).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.getBarCodeInfo(it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

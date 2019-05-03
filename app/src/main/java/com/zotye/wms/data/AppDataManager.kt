@@ -1,22 +1,21 @@
 package com.zotye.wms.data
 
 import android.content.Context
-import com.zotye.wms.data.db.DbHelper
-import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.data.api.ApiHelper
-import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.*
+import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
+import com.zotye.wms.data.api.model.UnpackingDto
+import com.zotye.wms.data.api.model.User
+import com.zotye.wms.data.api.model.VehicleReceiptParamsDto
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
-import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
-import com.zotye.wms.data.api.model.receipt.DeliveryNoteInfoResponse
+import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
-import com.zotye.wms.data.api.response.ReceiveConfirmResponse
+import com.zotye.wms.data.db.DbHelper
+import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
-import retrofit2.Call
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,6 +33,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun getUserInfo(userId: String) = apiHelper.getUserInfo(userId)
 
     override fun getPackageInfo(userId: String, isGroupReceive: Boolean, packageId: String) = apiHelper.getPackageInfo(userId, isGroupReceive, packageId)
+
+    override fun joinPackageInfo(userId: String, packageId: String)=apiHelper.joinPackageInfo(userId, packageId)
 
     override fun getStorageUnitInfoByBarcode(userId: String, barCode: String) = apiHelper.getStorageUnitInfoByBarcode(userId, barCode)
 

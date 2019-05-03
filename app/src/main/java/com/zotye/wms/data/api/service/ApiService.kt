@@ -41,6 +41,11 @@ interface ApiService {
     fun getPackageInfo(@Field("userId") userId: String, @Field("isGroupReceive") isGroupReceive: Boolean, @Field("packageId") packageId: String): Call<ApiResponse<BarcodeInfo>>
 
     @FormUrlEncoded
+    @POST("bar_code/joinPackageInfo")
+    fun joinPackageInfo(@Field("userId") userId: String, @Field("packageId") packageId: String): Call<ApiResponse<BarcodeInfo>>
+
+
+    @FormUrlEncoded
     @POST("bar_code/storageUnitInfoByCode")
     fun getStorageUnitInfoByBarcode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<BarcodeInfo>>
 

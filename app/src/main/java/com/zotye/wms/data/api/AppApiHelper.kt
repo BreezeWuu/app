@@ -1,6 +1,8 @@
 package com.zotye.wms.data.api
 
-import com.zotye.wms.data.api.model.*
+import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
+import com.zotye.wms.data.api.model.UnpackingDto
+import com.zotye.wms.data.api.model.VehicleReceiptParamsDto
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
@@ -8,7 +10,6 @@ import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
 import com.zotye.wms.data.api.service.ApiService
-import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -23,6 +24,8 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun getUserInfo(userId: String) = apiService.getUserInfo(userId)
 
     override fun getPackageInfo(userId: String, isGroupReceive: Boolean, packageId: String) = apiService.getPackageInfo(userId, isGroupReceive, packageId)
+
+    override fun joinPackageInfo(userId: String, packageId: String)=apiService.joinPackageInfo(userId, packageId)
 
     override fun getStorageUnitInfoByBarcode(userId: String, barCode: String) = apiService.getStorageUnitInfoByBarcode(userId, barCode)
 
