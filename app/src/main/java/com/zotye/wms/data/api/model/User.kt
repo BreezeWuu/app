@@ -116,6 +116,7 @@ enum class ResourceType(val code: String) {
     CKPCD("ckpcd1"),//查看配车单
     TEST_RECV("TEST_RECV"),//测试
     CB001("CB001"),//拆包
+    APPHB("APPHB"),//合包
     Unknown("");
 
 

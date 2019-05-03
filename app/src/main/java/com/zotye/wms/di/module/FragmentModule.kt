@@ -80,4 +80,7 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeUnPackageFragment(): UnPackageFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeJoinPackageFragment(): JoinPackageFragment
 }

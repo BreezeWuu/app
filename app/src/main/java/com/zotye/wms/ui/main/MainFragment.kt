@@ -121,14 +121,17 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         ResourceType.MANUAL_BOARD_OUT -> {
                             fragment = ManualBoardOutFragment.newInstance(it.name)
                         }
-                        ResourceType.SJXXCX->{
+                        ResourceType.SJXXCX -> {
                             fragment = StoragePositionInfoFragment.newInstance(it.name)
                         }
-                        ResourceType.CKPCD->{
+                        ResourceType.CKPCD -> {
                             fragment = ViewVehicleReceiptFragment.newInstance(it.name)
                         }
-                        ResourceType.CB001->{
+                        ResourceType.CB001 -> {
                             fragment = UnPackageFragment.newInstance(it.name)
+                        }
+                        ResourceType.APPHB -> {
+                            fragment = JoinPackageFragment.newInstance(it.name)
                         }
                         else -> {
                             return@OnItemChildClickListener
