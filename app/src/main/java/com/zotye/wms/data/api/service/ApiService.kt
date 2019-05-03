@@ -188,4 +188,10 @@ interface ApiService {
     /**拆包*/
     @POST("bar_code/unpacking")
     fun unpacking(@Body unpackingDto: UnpackingDto): Call<ApiResponse<String>>
+
+
+    /**合包*/
+    @POST("bar_code/joinPackage")
+    fun joinPackage(@Body joinPackageDto: JoinPackageDto): Call<ApiResponse<String>>
+
 }

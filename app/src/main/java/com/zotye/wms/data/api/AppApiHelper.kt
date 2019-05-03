@@ -1,5 +1,6 @@
 package com.zotye.wms.data.api
 
+import com.zotye.wms.data.api.model.JoinPackageDto
 import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
 import com.zotye.wms.data.api.model.UnpackingDto
 import com.zotye.wms.data.api.model.VehicleReceiptParamsDto
@@ -10,6 +11,7 @@ import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
 import com.zotye.wms.data.api.service.ApiService
+import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -102,4 +104,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun getMesPickReceiptListById(id: String)=apiService.getMesPickReceiptListById(id)
 
     override fun unpacking(unpackingDto: UnpackingDto)=apiService.unpacking(unpackingDto)
+
+    override fun joinPackage(joinPackageDto: JoinPackageDto)=apiService.joinPackage(joinPackageDto)
 }
