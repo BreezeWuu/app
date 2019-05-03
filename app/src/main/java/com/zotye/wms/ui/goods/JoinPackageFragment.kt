@@ -129,14 +129,7 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
 
     override fun getBarCodeInfo(barcodeInfo: BarcodeInfo?) {
         barcodeInfo?.let { info ->
-            val barcodeType = BarCodeType.fromCodeType(info.barCodeType)
-            barcodeType?.let {
-                when (it) {
-                    BarCodeType.Package -> {
-                        getPackageInfo(Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java))
-                    }
-                }
-            }
+            getPackageInfo(Gson().fromJson<PackageInfo>(info.barCodeInfo, PackageInfo::class.java))
         }
     }
 
