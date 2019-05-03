@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.model.BarcodeInfo
+import com.zotye.wms.data.api.model.JoinPackageDto
 import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
@@ -27,6 +28,7 @@ import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_join_package.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.collections.forEachByIndex
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.textResource
@@ -145,7 +147,19 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
     }
 
     fun joinPackage(result: String) {
-
+        val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
+        val codeList = arrayListOf<String>()
+        var newBatchNumber = ""
+        adapter.data.forEachByIndex {
+            codeList.add(it.code)
+            newBatchNumber = it.batchNum ?: ""
+        }
+        val joinPackageDto = JoinPackageDto().apply {
+            spId = result
+            sourceCodes = codeList
+            batchNum = newBatchNumber
+        }
+        presenter.joinPackage(joinPackageDto)
     }
 
     override fun getBarCodeInfo(barcodeInfo: BarcodeInfo?) {
