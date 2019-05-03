@@ -6,6 +6,7 @@ import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarcodeInfo
+import com.zotye.wms.data.api.model.JoinPackageDto
 import com.zotye.wms.data.api.model.LogisticsReceiveInfo
 import com.zotye.wms.data.api.model.receipt.GoodsReceiveResponse
 import com.zotye.wms.ui.common.BasePresenter
@@ -29,6 +30,7 @@ object GroupReceiveContract {
         fun getPackageInfo(isGroupReceive: Boolean, packageId: String)
         fun getJoinPackageInfo(packageId: String)
         fun submitReceiveInfo(logisticsReceiveInfo: LogisticsReceiveInfo)
+        fun joinPackage(joinPackageDto: JoinPackageDto)
     }
 
     class GroupReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<GroupReceiveView>(), GroupReceivePresenter {
@@ -114,5 +116,31 @@ object GroupReceiveContract {
             }
         }
 
+        override fun joinPackage(joinPackageDto: JoinPackageDto) {
+            mvpView?.showProgressDialog(R.string.submiting)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.joinPackage(joinPackageDto).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.showMessage(it.message)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
     }
 }

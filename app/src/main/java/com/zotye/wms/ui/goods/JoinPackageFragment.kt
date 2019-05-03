@@ -81,6 +81,24 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
         }
+        spInput.setOnClickListener {
+            fragmentManager!!.beginTransaction().add(R.id.main_content, BarCodeScannerFragment().apply {
+                setScannerDelegate(object : ScannerDelegate {
+                    override fun succeed(result: String) {
+                        joinPackage(result)
+                    }
+                })
+            }).addToBackStack(null).commit()
+        }
+        spInput.setOnClickListener {
+            val codeInputView = LayoutInflater.from(it.context).inflate(R.layout.dialog_pda_code_input, null)
+            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+            AlertDialog.Builder(it.context).setTitle(R.string.action_input_package_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                joinPackage(editText.text.toString())
+                hideKeyboard(editText)
+            }.setPositiveButton(R.string.cancel, null).show()
+            showKeyboard(editText)
+        }
         packageRecyclerView.layoutManager = LinearLayoutManager(context)
         val goodsPackageAdapter = GoodsPackageAdapter()
         val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
@@ -124,6 +142,10 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
                 }
             }
         }
+    }
+
+    fun joinPackage(result: String) {
+
     }
 
     override fun getBarCodeInfo(barcodeInfo: BarcodeInfo?) {
