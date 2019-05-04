@@ -148,8 +148,14 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
         presenter.getManualBoardList(result, "")
     }
 
-    override fun getManualBoardList(manualBoardList: List<ManualBoardDeliveryDto>) {
-        (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
+    override fun getManualBoardList(showWarnings: Boolean, warnMessage: String, manualBoardList: List<ManualBoardDeliveryDto>?) {
+        if(showWarnings){
+            AlertDialog.Builder(context!!).setTitle(R.string.warn).setMessage(warnMessage).setNegativeButton(R.string.goon) { _, _ ->
+                (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
+            }.setPositiveButton(R.string.cancel, null).show()
+        }else{
+            (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
+        }
     }
 
     override fun saveManualBoardOutSucceed(message: String, result: List<MaterialPullResult>) {

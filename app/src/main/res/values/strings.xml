@@ -288,4 +288,6 @@
     <string name="not_match_join_package_batch_num">批次号不一致，请先修改批次号！</string>
     <string name="action_add_package_input">输入添加包装</string>
     <string name="action_add_package_scanner">扫描添加包装</string>
+    <string name="warn">警告</string>
+    <string name="goon">继续</string>
 </resources>
