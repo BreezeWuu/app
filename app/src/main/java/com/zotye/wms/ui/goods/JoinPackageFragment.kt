@@ -122,6 +122,7 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
                         val editText = goodsPackageAdapter.getViewByPosition(position, R.id.receiveNumberText) as TextInputEditText
                         val batchNumberEditText = goodsPackageAdapter.getViewByPosition(position, R.id.batchNumber) as TextInputEditText
                         if (item.isEditEnable) {
+                            item.batchNum = batchNumberEditText.text.toString()
                             val numberText = editText.text.toString()
                             item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
                         } else {
