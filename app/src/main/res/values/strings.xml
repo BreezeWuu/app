@@ -276,4 +276,5 @@
     <string name="action_input_un_package_number">输入拆包数量</string>
     <string name="un_package_number">拆包数量</string>
     <string name="error_un_packing_number">拆包数量必须大于0，小于可用包装数！</string>
+    <string name="error_join_package">合包包装数必须大于1！</string>
 </resources>

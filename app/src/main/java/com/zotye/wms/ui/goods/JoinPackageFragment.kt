@@ -154,6 +154,9 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
             codeList.add(it.code)
             newBatchNumber = it.batchNum ?: ""
         }
+        if(codeList.size<=1){
+            showMessage(R.string.error_join_package)
+        }
         val joinPackageDto = JoinPackageDto().apply {
             spId = result
             sourceCodes = codeList
