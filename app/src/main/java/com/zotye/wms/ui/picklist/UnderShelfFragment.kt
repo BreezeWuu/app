@@ -135,6 +135,25 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 //                fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
             }
         }
+        addPackageInput.setOnClickListener {
+            val codeInputView = LayoutInflater.from(context!!).inflate(R.layout.dialog_pda_code_input, null)
+            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+            editText.setHint(R.string.package_code)
+            AlertDialog.Builder(context!!).setTitle(R.string.action_input_package_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                val result = editText.text.toString()
+                var hasAdded = false
+                adapter.data.forEachByIndex {
+                    if (result == it.storageUnitInfoCode) {
+                        showMessage("该包装已添加！")
+                        hasAdded = true
+                    }
+                }
+                if (!hasAdded)
+                    presenter.addPackage(prNo, result)
+                hideKeyboard(editText)
+            }.setPositiveButton(R.string.cancel, null).show()
+            showKeyboard(editText)
+        }
         addPackageButton.setOnClickListener {
             if (TextUtils.isEmpty(prNo)) {
                 showMessage("请先添加拣配单")
@@ -174,7 +193,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 request.prNo = prNo
                 doAsync {
                     adapter.data.forEachByIndex { pickListPullOffShelf ->
-                        request.stCodes?.add(pickListPullOffShelf.storageUnitInfoCode?:"")
+                        request.stCodes?.add(pickListPullOffShelf.storageUnitInfoCode ?: "")
                     }
                     onUiThread {
                         hideProgressDialog()

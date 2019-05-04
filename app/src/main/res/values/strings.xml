@@ -36,8 +36,8 @@
     <string name="add">添加</string>
     <string name="info">提示</string>
     <string name="action_input">手动输入</string>
-    <string name="action_input_package_code">请输入包装单号/托盘号</string>
-    <string name="package_code">包装单号/托盘号</string>
+    <string name="action_input_package_code">请输入包装单号</string>
+    <string name="package_code">包装单号</string>
     <string name="loading_query_bar_code_info">正在查询条形码信息&#8230;</string>
     <string name="repeat_package_code_warn">该包装单号已存在！</string>
     <!--包装详情-->
@@ -285,4 +285,6 @@
     <string name="error_join_package">合包包装数必须大于1！</string>
     <string name="added_package_list">已添加的包装</string>
     <string name="not_match_join_package_batch_num">批次号不一致，请先修改批次号！</string>
+    <string name="action_add_package_input">输入添加包装</string>
+    <string name="action_add_package_scanner">扫描添加包装</string>
 </resources>
