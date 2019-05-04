@@ -109,6 +109,10 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun joinPackage(joinPackageDto: JoinPackageDto) = apiHelper.joinPackage(joinPackageDto)
 
+    override fun addPackage(prNo: String, stCode: String) = apiHelper.addPackage(prNo, stCode)
+
+    override fun deletePackage(dto: LESPackageInfoUpdateDto) = apiHelper.deletePackage(dto)
+
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)

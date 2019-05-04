@@ -1,9 +1,6 @@
 package com.zotye.wms.data.api
 
-import com.zotye.wms.data.api.model.JoinPackageDto
-import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
-import com.zotye.wms.data.api.model.UnpackingDto
-import com.zotye.wms.data.api.model.VehicleReceiptParamsDto
+import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
 import com.zotye.wms.data.api.model.picking.ProduceAcquireConfirmRequest
@@ -27,7 +24,7 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun getPackageInfo(userId: String, isGroupReceive: Boolean, packageId: String) = apiService.getPackageInfo(userId, isGroupReceive, packageId)
 
-    override fun joinPackageInfo(userId: String, packageId: String)=apiService.joinPackageInfo(userId, packageId)
+    override fun joinPackageInfo(userId: String, packageId: String) = apiService.joinPackageInfo(userId, packageId)
 
     override fun getStorageUnitInfoByBarcode(userId: String, barCode: String) = apiService.getStorageUnitInfoByBarcode(userId, barCode)
 
@@ -89,21 +86,25 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun checkPickStationInfo(pickCode: String, stationCode: String) = apiService.checkPickStationInfo(pickCode, stationCode)
 
-    override fun getManualBoardLis(code: String, materialNum: String)=apiService.getManualBoardLis(code, materialNum)
+    override fun getManualBoardLis(code: String, materialNum: String) = apiService.getManualBoardLis(code, materialNum)
 
-    override fun saveManualBoardOut(manualBoardDeliveryDto: List<ManualBoardDeliveryDto>)=apiService.saveManualBoardOut(manualBoardDeliveryDto)
+    override fun saveManualBoardOut(manualBoardDeliveryDto: List<ManualBoardDeliveryDto>) = apiService.saveManualBoardOut(manualBoardDeliveryDto)
 
-    override fun getStoragePositionInfoByCode(code: String)=apiService.getStoragePositionInfoByCode(code)
+    override fun getStoragePositionInfoByCode(code: String) = apiService.getStoragePositionInfoByCode(code)
 
-    override fun viewVehicleReceiptFilterInfo(userId: String)=apiService.viewVehicleReceiptFilterInfo(userId)
+    override fun viewVehicleReceiptFilterInfo(userId: String) = apiService.viewVehicleReceiptFilterInfo(userId)
 
-    override fun getVehicleReceiptByCode(code: String)=apiService.getVehicleReceiptByCode(code)
+    override fun getVehicleReceiptByCode(code: String) = apiService.getVehicleReceiptByCode(code)
 
-    override fun searchVehicleReceipt(dto: VehicleReceiptParamsDto)=apiService.searchVehicleReceipt(dto)
+    override fun searchVehicleReceipt(dto: VehicleReceiptParamsDto) = apiService.searchVehicleReceipt(dto)
 
-    override fun getMesPickReceiptListById(id: String)=apiService.getMesPickReceiptListById(id)
+    override fun getMesPickReceiptListById(id: String) = apiService.getMesPickReceiptListById(id)
 
-    override fun unpacking(unpackingDto: UnpackingDto)=apiService.unpacking(unpackingDto)
+    override fun unpacking(unpackingDto: UnpackingDto) = apiService.unpacking(unpackingDto)
 
-    override fun joinPackage(joinPackageDto: JoinPackageDto)=apiService.joinPackage(joinPackageDto)
+    override fun joinPackage(joinPackageDto: JoinPackageDto) = apiService.joinPackage(joinPackageDto)
+
+    override fun addPackage(prNo: String, stCode: String) = apiService.addPackage(prNo, stCode)
+
+    override fun deletePackage(dto: LESPackageInfoUpdateDto) = apiService.deletePackage(dto)
 }

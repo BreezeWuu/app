@@ -65,6 +65,12 @@
     <string name="not_match_batch_num">批次号不一致，不允许组托！</string>
     <string name="not_match_sl_code">库存地点不一致，不允许组托！</string>
     <string name="not_match_delivery_note_code">交货单号不一致，不允许组托！</string>
+
+    <string name="not_match_join_package_material_id">物料号不一致，不允许合包！</string>
+    <string name="not_match_join_package_supplier_info">供应商不一致，不允许合包！</string>
+    <string name="not_match_join_package_sl_code">库存地点不一致，不允许合包！</string>
+    <string name="not_match_join_package_delivery_note_code">交货单号不一致，不允许合包！</string>
+
     <string name="batch_number_empty_error">批次号不能为空</string>
     <string name="not_match_third_part_receive_num">非三方物流实收数量不允许大于包装数量!</string>
     <string name="error_package_list_empty">包装为空，不能放入托盘！</string>
@@ -95,8 +101,8 @@
     <string name="title_check_bad_product">外检不良品生成拣配单</string>
     <string name="picklist_code_format">拣配单号：</string>
     <string name="title_pick_list_info">拣配单明细</string>
-    <string name="action_add_package_or_tuopan">添加包装或托盘</string>
-    <string name="title_pick_list_add_package">添加包装或托盘</string>
+    <string name="action_add_package_or_tuopan">添加包装</string>
+    <string name="title_pick_list_add_package">添加包装</string>
     <string name="title_loading_create">创建装车单</string>
     <string name="count_format">数量：</string>
     <string name="under_shelf_count">下架数量</string>
@@ -277,4 +283,6 @@
     <string name="un_package_number">拆包数量</string>
     <string name="error_un_packing_number">拆包数量必须大于0，小于可用包装数！</string>
     <string name="error_join_package">合包包装数必须大于1！</string>
+    <string name="added_package_list">已添加的包装</string>
+    <string name="not_match_join_package_batch_num">批次号不一致，请先修改批次号！</string>
 </resources>

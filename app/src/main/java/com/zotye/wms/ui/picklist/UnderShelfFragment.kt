@@ -121,7 +121,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             })
             fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
         }
-        underShelfButton.onClick {
+        underShelfButton.setOnClickListener {
             if (adapter.data.isEmpty()) {
                 showMessage(R.string.picklist_pull_off_shelf_empty_error)
             } else {

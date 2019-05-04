@@ -189,9 +189,17 @@ interface ApiService {
     @POST("bar_code/unpacking")
     fun unpacking(@Body unpackingDto: UnpackingDto): Call<ApiResponse<String>>
 
-
     /**合包*/
     @POST("bar_code/joinPackage")
     fun joinPackage(@Body joinPackageDto: JoinPackageDto): Call<ApiResponse<String>>
+
+    /**添加包*/
+    @FormUrlEncoded
+    @POST("bar_code/addPackage")
+    fun addPackage(@Field("prNo") prNo: String, @Field("stCode") stCode: String): Call<ApiResponse<String>>
+
+    /**删除包*/
+    @POST("bar_code/deletePackage")
+    fun deletePackage(@Body dto: LESPackageInfoUpdateDto): Call<ApiResponse<String>>
 
 }

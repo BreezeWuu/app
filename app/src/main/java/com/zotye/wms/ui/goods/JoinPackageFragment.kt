@@ -122,13 +122,6 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
                         val editText = goodsPackageAdapter.getViewByPosition(position, R.id.receiveNumberText) as TextInputEditText
                         val batchNumberEditText = goodsPackageAdapter.getViewByPosition(position, R.id.batchNumber) as TextInputEditText
                         if (item.isEditEnable) {
-                            if (item.isBatchMaterialEditable()) {
-                                if (batchNumberEditText.text.isNullOrBlank()) {
-                                    batchNumberEditText.error = getString(R.string.batch_number_empty_error)
-                                    return@let
-                                } else
-                                    item.batchNum = batchNumberEditText.text.toString()
-                            }
                             val numberText = editText.text.toString()
                             item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
                         } else {
@@ -150,12 +143,20 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
         val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
         val codeList = arrayListOf<String>()
         var newBatchNumber = ""
-        adapter.data.forEachByIndex {
-            codeList.add(it.code)
-            newBatchNumber = it.batchNum ?: ""
+        adapter.data.forEachIndexed { index, packageInfo ->
+            codeList.add(packageInfo.code)
+            if (index == 0) {
+                newBatchNumber = packageInfo.batchNum ?: ""
+            } else {
+                if (newBatchNumber != packageInfo.batchNum) {
+                    showSnackBar(getString(R.string.not_match_join_package_batch_num))
+                    return
+                }
+            }
         }
-        if(codeList.size<=1){
+        if (codeList.size <= 1) {
             showMessage(R.string.error_join_package)
+            return
         }
         val joinPackageDto = JoinPackageDto().apply {
             spId = result
@@ -187,45 +188,24 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
         infoView.findViewById<AppCompatButton>(R.id.okButton).textResource = R.string.add
         infoView.findViewById<View>(R.id.okButton).setOnClickListener {
-            if (packageInfo.isBatchMaterialEditable()) {
-                if (batchNumberEditText.text.isNullOrBlank()) {
-                    batchNumberEditText.error = getString(R.string.batch_number_empty_error)
-                    return@setOnClickListener
-                }
-            }
-//            val numberText = receiveNumberEditText.text.toString()
-//            if (TextUtils.isEmpty(numberText)) {
-//                receiveNumberEditText.error = getString(R.string.error_receive_number)
-//                return@onClick
-//            }
-//            val receiveNumber = BigDecimal(numberText)
-//            if (receiveNumber.compareTo(BigDecimal.ZERO) < 1) {
-//                receiveNumberEditText.error = getString(R.string.error_receive_number)
-//                return@onClick
-//            }
-//            packageInfo.receiveNum = receiveNumber
             packageInfo.batchNum = batchNumberEditText.text.toString()
             val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
             if (adapter.data.isNotEmpty()) {
                 val lastPackage = adapter.getItem(adapter.itemCount - 1)!!
                 if (lastPackage.materialNum != packageInfo.materialNum) {
-                    showSnackBar(infoView, getString(R.string.not_match_material_id))
+                    showSnackBar(infoView, getString(R.string.not_match_join_package_material_id))
                     return@setOnClickListener
                 }
                 if (lastPackage.supplierCode != packageInfo.supplierCode) {
-                    showSnackBar(infoView, getString(R.string.not_match_supplier_info))
+                    showSnackBar(infoView, getString(R.string.not_match_join_package_supplier_info))
                     return@setOnClickListener
                 }
                 if (lastPackage.slCode != packageInfo.slCode) {
-                    showSnackBar(infoView, getString(R.string.not_match_sl_code))
-                    return@setOnClickListener
-                }
-                if (lastPackage.batchNum != packageInfo.batchNum) {
-                    batchNumberEditText.error = getString(R.string.not_match_batch_num)
+                    showSnackBar(infoView, getString(R.string.not_match_join_package_sl_code))
                     return@setOnClickListener
                 }
                 if (lastPackage.deliveryNoteCode != packageInfo.deliveryNoteCode) {
-                    batchNumberEditText.error = getString(R.string.not_match_delivery_note_code)
+                    batchNumberEditText.error = getString(R.string.not_match_join_package_delivery_note_code)
                     return@setOnClickListener
                 }
             }
