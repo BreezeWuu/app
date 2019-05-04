@@ -44,7 +44,6 @@ interface ApiService {
     @POST("bar_code/joinPackageInfo")
     fun joinPackageInfo(@Field("userId") userId: String, @Field("packageId") packageId: String): Call<ApiResponse<BarcodeInfo>>
 
-
     @FormUrlEncoded
     @POST("bar_code/storageUnitInfoByCode")
     fun getStorageUnitInfoByBarcode(@Field("userId") userId: String, @Field("barCode") barCode: String): Call<ApiResponse<BarcodeInfo>>
