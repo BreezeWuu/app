@@ -123,10 +123,10 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
                         val batchNumberEditText = goodsPackageAdapter.getViewByPosition(position, R.id.batchNumber) as TextInputEditText
                         if (item.isEditEnable) {
                             item.batchNum = batchNumberEditText.text.toString()
-                            val numberText = editText.text.toString()
-                            item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
+//                            val numberText = editText.text.toString()
+//                            item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
                         } else {
-                            editText.requestFocus()
+                            batchNumberEditText.requestFocus()
                         }
                         item.isEditEnable = !item.isEditEnable
                         goodsPackageAdapter.notifyItemChanged(position)
@@ -238,6 +238,10 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
     override fun onDestroyView() {
         super.onDestroyView()
         presenter.onDetach()
+    }
+
+    override fun joinPackageSucceed(message: String) {
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok,null).show()
     }
 
     class GoodsPackageAdapter : BaseQuickAdapter<PackageInfo, BaseViewHolder>(R.layout.item_goods_package) {

@@ -300,6 +300,10 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         presenter.onDetach()
     }
 
+    override fun joinPackageSucceed(message: String) {
+
+    }
+
     class GoodsPackageAdapter : BaseQuickAdapter<PackageInfo, BaseViewHolder>(R.layout.item_goods_package) {
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: PackageInfo) {

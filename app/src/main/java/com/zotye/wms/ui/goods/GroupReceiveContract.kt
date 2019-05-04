@@ -24,6 +24,7 @@ object GroupReceiveContract {
     interface GroupReceiveView : MvpView {
         fun getBarCodeInfo(barcodeInfo: BarcodeInfo?)
         fun submitReceiveInfoSucceed(message: String)
+        fun joinPackageSucceed(message: String)
     }
 
     interface GroupReceivePresenter : MvpPresenter<GroupReceiveView> {
@@ -131,7 +132,7 @@ object GroupReceiveContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.showMessage(it.message)
+                                        mvpView?.joinPackageSucceed(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }
