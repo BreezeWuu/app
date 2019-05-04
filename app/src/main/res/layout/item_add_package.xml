@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/spacing_small">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/packageCode"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height_normal"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/spacing_small"
+        android:text="adfasdfas"
+        app:autoSizeMaxTextSize="@dimen/font_large"
+        app:autoSizeMinTextSize="@dimen/font_smallest"
+        app:autoSizeTextType="uniform" />
+
+    <Button
+        android:id="@+id/deleteButton"
+        style="@style/Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/button_height_normal"
+        android:text="@string/delete" />
+</LinearLayout>

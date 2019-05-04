@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_pick_list_under_shelf.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.collections.forEachByIndex
+import org.jetbrains.anko.collections.forEachWithIndex
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -102,24 +104,30 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         pickListRecyclerView.layoutManager = LinearLayoutManager(context)
         pickListRecyclerView.adapter = adapter
         adapter.setOnItemChildClickListener { _, _, position ->
-            val pickListPullOffShelf = adapter.getItem(position)
-            val fragment = BarCodeScannerFragment()
-            fragment.setScannerDelegate(object : ScannerDelegate {
-                override fun succeed(result: String) {
-                    /**拆分出包装号*/
-                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
-                        if (pickListPullOffShelf.pullOffConfirm) {
-                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
+            adapter.getItem(position)?.apply {
+                val fragment = BarCodeScannerFragment()
+                fragment.setScannerDelegate(object : ScannerDelegate {
+                    override fun succeed(result: String) {
+                        if (result == parentStorageUnitInfoCode || result == storageUnitInfoCode || packageCodes.contains(result)) {
+                            showMessage("该包装已添加！")
                         } else {
-                            pickListPullOffShelf.isAddedPackage = true
-                            adapter.notifyItemChanged(position)
+                            presenter.addPackage(pickListCode ?: "", result)
                         }
-                    } else {
-                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.not_match_under_shelf_package).setNegativeButton(R.string.ok, null).show()
+//                    /**拆分出包装号*/
+//                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
+//                        if (pickListPullOffShelf.pullOffConfirm) {
+//                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
+//                        } else {
+//                            pickListPullOffShelf.isAddedPackage = true
+//                            adapter.notifyItemChanged(position)
+//                        }
+//                    } else {
+//                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.not_match_under_shelf_package).setNegativeButton(R.string.ok, null).show()
+//                    }
                     }
-                }
-            })
-            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+                })
+                fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+            }
         }
         underShelfButton.setOnClickListener {
             if (adapter.data.isEmpty()) {
@@ -208,6 +216,20 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         presenter.getPickListInfoByCode(result)
     }
 
+    override fun addPackageSucceed(prNo: String, stCode: String) {
+        (pickListRecyclerView.adapter as PickListOffShelfAdapter).apply {
+            data.forEachWithIndex { i, pickListPullOffShelf ->
+                if (prNo == pickListPullOffShelf.pickListCode) {
+                    pickListPullOffShelf.packageCodes.add(stCode)
+                    notifyItemChanged(i)
+                }
+            }
+        }
+    }
+
+    override fun deletePackageSucceed(prNo: String, stCode: String) {
+    }
+
     override fun getPickListPullOffShelfListFailed() {
         if (arguments?.containsKey("pickCode") == true)
             activity?.onBackPressed()
@@ -259,12 +281,36 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         override fun convert(helper: BaseViewHolder, item: PickListPullOffShelf) {
             val dataBind = DataBindingUtil.bind<ItemPickListInfoUnderShelfBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
-            if (!TextUtils.isEmpty(item.storageUnitInfoCode)) {
-                helper.getView<View>(R.id.packageCodeScanner).visibility = View.VISIBLE
-                helper.addOnClickListener(R.id.packageCodeScanner)
-            } else {
-                helper.getView<View>(R.id.packageCodeScanner).visibility = View.GONE
+//            if (!TextUtils.isEmpty(item.storageUnitInfoCode)) {
+//                helper.getView<View>(R.id.packageCodeScanner).visibility = View.VISIBLE
+            helper.getView<RecyclerView>(R.id.addPackageRecyclerView).apply {
+                layoutManager = LinearLayoutManager(mContext)
+                val adapter = PackageAdapter()
+                adapter.pickListPullOffShelf = item
             }
+            helper.addOnClickListener(R.id.addPackageButton)
+//            } else {
+//                helper.getView<View>(R.id.packageCodeScanner).visibility = View.GONE
+//            }
+        }
+    }
+
+    class PackageAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_add_package) {
+
+        var pickListPullOffShelf: PickListPullOffShelf? = null
+            set(value) {
+                field = value
+                setNewData(value?.packageCodes ?: arrayListOf())
+            }
+
+        override fun convert(helper: BaseViewHolder, item: String) {
+            helper.setText(R.id.packageCode, item)
+//            if (!TextUtils.isEmpty(item.storageUnitInfoCode)) {
+//                helper.getView<View>(R.id.packageCodeScanner).visibility = View.VISIBLE
+            helper.addOnClickListener(R.id.addPackageButton)
+//            } else {
+//                helper.getView<View>(R.id.packageCodeScanner).visibility = View.GONE
+//            }
         }
     }
 }

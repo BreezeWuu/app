@@ -7,10 +7,7 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.BarCodeType
-import com.zotye.wms.data.api.model.BarcodeInfo
-import com.zotye.wms.data.api.model.PickListInfo
-import com.zotye.wms.data.api.model.PickListPullOffShelf
+import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.api.model.under.shelf.MaterialReplenishment
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
@@ -31,12 +28,16 @@ object UnderShelfContract {
         fun getPickListPullOffShelfListFailed()
         fun getStorageUnitMaterialTotalNumber(position: Int, info: SUMaterialInfo)
         fun underShelfSucceed()
+        fun addPackageSucceed(prNo: String, stCode: String)
+        fun deletePackageSucceed(prNo: String, stCode: String)
     }
 
     interface UnderShelfPresenter : MvpPresenter<UnderShelfView> {
         fun getPickListInfoByCode(barCode: String)
         fun getStorageUnitMaterialTotalNumber(position: Int, storageUnitInfoCode: String, spDetailId: String)
         fun underShelfConfirm(request: PrMobileConfirmRequest)
+        fun addPackage(prNo: String, stCode: String)
+        fun deletePackage(prNo: String, stCode: String)
     }
 
     class UnderShelfPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<UnderShelfView>(), UnderShelfPresenter {
@@ -118,6 +119,64 @@ object UnderShelfContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.underShelfSucceed()
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun addPackage(prNo: String, stCode: String) {
+            mvpView?.showProgressDialog(R.string.submiting)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.addPackage(prNo, stCode).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.addPackageSucceed(prNo, stCode)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun deletePackage(prNo: String, stCode: String) {
+            val lesPackageInfoUpdateDto = LESPackageInfoUpdateDto().apply {
+                pickReceiptCode = prNo
+                packageCodes = listOf(stCode)
+            }
+            mvpView?.showProgressDialog(R.string.submiting)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.deletePackage(lesPackageInfoUpdateDto).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.deletePackageSucceed(prNo, stCode)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

@@ -83,7 +83,7 @@ class JoinPackageFragment : BaseFragment(), ScannerDelegate, GroupReceiveContrac
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
         }
-        spInput.setOnClickListener {
+        spScanner.setOnClickListener {
             fragmentManager!!.beginTransaction().add(R.id.main_content, BarCodeScannerFragment().apply {
                 setScannerDelegate(object : ScannerDelegate {
                     override fun succeed(result: String) {
