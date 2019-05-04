@@ -74,6 +74,10 @@ interface ApiService {
     fun logisticsReceiveConfirm(@Field("userId") userId: String, @Field("noteId") noteId: String): Call<ApiResponse<String>>
 
     @FormUrlEncoded
+    @POST("bar_code/reliveryForLesDeliveryNote")
+    fun reliveryForLesDeliveryNote(@Field("userId") userId: String, @Field("noteId") noteId: String): Call<ApiResponse<String>>
+
+    @FormUrlEncoded
     @POST("bar_code/pickListInfoByCode")
     fun getPickListInfoByCode(@Field("userId") userId: String, @Field("OpterationType") OpterationType: String, @Field("barCode") barCode: String): Call<ApiResponse<BarcodeInfo>>
 

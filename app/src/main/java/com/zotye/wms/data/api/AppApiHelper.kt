@@ -107,4 +107,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun addPackage(prNo: String, stCode: String) = apiService.addPackage(prNo, stCode)
 
     override fun deletePackage(dto: LESPackageInfoUpdateDto) = apiService.deletePackage(dto)
+
+    override fun reliveryForLesDeliveryNote(userId: String, noteId: String)=apiService.reliveryForLesDeliveryNote(userId, noteId)
 }

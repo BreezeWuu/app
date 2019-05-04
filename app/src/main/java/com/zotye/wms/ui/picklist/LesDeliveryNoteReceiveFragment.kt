@@ -84,7 +84,7 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
         }
         confirmButton.onClick {
             AlertDialog.Builder(getContext()!!).setTitle(R.string.info).setMessage(R.string.action_receive_confirm_info).setNegativeButton(R.string.ok) { _, _ ->
-                presenter.logisticsReceiveConfirm(barCode)
+                presenter.reliveryForLesDeliveryNote(barCode)
             }.setPositiveButton(R.string.cancel, null).show()
         }
     }

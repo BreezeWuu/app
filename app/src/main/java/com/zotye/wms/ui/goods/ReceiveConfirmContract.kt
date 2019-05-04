@@ -32,6 +32,7 @@ object ReceiveConfirmContract {
     interface ReceiveConfirmPresenter : MvpPresenter<ReceiveConfirmView> {
         fun logisticsReceiveConfirmInfoByCode(barCode: String)
         fun logisticsReceiveConfirm(barCode: String)
+        fun reliveryForLesDeliveryNote(barCode: String)
     }
 
     class ReceiveConfirmPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<ReceiveConfirmView>(), ReceiveConfirmPresenter {
@@ -82,6 +83,33 @@ object ReceiveConfirmContract {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
                         dataManager.logisticsReceiveConfirm(it.userId, barCode).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.packageReceiveSucceed(it.message)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun reliveryForLesDeliveryNote(barCode: String) {
+            mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.reliveryForLesDeliveryNote(it.userId, barCode).enqueue(object : Callback<ApiResponse<String>> {
                             override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }
