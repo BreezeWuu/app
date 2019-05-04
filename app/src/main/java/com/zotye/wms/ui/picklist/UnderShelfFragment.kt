@@ -99,7 +99,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         }
         val emptyView = LayoutInflater.from(context).inflate(R.layout.layout_error, null)
         emptyView.find<TextView>(R.id.text_error).text = getString(R.string.pick_list_under_shelf_list_empty)
-        val adapter = PickListOffShelfAdapter()
+        val adapter = PickListOffShelfAdapter(this)
         adapter.emptyView = emptyView
         pickListRecyclerView.layoutManager = LinearLayoutManager(context)
         pickListRecyclerView.adapter = adapter
@@ -228,6 +228,14 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
     }
 
     override fun deletePackageSucceed(prNo: String, stCode: String) {
+        (pickListRecyclerView.adapter as PickListOffShelfAdapter).apply {
+            data.forEachWithIndex { i, pickListPullOffShelf ->
+                if (prNo == pickListPullOffShelf.pickListCode) {
+                    pickListPullOffShelf.packageCodes.remove(stCode)
+                    notifyItemChanged(i)
+                }
+            }
+        }
     }
 
     override fun getPickListPullOffShelfListFailed() {
@@ -276,22 +284,23 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             true
     }
 
-    class PickListOffShelfAdapter : BaseQuickAdapter<PickListPullOffShelf, BaseViewHolder>(R.layout.item_pick_list_info_under_shelf) {
+    class PickListOffShelfAdapter(val fragment: UnderShelfFragment) : BaseQuickAdapter<PickListPullOffShelf, BaseViewHolder>(R.layout.item_pick_list_info_under_shelf) {
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: PickListPullOffShelf) {
             val dataBind = DataBindingUtil.bind<ItemPickListInfoUnderShelfBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
-//            if (!TextUtils.isEmpty(item.storageUnitInfoCode)) {
-//                helper.getView<View>(R.id.packageCodeScanner).visibility = View.VISIBLE
             helper.getView<RecyclerView>(R.id.addPackageRecyclerView).apply {
                 layoutManager = LinearLayoutManager(mContext)
                 val adapter = PackageAdapter()
+                adapter.setOnItemChildClickListener { _, _, position ->
+                    adapter.getItem(position)?.apply {
+                        fragment.presenter.deletePackage(item.pickListCode ?: "", this)
+                    }
+                }
                 adapter.pickListPullOffShelf = item
+                this.adapter = adapter
             }
             helper.addOnClickListener(R.id.addPackageButton)
-//            } else {
-//                helper.getView<View>(R.id.packageCodeScanner).visibility = View.GONE
-//            }
         }
     }
 
@@ -305,12 +314,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 
         override fun convert(helper: BaseViewHolder, item: String) {
             helper.setText(R.id.packageCode, item)
-//            if (!TextUtils.isEmpty(item.storageUnitInfoCode)) {
-//                helper.getView<View>(R.id.packageCodeScanner).visibility = View.VISIBLE
-            helper.addOnClickListener(R.id.addPackageButton)
-//            } else {
-//                helper.getView<View>(R.id.packageCodeScanner).visibility = View.GONE
-//            }
+            helper.addOnClickListener(R.id.deleteButton)
         }
     }
 }

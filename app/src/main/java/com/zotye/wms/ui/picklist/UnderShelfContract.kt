@@ -1,5 +1,6 @@
 package com.zotye.wms.ui.picklist
 
+import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import com.google.gson.reflect.TypeToken
@@ -178,7 +179,7 @@ object UnderShelfContract {
                                     if (it.isSucceed()) {
                                         mvpView?.deletePackageSucceed(prNo, stCode)
                                     } else {
-                                        mvpView?.showMessage(it.message)
+                                        mvpView?.showMessage(if(TextUtils.isEmpty(it.message))"删除包装失败！" else it.message)
                                     }
                                 }
                             }
