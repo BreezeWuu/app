@@ -107,8 +107,6 @@ class PickListPullOffShelf {
 
     val spDetailId: String? = null
 
-    var packageCodes: ArrayList<String> = arrayListOf()
-
     fun isChecked(): Boolean {
         return checkFlag && isAddedPackage && (totalNum == lockNumber)
     }

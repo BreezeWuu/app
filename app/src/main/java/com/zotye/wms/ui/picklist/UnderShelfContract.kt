@@ -25,7 +25,7 @@ import javax.inject.Inject
  */
 object UnderShelfContract {
     interface UnderShelfView : MvpView {
-        fun getPickListPullOffShelfList(pickListPullOffShelfList: List<PickListPullOffShelf>)
+        fun getPickListPullOffShelfList(barCode:String,pickListPullOffShelfList: List<PickListPullOffShelf>)
         fun getPickListPullOffShelfListFailed()
         fun getStorageUnitMaterialTotalNumber(position: Int, info: SUMaterialInfo)
         fun underShelfSucceed()
@@ -61,7 +61,7 @@ object UnderShelfContract {
                                         val list = Gson().fromJson<List<PickListPullOffShelf>>(it.data!!.barCodeInfo, object : TypeToken<List<PickListPullOffShelf>>() {
 
                                         }.type)
-                                        mvpView?.getPickListPullOffShelfList(list)
+                                        mvpView?.getPickListPullOffShelfList(barCode,list)
                                     } else {
 
                                         mvpView?.showMessage(it.message)

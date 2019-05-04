@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.system.Os.remove
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,8 @@ import javax.inject.Inject
  * Created by hechuangju on 2018/01/25
  */
 class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, ScannerDelegate {
+
+    private var prNo: String = ""
 
     companion object {
         fun newInstance(title: String): UnderShelfFragment {
@@ -105,25 +108,57 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         pickListRecyclerView.adapter = adapter
         adapter.setOnItemChildClickListener { _, _, position ->
             adapter.getItem(position)?.apply {
+                AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.delete_item_confirm).setNegativeButton(R.string.ok) { _, _ ->
+                    presenter.deletePackage(pickListCode ?: "", storageUnitInfoCode ?: "")
+                }.setPositiveButton(R.string.cancel, null).show()
+//
+//                val fragment = BarCodeScannerFragment()
+//                fragment.setScannerDelegate(object : ScannerDelegate {
+//                    override fun succeed(result: String) {
+//                        if (result == parentStorageUnitInfoCode || result == storageUnitInfoCode || packageCodes.contains(result)) {
+//                            showMessage("该包装已添加！")
+//                        } else {
+//                            presenter.addPackage(pickListCode ?: "", result)
+//                        }
+////                    /**拆分出包装号*/
+////                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
+////                        if (pickListPullOffShelf.pullOffConfirm) {
+////                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
+////                        } else {
+////                            pickListPullOffShelf.isAddedPackage = true
+////                            adapter.notifyItemChanged(position)
+////                        }
+////                    } else {
+////                         }
+//                    }
+//                })
+//                fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+            }
+        }
+        addPackageButton.setOnClickListener {
+            if (TextUtils.isEmpty(prNo)) {
+                showMessage("请先添加拣配单")
+            } else {
                 val fragment = BarCodeScannerFragment()
                 fragment.setScannerDelegate(object : ScannerDelegate {
                     override fun succeed(result: String) {
-                        if (result == parentStorageUnitInfoCode || result == storageUnitInfoCode || packageCodes.contains(result)) {
-                            showMessage("该包装已添加！")
-                        } else {
-                            presenter.addPackage(pickListCode ?: "", result)
+                        adapter.data.forEachByIndex {
+                            if (result == it.storageUnitInfoCode) {
+                                showMessage("该包装已添加！")
+                                return
+                            }
                         }
-//                    /**拆分出包装号*/
-//                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
-//                        if (pickListPullOffShelf.pullOffConfirm) {
-//                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
-//                        } else {
-//                            pickListPullOffShelf.isAddedPackage = true
-//                            adapter.notifyItemChanged(position)
-//                        }
-//                    } else {
-//                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.not_match_under_shelf_package).setNegativeButton(R.string.ok, null).show()
-//                    }
+                        presenter.addPackage(prNo, result)
+////                    /**拆分出包装号*/
+////                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
+////                        if (pickListPullOffShelf.pullOffConfirm) {
+////                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
+////                        } else {
+////                            pickListPullOffShelf.isAddedPackage = true
+////                            adapter.notifyItemChanged(position)
+////                        }
+////                    } else {
+////                         }
                     }
                 })
                 fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
@@ -135,22 +170,11 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             } else {
                 showProgressDialog(R.string.loading_create_data)
                 val request = PrMobileConfirmRequest()
-                request.confirmDetail = ArrayList()
+                request.stCodes = arrayListOf()
+                request.prNo = prNo
                 doAsync {
                     adapter.data.forEachByIndex { pickListPullOffShelf ->
-                        request.prNo = pickListPullOffShelf.pickListCode
-                        if (pickListPullOffShelf.pullOffConfirm && !TextUtils.isEmpty(pickListPullOffShelf.storageUnitInfoCode) && !pickListPullOffShelf.isAddedPackage) {
-                            onUiThread {
-                                showMessage(R.string.picklist_pull_off_shelf_no_add_error)
-                                hideProgressDialog()
-                            }
-                            return@doAsync
-                        }
-                        val prDto = PrMobileConfirmRequest.PrCheckInfoDto()
-                        prDto.id = pickListPullOffShelf.id
-                        prDto.checkNum = if (pickListPullOffShelf.isChecked()) pickListPullOffShelf.checkCount else null
-                        prDto.actualOffshelfNum = if (pickListPullOffShelf.pullOffConfirm) pickListPullOffShelf.actulOffShellNumber else pickListPullOffShelf.totalNum
-                        request.confirmDetail?.add(prDto)
+                        request.stCodes?.add(pickListPullOffShelf.storageUnitInfoCode?:"")
                     }
                     onUiThread {
                         hideProgressDialog()
@@ -217,22 +241,22 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
     }
 
     override fun addPackageSucceed(prNo: String, stCode: String) {
-        (pickListRecyclerView.adapter as PickListOffShelfAdapter).apply {
-            data.forEachWithIndex { i, pickListPullOffShelf ->
-                if (prNo == pickListPullOffShelf.pickListCode) {
-                    pickListPullOffShelf.packageCodes.add(stCode)
-                    notifyItemChanged(i)
-                }
-            }
-        }
+//        (pickListRecyclerView.adapter as PickListOffShelfAdapter).apply {
+//            data.forEachWithIndex { i, pickListPullOffShelf ->
+//                if (prNo == pickListPullOffShelf.pickListCode) {
+//                    pickListPullOffShelf.packageCodes.add(stCode)
+//                    notifyItemChanged(i)
+//                }
+//            }
+//        }
+        succeed(prNo)
     }
 
     override fun deletePackageSucceed(prNo: String, stCode: String) {
         (pickListRecyclerView.adapter as PickListOffShelfAdapter).apply {
             data.forEachWithIndex { i, pickListPullOffShelf ->
-                if (prNo == pickListPullOffShelf.pickListCode) {
-                    pickListPullOffShelf.packageCodes.remove(stCode)
-                    notifyItemChanged(i)
+                if (prNo == pickListPullOffShelf.pickListCode && stCode == pickListPullOffShelf.storageUnitInfoCode) {
+                    remove(i)
                 }
             }
         }
@@ -260,7 +284,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         }
     }
 
-    override fun getPickListPullOffShelfList(pickListPullOffShelfList: List<PickListPullOffShelf>) {
+    override fun getPickListPullOffShelfList(barCode: String, pickListPullOffShelfList: List<PickListPullOffShelf>) {
+        prNo = barCode
         if (pickListPullOffShelfList.isEmpty())
             showMessage(R.string.pick_list_under_shelf_list_empty)
         else
@@ -289,32 +314,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
         override fun convert(helper: BaseViewHolder, item: PickListPullOffShelf) {
             val dataBind = DataBindingUtil.bind<ItemPickListInfoUnderShelfBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
-            helper.getView<RecyclerView>(R.id.addPackageRecyclerView).apply {
-                layoutManager = LinearLayoutManager(mContext)
-                val adapter = PackageAdapter()
-                adapter.setOnItemChildClickListener { _, _, position ->
-                    adapter.getItem(position)?.apply {
-                        fragment.presenter.deletePackage(item.pickListCode ?: "", this)
-                    }
-                }
-                adapter.pickListPullOffShelf = item
-                this.adapter = adapter
-            }
-            helper.addOnClickListener(R.id.addPackageButton)
-        }
-    }
-
-    class PackageAdapter : BaseQuickAdapter<String, BaseViewHolder>(R.layout.item_add_package) {
-
-        var pickListPullOffShelf: PickListPullOffShelf? = null
-            set(value) {
-                field = value
-                setNewData(value?.packageCodes ?: arrayListOf())
-            }
-
-        override fun convert(helper: BaseViewHolder, item: String) {
-            helper.setText(R.id.packageCode, item)
-            helper.addOnClickListener(R.id.deleteButton)
+            helper.addOnClickListener(R.id.deletePackageButton)
         }
     }
 }
