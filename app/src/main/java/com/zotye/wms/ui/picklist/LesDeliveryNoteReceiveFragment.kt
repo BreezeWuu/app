@@ -91,7 +91,7 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
 
     override fun succeed(result: String) {
         barCode = result
-        presenter.logisticsReceiveConfirmInfoByCode(result)
+        presenter.reliveryForLesDeliveryNoteByCode(result)
     }
 
     override fun getUnReceivePackageList(packageInfoList: List<PackageInfo>) {

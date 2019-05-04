@@ -31,6 +31,7 @@ object ReceiveConfirmContract {
 
     interface ReceiveConfirmPresenter : MvpPresenter<ReceiveConfirmView> {
         fun logisticsReceiveConfirmInfoByCode(barCode: String)
+        fun reliveryForLesDeliveryNoteByCode(barCode: String)
         fun logisticsReceiveConfirm(barCode: String)
         fun reliveryForLesDeliveryNote(barCode: String)
     }
@@ -42,6 +43,47 @@ object ReceiveConfirmContract {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
                         dataManager.logisticsReceiveConfirmInfoByCode(it.userId, barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
+                            override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<BarcodeInfo>>?, response: Response<ApiResponse<BarcodeInfo>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed() && it.data != null) {
+                                        when (it.data!!.barCodeType) {
+                                            BarCodeType.Package.type -> {
+                                                mvpView?.getUnReceivePackageList(Gson().fromJson<List<PackageInfo>>(it.data!!.barCodeInfo, object : TypeToken<List<PackageInfo>>() {
+
+                                                }.type))
+                                            }
+                                            BarCodeType.PickList.type -> {
+                                                mvpView?.getUnReceivePickInfoList(Gson().fromJson<List<PickListInfo>>(it.data!!.barCodeInfo, object : TypeToken<List<PickListInfo>>() {
+
+                                                }.type))
+                                            }
+                                            else -> {
+
+                                            }
+                                        }
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun reliveryForLesDeliveryNoteByCode(barCode: String) {
+            mvpView?.showProgressDialog(R.string.loading_query_bar_code_info)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        dataManager.reliveryForLesDeliveryNoteByCode(it.userId, barCode).enqueue(object : Callback<ApiResponse<BarcodeInfo>> {
                             override fun onFailure(call: Call<ApiResponse<BarcodeInfo>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }

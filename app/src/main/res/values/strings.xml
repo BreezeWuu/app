@@ -240,7 +240,7 @@
     <string name="title_shelf_confirm">上架确认</string>
     <string name="error_empty_package">包装单号为空，请先扫描包装单号！</string>
     <string name="error_empty_st_code">库位码信息为空，请先扫描库位码！</string>
-    <string name="title_manual_board_out">手工看板出库</string>
+    <string name="title_manual_board_out">手工看板拉动</string>
     <string name="action_input_kan_ban_id">输入看板ID</string>
     <string name="action_scanner_kan_ban_id">扫描看板ID</string>
     <string name="action_input_material_id">输入物料号</string>

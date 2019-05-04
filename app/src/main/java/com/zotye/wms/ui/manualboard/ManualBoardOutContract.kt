@@ -75,7 +75,7 @@ object ManualBoardOutContract {
                                     if (it.isSucceed()) {
                                         mvpView?.saveManualBoardOutSucceed(it.message,it.data!!)
                                     } else {
-                                        mvpView?.showMessage("手工看板出库失败！")
+                                        mvpView?.showMessage("手工看板拉动失败！")
                                     }
                                 }
                             }
