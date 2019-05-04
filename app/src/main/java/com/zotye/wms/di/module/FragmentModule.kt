@@ -83,4 +83,8 @@ abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract fun contributeJoinPackageFragment(): JoinPackageFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeLesDeliveryNoteReceiveFragment(): LesDeliveryNoteReceiveFragment
+
 }

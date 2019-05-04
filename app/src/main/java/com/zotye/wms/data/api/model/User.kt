@@ -69,7 +69,7 @@ class Resource(
             ResourceType.STRICT_RECV -> {
                 R.drawable.ic_loading_list_receipt
             }
-            ResourceType.NORMAL_RECV -> {
+            ResourceType.NORMAL_RECV ,ResourceType.JHDZDSHAPP-> {
                 R.drawable.ic_delivery_note_receipt
             }
             ResourceType.OUTBOUND_CHECK -> {
@@ -117,6 +117,7 @@ enum class ResourceType(val code: String) {
     TEST_RECV("TEST_RECV"),//测试
     CB001("CB001"),//拆包
     APPHB("APPHB"),//合包
+    JHDZDSHAPP("jhdzdshAPP"),//交货单整单收货
     Unknown("");
 
 

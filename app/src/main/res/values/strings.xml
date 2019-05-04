@@ -87,6 +87,7 @@
     <string name="title_receive_confirm">确认收货</string>
     <string name="action_finish">退出</string>
     <string name="action_receive_confirm">结束收货</string>
+    <string name="receive_confirm">确认收货</string>
     <string name="un_receive_package_list">未收货包装列表</string>
     <string name="un_receive_pick_list">未收货拣配单列表</string>
     <string name="receive_sl_code">收货库存地点：</string>
