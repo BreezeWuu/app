@@ -308,10 +308,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 
     override fun getPickListPullOffShelfList(barCode: String, pickListPullOffShelfList: List<PickListPullOffShelf>) {
         prNo = barCode
-        if (pickListPullOffShelfList.isEmpty())
-            showMessage(R.string.pick_list_under_shelf_list_empty)
-        else
-            (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(pickListPullOffShelfList)
+        (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(pickListPullOffShelfList)
     }
 
     override fun underShelfSucceed() {
