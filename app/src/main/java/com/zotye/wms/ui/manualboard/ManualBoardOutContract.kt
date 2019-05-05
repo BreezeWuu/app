@@ -21,7 +21,7 @@ object ManualBoardOutContract {
 
 
     interface ManualBoardOutView : MvpView {
-        fun getManualBoardList(showWarnings: Boolean, warnMessage: String, manualBoardList: List<ManualBoardDeliveryDto>?)
+        fun getManualBoardList(showWarnings: Boolean, warnMessage: String?, manualBoardList: List<ManualBoardDeliveryDto>?)
         fun saveManualBoardOutSucceed(message: String, result: List<MaterialPullResult>)
     }
 
