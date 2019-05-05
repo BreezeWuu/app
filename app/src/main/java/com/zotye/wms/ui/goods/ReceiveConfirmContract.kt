@@ -1,5 +1,6 @@
 package com.zotye.wms.ui.goods
 
+import android.text.TextUtils
 import com.google.gson.Gson
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
@@ -26,7 +27,7 @@ object ReceiveConfirmContract {
     interface ReceiveConfirmView : MvpView {
         fun getUnReceivePickInfoList(pickInfoList: List<PickListInfo>)
         fun getUnReceivePackageList(packageInfoList: List<PackageInfo>)
-        fun packageReceiveSucceed(message: String)
+        fun packageReceiveSucceed(message: String?)
     }
 
     interface ReceiveConfirmPresenter : MvpPresenter<ReceiveConfirmView> {
@@ -134,7 +135,7 @@ object ReceiveConfirmContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.packageReceiveSucceed(it.message)
+                                        mvpView?.packageReceiveSucceed(if(TextUtils.isEmpty(it.message))"收货成功" else it.message )
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }
@@ -161,7 +162,7 @@ object ReceiveConfirmContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.packageReceiveSucceed(it.message)
+                                        mvpView?.packageReceiveSucceed(if(TextUtils.isEmpty(it.message))"收货成功" else it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

@@ -83,7 +83,7 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
             fragmentManager?.beginTransaction()?.remove(this@LesDeliveryNoteReceiveFragment)?.commit()
         }
         confirmButton.onClick {
-            AlertDialog.Builder(getContext()!!).setTitle(R.string.info).setMessage(R.string.action_receive_confirm_info).setNegativeButton(R.string.ok) { _, _ ->
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.info).setMessage("是否确定整单收货").setNegativeButton(R.string.ok) { _, _ ->
                 presenter.reliveryForLesDeliveryNote(barCode)
             }.setPositiveButton(R.string.cancel, null).show()
         }
@@ -122,7 +122,7 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
         })
     }
 
-    override fun packageReceiveSucceed(message: String) {
+    override fun packageReceiveSucceed(message: String?) {
         viewSwitcher.showPrevious()
         toolbar_base.title = arguments?.getString("title")
                 ?: getString(R.string.title_receive_confirm)

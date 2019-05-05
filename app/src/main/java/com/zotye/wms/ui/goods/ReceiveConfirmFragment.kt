@@ -118,7 +118,7 @@ class ReceiveConfirmFragment : BaseFragment(), ScannerDelegate, ReceiveConfirmCo
         })
     }
 
-    override fun packageReceiveSucceed(message: String) {
+    override fun packageReceiveSucceed(message: String?) {
         viewSwitcher.showPrevious()
         toolbar_base.title = arguments?.getString("title")
                 ?: getString(R.string.title_receive_confirm)
