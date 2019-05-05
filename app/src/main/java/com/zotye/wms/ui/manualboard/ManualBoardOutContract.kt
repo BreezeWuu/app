@@ -1,5 +1,6 @@
 package com.zotye.wms.ui.manualboard
 
+import android.text.TextUtils
 import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
@@ -73,7 +74,7 @@ object ManualBoardOutContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.saveManualBoardOutSucceed(it.message, it.data!!)
+                                        mvpView?.saveManualBoardOutSucceed(if(TextUtils.isEmpty(it.message)) "手工看板拉动成功" else it.message, it.data!!)
                                     } else {
                                         mvpView?.showMessage("手工看板拉动失败！")
                                     }
