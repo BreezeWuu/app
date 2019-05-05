@@ -273,11 +273,14 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 
     override fun deletePackageSucceed(prNo: String, stCode: String) {
         (pickListRecyclerView.adapter as PickListOffShelfAdapter).apply {
+            var index = -1
             data.forEachWithIndex { i, pickListPullOffShelf ->
                 if (prNo == pickListPullOffShelf.pickListCode && stCode == pickListPullOffShelf.storageUnitInfoCode) {
-                    remove(i)
+                    index = i
                 }
             }
+            if (index >= 0)
+                remove(index)
         }
     }
 
