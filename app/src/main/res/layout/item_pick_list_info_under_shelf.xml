@@ -361,6 +361,35 @@
                         android:textColor="@color/black" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="center_vertical|right"
+                        android:text="@string/status_format"
+                        android:textColor="@color/red"
+                        app:autoSizeMaxTextSize="@dimen/font_large"
+                        app:autoSizeMinTextSize="@dimen/font_smallest"
+                        app:autoSizeTextType="uniform" />
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="7"
+                        android:gravity="center_vertical"
+                        android:text='@{info.isAddedPackage?"已确认":"未确认"}'
+                        android:textColor="@color/red" />
+                </LinearLayout>
+
 
                 <!--            <android.support.v7.widget.AppCompatButton-->
                 <!--                android:id="@+id/packageCodeScanner"-->
@@ -381,9 +410,9 @@
                     android:layout_height="@dimen/button_height_normal"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/spacing_small"
-                    android:visibility="@{TextUtils.isEmpty(info.storageUnitInfoCode)?View.GONE:View.VISIBLE}"
                     android:text="@string/delete"
-                    android:textSize="18dp" />
+                    android:textSize="18dp"
+                    android:visibility="@{TextUtils.isEmpty(info.storageUnitInfoCode)?View.GONE:View.VISIBLE}" />
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </android.support.v7.widget.CardView>

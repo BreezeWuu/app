@@ -42,6 +42,12 @@ import javax.inject.Inject
 class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, ScannerDelegate {
 
     private var prNo: String = ""
+    private var addPackage: ArrayList<String> = arrayListOf()
+    var underShelfCallBack: UnderShelfCallBack? = null
+
+    interface UnderShelfCallBack {
+        fun underShelfSucceed(code: String)
+    }
 
     companion object {
         fun newInstance(title: String): UnderShelfFragment {
@@ -111,28 +117,6 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.delete_item_confirm).setNegativeButton(R.string.ok) { _, _ ->
                     presenter.deletePackage(pickListCode ?: "", storageUnitInfoCode ?: "")
                 }.setPositiveButton(R.string.cancel, null).show()
-//
-//                val fragment = BarCodeScannerFragment()
-//                fragment.setScannerDelegate(object : ScannerDelegate {
-//                    override fun succeed(result: String) {
-//                        if (result == parentStorageUnitInfoCode || result == storageUnitInfoCode || packageCodes.contains(result)) {
-//                            showMessage("该包装已添加！")
-//                        } else {
-//                            presenter.addPackage(pickListCode ?: "", result)
-//                        }
-////                    /**拆分出包装号*/
-////                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
-////                        if (pickListPullOffShelf.pullOffConfirm) {
-////                            presenter.getStorageUnitMaterialTotalNumber(position, pickListPullOffShelf.storageUnitInfoCode!!, pickListPullOffShelf.spDetailId!!)
-////                        } else {
-////                            pickListPullOffShelf.isAddedPackage = true
-////                            adapter.notifyItemChanged(position)
-////                        }
-////                    } else {
-////                         }
-//                    }
-//                })
-//                fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
             }
         }
         addPackageInput.setOnClickListener {
@@ -143,13 +127,18 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 val result = editText.text.toString()
                 var hasAdded = false
                 adapter.data.forEachByIndex {
-                    if (result == it.storageUnitInfoCode) {
-                        showMessage("该包装已添加！")
+                    val stCode = if (TextUtils.isEmpty(it.parentStorageUnitInfoCode)) it.storageUnitInfoCode else it.parentStorageUnitInfoCode
+                    if (result == stCode) {
                         hasAdded = true
+                        if (!addPackage.contains(result))
+                            addPackage.add(result)
+                        adapter.notifyDataSetChanged()
                     }
                 }
                 if (!hasAdded)
-                    presenter.addPackage(prNo, result)
+                    AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.confirm_add_package).setNegativeButton(R.string.ok) { _, _ ->
+                        presenter.addPackage(prNo, result)
+                    }.setPositiveButton(R.string.cancel, null).show()
                 hideKeyboard(editText)
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
@@ -162,12 +151,17 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 fragment.setScannerDelegate(object : ScannerDelegate {
                     override fun succeed(result: String) {
                         adapter.data.forEachByIndex {
-                            if (result == it.storageUnitInfoCode) {
-                                showMessage("该包装已添加！")
+                            val stCode = if (TextUtils.isEmpty(it.parentStorageUnitInfoCode)) it.storageUnitInfoCode else it.parentStorageUnitInfoCode
+                            if (result == stCode) {
+                                if (!addPackage.contains(result))
+                                    addPackage.add(result)
+                                adapter.notifyDataSetChanged()
                                 return
                             }
                         }
-                        presenter.addPackage(prNo, result)
+                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.confirm_add_package).setNegativeButton(R.string.ok) { _, _ ->
+                            presenter.addPackage(prNo, result)
+                        }.setPositiveButton(R.string.cancel, null).show()
 ////                    /**拆分出包装号*/
 ////                    if (pickListPullOffShelf?.storageUnitInfoCode == result) {
 ////                        if (pickListPullOffShelf.pullOffConfirm) {
@@ -260,6 +254,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
     }
 
     override fun addPackageSucceed(prNo: String, stCode: String) {
+        if (!addPackage.contains(stCode))
+            addPackage.add(stCode)
 //        (pickListRecyclerView.adapter as PickListOffShelfAdapter).apply {
 //            data.forEachWithIndex { i, pickListPullOffShelf ->
 //                if (prNo == pickListPullOffShelf.pickListCode) {
@@ -272,6 +268,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
     }
 
     override fun deletePackageSucceed(prNo: String, stCode: String) {
+        addPackage.remove(stCode)
         (pickListRecyclerView.adapter as PickListOffShelfAdapter).apply {
             var index = -1
             data.forEachWithIndex { i, pickListPullOffShelf ->
@@ -313,7 +310,11 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 
     override fun underShelfSucceed() {
         (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(null)
-        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok, null).create()
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok){
+            _,_->
+            underShelfCallBack?.underShelfSucceed(prNo)
+            activity?.onBackPressed()
+        }.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         dialog.show()
@@ -331,6 +332,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
     class PickListOffShelfAdapter(val fragment: UnderShelfFragment) : BaseQuickAdapter<PickListPullOffShelf, BaseViewHolder>(R.layout.item_pick_list_info_under_shelf) {
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: PickListPullOffShelf) {
+            val stCode = if (TextUtils.isEmpty(item.parentStorageUnitInfoCode)) item.storageUnitInfoCode else item.parentStorageUnitInfoCode
+            item.isAddedPackage = fragment.addPackage.contains(stCode)
             val dataBind = DataBindingUtil.bind<ItemPickListInfoUnderShelfBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
             helper.addOnClickListener(R.id.deletePackageButton)

@@ -24,7 +24,7 @@ object ViewVehicleReceiptContract {
     interface ViewVehicleReceiptView : MvpView {
         fun getViewVehicleReceiptFilterInfo(vehicleReceiptFilterInfo: VehicleReceiptFilterInfo?)
         fun getVehicleReceipt(data: List<VehicleReceiptDto>?)
-        fun getMesPickReceiptList(data: List<MESPickReceiptDto>?)
+        fun getMesPickReceiptList(vId:String,data: List<MESPickReceiptDto>?)
     }
 
     interface ViewVehicleReceiptPresenter : MvpPresenter<ViewVehicleReceiptView> {
@@ -132,7 +132,7 @@ object ViewVehicleReceiptContract {
                                 mvpView?.hideProgressDialog()
                                 response.body()?.let {
                                     if (it.isSucceed()) {
-                                        mvpView?.getMesPickReceiptList(it.data)
+                                        mvpView?.getMesPickReceiptList(id,it.data)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

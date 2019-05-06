@@ -22,6 +22,7 @@ import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_viewvehiclereceipt.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.collections.forEachWithIndex
 import javax.inject.Inject
 
 /**
@@ -133,7 +134,7 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
         }
     }
 
-    override fun getMesPickReceiptList(data: List<MESPickReceiptDto>?) {
+    override fun getMesPickReceiptList(vId:String,data: List<MESPickReceiptDto>?) {
         if (data?.isNotEmpty() == true) {
             data.apply {
                 viewFlipper.displayedChild = 2
@@ -142,7 +143,26 @@ class ViewVehicleReceiptFragment : BaseFragment(), ViewVehicleReceiptContract.Vi
                     setNewData(data)
                     setOnItemChildClickListener { _, _, position ->
                         get(position).apply {
-                            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_content, UnderShelfFragment.newInstance(getString(R.string.title_under_shelf), this.no))?.addToBackStack(null)?.commit()
+                            val fragment = UnderShelfFragment.newInstance(getString(R.string.title_under_shelf), this.no)
+                            fragment.underShelfCallBack = object : UnderShelfFragment.UnderShelfCallBack {
+                                override fun underShelfSucceed(code: String) {
+                                    remove(position)
+                                    if (data.isEmpty()) {
+                                        viewFlipper.displayedChild = 1
+                                        (PCRecyclerView.adapter as PCadapter).let {
+                                            var index = -1
+                                            it.data.forEachWithIndex { i, vehicleReceiptDto ->
+                                                if (vehicleReceiptDto.id == vId)
+                                                    index = i
+                                            }
+                                            if (index >= 0) {
+                                                it.remove(index)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_content, fragment)?.addToBackStack(null)?.commit()
                         }
                     }
                 }

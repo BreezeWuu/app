@@ -290,4 +290,6 @@
     <string name="action_add_package_scanner">扫描添加包装</string>
     <string name="warn">警告</string>
     <string name="goon">继续</string>
+    <string name="status_format">状态：</string>
+    <string name="confirm_add_package">确认添加该包装？</string>
 </resources>
