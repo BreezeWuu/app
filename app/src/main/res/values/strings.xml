@@ -292,4 +292,5 @@
     <string name="goon">继续</string>
     <string name="status_format">状态：</string>
     <string name="confirm_add_package">确认添加该包装？</string>
+    <string name="under_shelf_no_confirmed">包装尚未全部确认，是否确定下架该拣配单？</string>
 </resources>

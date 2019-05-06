@@ -181,17 +181,50 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
             if (adapter.data.isEmpty()) {
                 showMessage(R.string.picklist_pull_off_shelf_empty_error)
             } else {
-                showProgressDialog(R.string.loading_create_data)
-                val request = PrMobileConfirmRequest()
-                request.stCodes = arrayListOf()
-                request.prNo = prNo
-                doAsync {
-                    adapter.data.forEachByIndex { pickListPullOffShelf ->
-                        request.stCodes?.add(pickListPullOffShelf.storageUnitInfoCode ?: "")
-                    }
-                    onUiThread {
-                        hideProgressDialog()
-                        presenter.underShelfConfirm(request)
+                var confirmed = true
+                var confirmedCount = 0
+                adapter.data.forEach {
+                    if (!it.isAddedPackage) confirmed = false
+                    else confirmedCount += 1
+                }
+                if (confirmedCount == 0) {
+                    showMessage("请先扫码确认包装！")
+                } else {
+                    if (confirmed) {
+                        showProgressDialog(R.string.loading_create_data)
+                        val request = PrMobileConfirmRequest()
+                        request.stCodes = arrayListOf()
+                        request.prNo = prNo
+                        doAsync {
+                            adapter.data.forEachByIndex { pickListPullOffShelf ->
+                                val code = if (TextUtils.isEmpty(pickListPullOffShelf.parentStorageUnitInfoCode)) pickListPullOffShelf.storageUnitInfoCode else pickListPullOffShelf.parentStorageUnitInfoCode
+                                if (pickListPullOffShelf.isAddedPackage)
+                                    request.stCodes?.add(code ?: "")
+                            }
+                            onUiThread {
+                                hideProgressDialog()
+                                presenter.underShelfConfirm(request)
+                            }
+                        }
+                    } else {
+                        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_no_confirmed)
+                                .setPositiveButton(R.string.ok) { _, _ ->
+                                    showProgressDialog(R.string.loading_create_data)
+                                    val request = PrMobileConfirmRequest()
+                                    request.stCodes = arrayListOf()
+                                    request.prNo = prNo
+                                    doAsync {
+                                        adapter.data.forEachByIndex { pickListPullOffShelf ->
+                                            val code = if (TextUtils.isEmpty(pickListPullOffShelf.parentStorageUnitInfoCode)) pickListPullOffShelf.storageUnitInfoCode else pickListPullOffShelf.parentStorageUnitInfoCode
+                                            if (pickListPullOffShelf.isAddedPackage)
+                                                request.stCodes?.add(code?: "")
+                                        }
+                                        onUiThread {
+                                            hideProgressDialog()
+                                            presenter.underShelfConfirm(request)
+                                        }
+                                    }
+                                }.setNegativeButton(R.string.cancel, null).show()
                     }
                 }
             }
@@ -310,8 +343,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 
     override fun underShelfSucceed() {
         (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(null)
-        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok){
-            _,_->
+        val dialog = AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(R.string.under_shelf_succeed).setNegativeButton(R.string.ok) { _, _ ->
             underShelfCallBack?.underShelfSucceed(prNo)
             activity?.onBackPressed()
         }.create()
