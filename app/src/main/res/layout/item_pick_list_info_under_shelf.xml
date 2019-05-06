@@ -381,6 +381,7 @@
                     android:layout_height="@dimen/button_height_normal"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/spacing_small"
+                    android:visibility="@{TextUtils.isEmpty(info.storageUnitInfoCode)?View.GONE:View.VISIBLE}"
                     android:text="@string/delete"
                     android:textSize="18dp" />
             </LinearLayout>
