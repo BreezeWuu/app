@@ -103,4 +103,6 @@ class ManualBoardDeliveryDto {
      * 紧急标识 0：否 1：是
      */
     var urgentFlag: String? = null
+
+    var warnMessage: String? = null
 }

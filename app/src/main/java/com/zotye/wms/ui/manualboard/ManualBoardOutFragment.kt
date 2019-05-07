@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +28,7 @@ import com.zotye.wms.ui.picking.PickingFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_manual_board_out.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.collections.forEachByIndex
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.SimpleDateFormat
@@ -148,13 +150,35 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
         presenter.getManualBoardList(result, "")
     }
 
-    override fun getManualBoardList(showWarnings: Boolean, warnMessage: String?, manualBoardList: List<ManualBoardDeliveryDto>?) {
-        if(showWarnings){
-            AlertDialog.Builder(context!!).setTitle(R.string.warn).setMessage(warnMessage).setNegativeButton(R.string.goon) { _, _ ->
-                (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
-            }.setPositiveButton(R.string.cancel, null).show()
-        }else{
-            (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
+    override fun getManualBoardList(manualBoardList: List<ManualBoardDeliveryDto>?) {
+        manualBoardList?.apply {
+            if (size > 0) {
+                if (size == 1) {
+                    if (!TextUtils.isEmpty(get(0).warnMessage)) {
+                        AlertDialog.Builder(context!!).setTitle(R.string.warn).setMessage(get(0).warnMessage).setNegativeButton(R.string.goon) { _, _ ->
+                            (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
+                        }.setPositiveButton(R.string.cancel, null).show()
+                    } else {
+                        (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
+                    }
+                } else {
+                    var items: Array<String> = arrayOf()
+                    forEachByIndex {
+                        it.manualBoardCode?.let { mbCode ->
+                            items = items.plus(mbCode)
+                        }
+                    }
+                    AlertDialog.Builder(context!!).setTitle("请选择看板卡").setItems(items) { _, position ->
+                        if (!TextUtils.isEmpty(get(position).warnMessage)) {
+                            AlertDialog.Builder(context!!).setTitle(R.string.warn).setMessage(get(position).warnMessage).setNegativeButton(R.string.goon) { _, _ ->
+                                (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(arrayListOf(manualBoardList[position]))
+                            }.setPositiveButton(R.string.cancel, null).show()
+                        } else {
+                            (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(arrayListOf(manualBoardList[position]))
+                        }
+                    }.show()
+                }
+            }
         }
     }
 
