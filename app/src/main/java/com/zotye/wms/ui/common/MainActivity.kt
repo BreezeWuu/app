@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
 import android.support.v4.content.LocalBroadcastManager
 import android.support.v7.app.AlertDialog
+import android.view.KeyEvent
 import com.zotye.wms.AppConstants
 import com.zotye.wms.BuildConfig
 import com.zotye.wms.R
@@ -148,6 +149,24 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
             intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive")
         }
         context.startActivity(intent)
+    }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        val fragment  = supportFragmentManager.findFragmentById(R.id.main_content)
+        if(fragment is BarCodeScannerFragment){
+            fragment.onKeyUp(keyCode, event)
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        val fragment  = supportFragmentManager.findFragmentById(R.id.main_content)
+        if(fragment is BarCodeScannerFragment){
+            fragment.onKeyDown(keyCode, event)
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onDestroy() {

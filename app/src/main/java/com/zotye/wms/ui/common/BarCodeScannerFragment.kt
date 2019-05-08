@@ -4,11 +4,15 @@ import android.Manifest
 import android.content.Context.VIBRATOR_SERVICE
 import android.os.Bundle
 import android.os.Vibrator
+import android.text.TextUtils
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import cn.bingoogolapple.qrcode.core.QRCodeView
+import com.symbol.scanning.*
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.BarCodeType
 import kotlinx.android.synthetic.main.fragment_base.*
@@ -29,7 +33,11 @@ import java.lang.Exception
 const val REQUEST_CODE_QRCODE_PERMISSIONS = 1
 
 class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, QRCodeView.Delegate {
+    private var TAG = "BarCodeScannerFragment"
     private var scannerDelegate: ScannerDelegate? = null
+    /*private Scanner mScanner =
+		mBarcodeManager.getDevice(BarcodeManager.DeviceIdentifier.INTERNAL_CAMERA1);*/
+    private var mScanner: Scanner? = null
 
     fun setScannerDelegate(scannerDelegate: ScannerDelegate) {
         this.scannerDelegate = scannerDelegate
@@ -46,6 +54,15 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
         toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
         toolbar_base.setNavigationOnClickListener {
             activity?.onBackPressed()
+        }
+        try {
+            val mBarcodeManager = BarcodeManager()
+            val mInfo = ScannerInfo("se4710_cam_builtin", "DECODER_2D")
+            mScanner = mBarcodeManager.getDevice(mInfo)
+            mScanner?.enable()
+            setDecodeListener()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
         zbarview.setDelegate(this)
         requestCodeQRCodePermissions()
@@ -121,8 +138,62 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
 
     }
 
+    private var mDataListener: Scanner.DataListener? = null
+
+    private fun setDecodeListener() {
+        mDataListener = Scanner.DataListener { scanDataCollection ->
+            var data = ""
+            val scanDataList = scanDataCollection.scanData
+
+            for (scanData in scanDataList) {
+                data = scanData.data
+            }
+            if (!TextUtils.isEmpty(data)) {
+                onScanQRCodeSuccess(data)
+            }
+        }
+
+        mScanner?.addDataListener(mDataListener)
+    }
+
     override fun onDestroyView() {
+        try {
+            mScanner?.disable()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
         zbarview.onDestroy()
         super.onDestroyView()
     }
+
+    fun onKeyUp(keyCode: Int, event: KeyEvent?) {
+        if (keyCode == KeyEvent.KEYCODE_BUTTON_L1
+                || keyCode == KeyEvent.KEYCODE_BUTTON_R1
+                || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
+            try {
+                mScanner?.cancelRead()
+            } catch (se: ScannerException) {
+                se.printStackTrace()
+            } finally {
+                mScanner?.removeDataListener(mDataListener)
+            }
+        }
+    }
+
+    fun onKeyDown(keyCode: Int, event: KeyEvent?) {
+        if (keyCode == KeyEvent.KEYCODE_BUTTON_L1
+                || keyCode == KeyEvent.KEYCODE_BUTTON_R1
+                || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
+            Log.i("ScanApp", "onKeyDown")
+            if (event?.repeatCount == 0) {
+                try {
+                    mScanner?.read()
+                } catch (se: ScannerException) {
+                    se.printStackTrace()
+                }
+            }
+        }
+    }
+
+
 }
