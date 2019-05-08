@@ -1,12 +1,9 @@
 package com.zotye.wms.ui.manualboard
 
-import android.app.DatePickerDialog
-import android.app.TimePickerDialog
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.text.Html
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -18,17 +15,14 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
 import com.zotye.wms.data.api.model.ManualBoardDeliveryDto
 import com.zotye.wms.data.api.model.MaterialPullResult
-import com.zotye.wms.data.api.model.StoragePackageMaterialInfo
 import com.zotye.wms.databinding.ItemManualBoardBinding
-import com.zotye.wms.databinding.ItemStorageMaterialInfoBinding
 import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
-import com.zotye.wms.ui.picking.PickingFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_manual_board_out.*
+import kotlinx.android.synthetic.main.simple_recycler_view.view.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
-import org.jetbrains.anko.collections.forEachByIndex
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import java.text.SimpleDateFormat
@@ -162,21 +156,25 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
                         (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(manualBoardList)
                     }
                 } else {
-                    var items: Array<String> = arrayOf()
-                    forEachByIndex {
-                        it.manualBoardCode?.let { mbCode ->
-                            items = items.plus(mbCode)
+                    val dialogView = LayoutInflater.from(context!!).inflate(R.layout.simple_recycler_view, null)
+                    val dialog = AlertDialog.Builder(context!!).setTitle("请选择看板卡").setView(dialogView).show()
+                    dialogView.recyclerView.layoutManager = LinearLayoutManager(context)
+                    dialogView.recyclerView.adapter = ManualBoardDescAdapter().apply {
+                        setNewData(manualBoardList)
+                        setOnItemChildClickListener { _, _, position ->
+                            get(position).apply {
+                                if (!TextUtils.isEmpty(warnMessage)) {
+                                    AlertDialog.Builder(context!!).setTitle(R.string.warn).setMessage(warnMessage).setNegativeButton(R.string.goon) { _, _ ->
+                                        dialog.dismiss()
+                                        (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(arrayListOf(this))
+                                    }.setPositiveButton(R.string.cancel, null).show()
+                                } else {
+                                    dialog.dismiss()
+                                    (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(arrayListOf(this))
+                                }
+                            }
                         }
                     }
-                    AlertDialog.Builder(context!!).setTitle("请选择看板卡").setItems(items) { _, position ->
-                        if (!TextUtils.isEmpty(get(position).warnMessage)) {
-                            AlertDialog.Builder(context!!).setTitle(R.string.warn).setMessage(get(position).warnMessage).setNegativeButton(R.string.goon) { _, _ ->
-                                (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(arrayListOf(manualBoardList[position]))
-                            }.setPositiveButton(R.string.cancel, null).show()
-                        } else {
-                            (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(arrayListOf(manualBoardList[position]))
-                        }
-                    }.show()
                 }
             }
         }
@@ -185,6 +183,16 @@ class ManualBoardOutFragment : BaseFragment(), ManualBoardOutContract.ManualBoar
     override fun saveManualBoardOutSucceed(message: String, result: List<MaterialPullResult>) {
         showMessage(message)
         (manualBoardRecyclerView.adapter as ManualBoardInfoAdapter).setNewData(listOf())
+    }
+
+    class ManualBoardDescAdapter : BaseQuickAdapter<ManualBoardDeliveryDto, BaseViewHolder>(R.layout.item_manual_board) {
+
+        override fun convert(helper: BaseViewHolder, item: ManualBoardDeliveryDto) {
+            val dataBind = DataBindingUtil.bind<ItemManualBoardBinding>(helper.itemView)
+            dataBind?.info = item
+            helper.addOnClickListener(R.id.layout)
+            helper.getView<View>(R.id.deleteButton).visibility = View.GONE
+        }
     }
 
     class ManualBoardInfoAdapter : BaseQuickAdapter<ManualBoardDeliveryDto, BaseViewHolder>(R.layout.item_manual_board) {
