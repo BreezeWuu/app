@@ -20,6 +20,7 @@ import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import com.zotye.wms.ui.goods.ReceiveConfirmContract
+import com.zotye.wms.ui.goods.ReceiveConfirmFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_receive_confirm.*
 import kotlinx.android.synthetic.main.layout_code_scanner.*
@@ -97,12 +98,22 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
     override fun getUnReceivePackageList(packageInfoList: List<PackageInfo>) {
         viewSwitcher.showNext()
         toolbar_base.titleResource = R.string.un_receive_package_list
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = PackageAdapter()
         recyclerView.adapter = adapter
+
+        receiveRecyclerView.layoutManager = LinearLayoutManager(context)
+        val receiveAdapter = PackageAdapter()
+        receiveRecyclerView.adapter = receiveAdapter
+
+
         totalFormatTextView.text = getString(R.string.total_receive_format, packageInfoList.size, packageInfoList.filter {
             it.eState == "2"
         }.size)
+        receiveAdapter.setNewData(packageInfoList.filter {
+            it.eState == "2"
+        })
         adapter.setNewData(packageInfoList.filter {
             it.eState != "2"
         })
@@ -111,12 +122,23 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
     override fun getUnReceivePickInfoList(pickInfoList: List<PickListInfo>) {
         viewSwitcher.showNext()
         toolbar_base.titleResource = R.string.un_receive_pick_list
+
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         val adapter = PickInfoAdapter()
         recyclerView.adapter = adapter
+
+
+        receiveRecyclerView.layoutManager = LinearLayoutManager(context)
+        val receiveAdapter = PickInfoAdapter()
+        receiveRecyclerView.adapter = receiveAdapter
+
         totalFormatTextView.text = getString(R.string.total_receive_format, pickInfoList.size, pickInfoList.filter {
             it.state != 1
         }.size)
+        receiveAdapter.setNewData(pickInfoList.filter {
+            it.state != 1
+        })
         adapter.setNewData(pickInfoList.filter {
             it.state == 1
         })
