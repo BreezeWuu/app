@@ -152,19 +152,27 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        val fragment  = supportFragmentManager.findFragmentById(R.id.main_content)
-        if(fragment is BarCodeScannerFragment){
-            fragment.onKeyUp(keyCode, event)
-            return true
+        if (keyCode == KeyEvent.KEYCODE_BUTTON_L1
+                || keyCode == KeyEvent.KEYCODE_BUTTON_R1
+                || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
+            val fragment = supportFragmentManager.findFragmentById(R.id.main_content)
+            if (fragment is BarCodeScannerFragment) {
+                fragment.onKeyUp(keyCode, event)
+                return true
+            }
         }
         return super.onKeyUp(keyCode, event)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        val fragment  = supportFragmentManager.findFragmentById(R.id.main_content)
-        if(fragment is BarCodeScannerFragment){
-            fragment.onKeyDown(keyCode, event)
-            return true
+        if (keyCode == KeyEvent.KEYCODE_BUTTON_L1
+                || keyCode == KeyEvent.KEYCODE_BUTTON_R1
+                || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
+            val fragment = supportFragmentManager.findFragmentById(R.id.main_content)
+            if (fragment is BarCodeScannerFragment) {
+                fragment.onKeyDown(keyCode, event)
+                return true
+            }
         }
         return super.onKeyDown(keyCode, event)
     }

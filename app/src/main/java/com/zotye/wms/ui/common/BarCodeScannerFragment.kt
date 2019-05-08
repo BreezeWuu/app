@@ -159,7 +159,7 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
     override fun onDestroyView() {
         try {
             mScanner?.disable()
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         zbarview.onDestroy()
@@ -167,33 +167,23 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
     }
 
     fun onKeyUp(keyCode: Int, event: KeyEvent?) {
-        if (keyCode == KeyEvent.KEYCODE_BUTTON_L1
-                || keyCode == KeyEvent.KEYCODE_BUTTON_R1
-                || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
-            try {
-                mScanner?.cancelRead()
-            } catch (se: ScannerException) {
-                se.printStackTrace()
-            } finally {
-                mScanner?.removeDataListener(mDataListener)
-            }
+        try {
+            mScanner?.cancelRead()
+        } catch (se: ScannerException) {
+            se.printStackTrace()
+        } finally {
+            mScanner?.removeDataListener(mDataListener)
         }
     }
 
     fun onKeyDown(keyCode: Int, event: KeyEvent?) {
-        if (keyCode == KeyEvent.KEYCODE_BUTTON_L1
-                || keyCode == KeyEvent.KEYCODE_BUTTON_R1
-                || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
-            Log.i("ScanApp", "onKeyDown")
-            if (event?.repeatCount == 0) {
-                try {
-                    mScanner?.read()
-                } catch (se: ScannerException) {
-                    se.printStackTrace()
-                }
+        Log.i("ScanApp", "onKeyDown")
+        if (event?.repeatCount == 0) {
+            try {
+                mScanner?.read()
+            } catch (se: ScannerException) {
+                se.printStackTrace()
             }
         }
     }
-
-
 }
