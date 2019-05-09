@@ -119,7 +119,7 @@ class QRCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallback
     }
 
     override fun onScanQRCodeOpenCameraError() {
-        showMessage(R.string.error_open_camera)
+//        showMessage(R.string.error_open_camera)
     }
 
     override fun onCameraAmbientBrightnessChanged(isDark: Boolean) {

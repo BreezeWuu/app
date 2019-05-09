@@ -124,7 +124,7 @@ class BarCodeScannerFragment : BaseFragment(), EasyPermissions.PermissionCallbac
     }
 
     override fun onScanQRCodeOpenCameraError() {
-        showMessage(R.string.error_open_camera)
+//        showMessage(R.string.error_open_camera)
     }
 
     private fun vibrate() {
