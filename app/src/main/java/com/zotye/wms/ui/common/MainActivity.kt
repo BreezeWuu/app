@@ -160,6 +160,10 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
                 fragment.onKeyUp(keyCode, event)
                 return true
             }
+            if (fragment is QRCodeScannerFragment) {
+                fragment.onKeyUp(keyCode, event)
+                return true
+            }
         }
         return super.onKeyUp(keyCode, event)
     }
@@ -170,6 +174,10 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector {
                 || keyCode == KeyEvent.KEYCODE_BUTTON_L2) {
             val fragment = supportFragmentManager.findFragmentById(R.id.main_content)
             if (fragment is BarCodeScannerFragment) {
+                fragment.onKeyDown(keyCode, event)
+                return true
+            }
+            if (fragment is QRCodeScannerFragment) {
                 fragment.onKeyDown(keyCode, event)
                 return true
             }

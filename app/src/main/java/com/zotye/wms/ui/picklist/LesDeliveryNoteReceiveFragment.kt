@@ -20,7 +20,6 @@ import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.ScannerDelegate
 import com.zotye.wms.ui.goods.ReceiveConfirmContract
-import com.zotye.wms.ui.goods.ReceiveConfirmFragment
 import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_receive_confirm.*
 import kotlinx.android.synthetic.main.layout_code_scanner.*
