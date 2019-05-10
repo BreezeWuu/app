@@ -194,8 +194,8 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
         val badReceiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.badNumberText)
         val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
         infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
-        infoView.findViewById<View>(R.id.noReceiveNumberLayout).visibility = if (isGroupReceive) View.GONE else View.VISIBLE
-        infoView.findViewById<View>(R.id.badNumberLayout).visibility = if (isGroupReceive) View.GONE else View.VISIBLE
+//        infoView.findViewById<View>(R.id.noReceiveNumberLayout).visibility = if (isGroupReceive) View.GONE else View.VISIBLE
+//        infoView.findViewById<View>(R.id.badNumberLayout).visibility = if (isGroupReceive) View.GONE else View.VISIBLE
         packageInfo.receiveNum = packageInfo.deliveryNum
         dataBind?.info = packageInfo
         val dialog = AlertDialog.Builder(context!!).setTitle(R.string.package_info).setView(infoView).create()
