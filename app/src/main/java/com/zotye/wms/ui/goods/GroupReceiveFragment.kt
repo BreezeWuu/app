@@ -221,12 +221,12 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
             val noReceiveNumber = if (TextUtils.isEmpty(noReceiveString)) BigDecimal.ZERO else BigDecimal(noReceiveString)
             val badReceiveString = badReceiveNumberEditText.text.toString()
             val badReceiveNumber = if (TextUtils.isEmpty(badReceiveString)) BigDecimal.ZERO else BigDecimal(badReceiveString)
-            if (!isGroupReceive) {
-                if (receiveNumber + noReceiveNumber + badReceiveNumber != packageInfo.deliveryNum) {
-                    receiveNumberEditText.error = getString(R.string.not_match_deliver_num)
-                    return@onClick
-                }
-            }
+//            if (!isGroupReceive) {
+//                if (receiveNumber + noReceiveNumber + badReceiveNumber != packageInfo.deliveryNum) {
+//                    receiveNumberEditText.error = getString(R.string.not_match_deliver_num)
+//                    return@onClick
+//                }
+//            }
             if (isGroupReceive) {
                 packageInfo.receiveNum = receiveNumber
                 packageInfo.batchNum = batchNumberEditText.text.toString()
