@@ -113,4 +113,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun reliveryForLesDeliveryNoteByCode(userId: String, barCode: String)=apiService.reliveryForLesDeliveryNoteByCode(userId, barCode)
 
     override fun getLogisticsPackageInfo(userId: String, code: String)=apiService.getLogisticsPackageInfo(userId, code)
+
+    override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto)=apiService.putAwayPackage(logisticsReceiveDto)
 }

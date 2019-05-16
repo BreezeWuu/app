@@ -7,6 +7,7 @@ import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.JoinPackageDto
+import com.zotye.wms.data.api.model.LogisticsReceiveDto
 import com.zotye.wms.data.api.model.LogisticsReceiveInfo
 import com.zotye.wms.data.api.model.receipt.GoodsReceiveResponse
 import com.zotye.wms.ui.common.BasePresenter
@@ -33,6 +34,7 @@ object GroupReceiveContract {
         fun getJoinPackageInfo(packageId: String)
         fun submitReceiveInfo(logisticsReceiveInfo: LogisticsReceiveInfo)
         fun joinPackage(joinPackageDto: JoinPackageDto)
+        fun putAwayPackage(logisticsReceiveDto : LogisticsReceiveDto)
     }
 
     class GroupReceivePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<GroupReceiveView>(), GroupReceivePresenter {
@@ -134,6 +136,34 @@ object GroupReceiveContract {
                                 response.body()?.let {
                                     if (it.isSucceed()) {
                                         mvpView?.getBarCodeInfo(it.data)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+        }
+
+        override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto) {
+            mvpView?.showProgressDialog(R.string.submiting)
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    logisticsReceiveDto.userId = it.userId
+                    appExecutors.mainThread().execute {
+                        dataManager.putAwayPackage(logisticsReceiveDto).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
+
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.joinPackageSucceed(it.message)
                                     } else {
                                         mvpView?.showMessage(it.message)
                                     }

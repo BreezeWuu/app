@@ -214,5 +214,7 @@ interface ApiService {
     @POST("bar_code/getLogisticsPackageInfo")
     fun getLogisticsPackageInfo(@Field("userId") userId: String, @Field("code") code: String): Call<ApiResponse<BarcodeInfo>>
 
+    @POST("bar_code/putAwayPackage")
+    fun putAwayPackage(@Body logisticsReceiveDto: LogisticsReceiveDto): Call<ApiResponse<String>>
 
 }

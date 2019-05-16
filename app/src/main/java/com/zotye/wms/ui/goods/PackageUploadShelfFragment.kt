@@ -6,6 +6,7 @@ import android.support.design.widget.TextInputEditText
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.zotye.wms.R
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.model.BarcodeInfo
 import com.zotye.wms.data.api.model.JoinPackageDto
+import com.zotye.wms.data.api.model.LogisticsReceiveDto
 import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemGoodsPackageBinding
@@ -30,6 +32,7 @@ import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.find
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.textResource
+import java.math.BigDecimal
 import javax.inject.Inject
 
 /**
@@ -120,12 +123,13 @@ class PackageUploadShelfFragment :BaseFragment(), ScannerDelegate, GroupReceiveC
                         val batchNumberEditText = goodsPackageAdapter.getViewByPosition(position, R.id.batchNumber) as TextInputEditText
                         if (item.isEditEnable) {
                             item.batchNum = batchNumberEditText.text.toString()
-//                            val numberText = editText.text.toString()
-//                            item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
+                            val numberText = editText.text.toString()
+                            item.receiveNum = BigDecimal(if (TextUtils.isEmpty(numberText)) "1" else numberText)
                         } else {
-                            batchNumberEditText.requestFocus()
+                            editText.requestFocus()
                         }
                         item.isEditEnable = !item.isEditEnable
+                        editText.isEnabled = item.isEditEnable
                         goodsPackageAdapter.notifyItemChanged(position)
                         if (item.isEditEnable)
                             showKeyboard(editText as EditText)
@@ -140,28 +144,18 @@ class PackageUploadShelfFragment :BaseFragment(), ScannerDelegate, GroupReceiveC
     fun joinPackage(result: String) {
         val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
         val codeList = arrayListOf<String>()
-        var newBatchNumber = ""
         adapter.data.forEachIndexed { index, packageInfo ->
             codeList.add(packageInfo.code)
-            if (index == 0) {
-                newBatchNumber = packageInfo.batchNum ?: ""
-            } else {
-                if (newBatchNumber != packageInfo.batchNum) {
-                    showSnackBar(getString(R.string.not_match_join_package_batch_num))
-                    return
-                }
-            }
         }
-        if (codeList.size <= 1) {
-            showMessage(R.string.error_join_package)
+        if (codeList.size < 1) {
+            showMessage(R.string.package_list_empty)
             return
         }
-        val joinPackageDto = JoinPackageDto().apply {
-            spId = result
-            sourceCodes = codeList
-            batchNum = newBatchNumber
-        }
-        presenter.joinPackage(joinPackageDto)
+        val logisticsReceiveDto = LogisticsReceiveDto()
+        logisticsReceiveDto.code = codeList[0]
+        logisticsReceiveDto.receiveNum = adapter.data[0].receiveNum
+        logisticsReceiveDto.spCode = result
+        presenter.putAwayPackage(logisticsReceiveDto)
     }
 
     override fun getBarCodeInfo(barcodeInfo: BarcodeInfo?) {
@@ -178,8 +172,9 @@ class PackageUploadShelfFragment :BaseFragment(), ScannerDelegate, GroupReceiveC
         val receiveNumberEditText = infoView.findViewById<TextInputEditText>(R.id.receiveNumberText)
         val batchNumberEditText = infoView.findViewById<TextInputEditText>(R.id.batchNumber)
         infoView.findViewById<View>(R.id.dialogActionLayout).visibility = View.VISIBLE
+        infoView.findViewById<View>(R.id.batchNumberLayout).visibility = View.GONE
         infoView.findViewById<View>(R.id.noReceiveNumberLayout).visibility = View.GONE
-        infoView.findViewById<View>(R.id.receiveNumberLayout).visibility = View.GONE
+        infoView.findViewById<View>(R.id.receiveNumberLayout).visibility = View.VISIBLE
         infoView.findViewById<View>(R.id.badNumberLayout).visibility = View.GONE
         packageInfo.receiveNum = packageInfo.deliveryNum
         dataBind?.info = packageInfo
@@ -239,6 +234,7 @@ class PackageUploadShelfFragment :BaseFragment(), ScannerDelegate, GroupReceiveC
 
     override fun joinPackageSucceed(message: String) {
         AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok,null).show()
+        (packageRecyclerView.adapter as GoodsPackageAdapter).setNewData(null)
     }
 
     class GoodsPackageAdapter : BaseQuickAdapter<PackageInfo, BaseViewHolder>(R.layout.item_goods_package) {
@@ -247,7 +243,8 @@ class PackageUploadShelfFragment :BaseFragment(), ScannerDelegate, GroupReceiveC
             val dataBind = DataBindingUtil.bind<ItemGoodsPackageBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
             helper.itemView.findViewById<View>(R.id.actionLayout).visibility = View.VISIBLE
-            helper.itemView.findViewById<View>(R.id.receiveNumberLayout).visibility = View.GONE
+            helper.itemView.findViewById<View>(R.id.batchNumberLayout).visibility = View.GONE
+            helper.itemView.findViewById<View>(R.id.receiveNumberLayout).visibility = View.VISIBLE
             helper.addOnClickListener(R.id.deleteButton)
             helper.addOnClickListener(R.id.editButton)
         }

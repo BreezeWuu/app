@@ -131,6 +131,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun reliveryForLesDeliveryNoteByCode(userId: String, barCode: String)=apiHelper.reliveryForLesDeliveryNoteByCode(userId, barCode)
 
+    override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto)=apiHelper.putAwayPackage(logisticsReceiveDto)
+
     override fun getAccessToken() = preferencesHelper.getAccessToken()
 
     override fun insertUser(user: User) = dbHelper.insertUser(user)
