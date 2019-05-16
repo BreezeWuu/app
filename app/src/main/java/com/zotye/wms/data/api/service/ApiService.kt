@@ -209,4 +209,10 @@ interface ApiService {
     @POST("bar_code/deletePackage")
     fun deletePackage(@Body dto: LESPackageInfoUpdateDto): Call<ApiResponse<String>>
 
+
+    @FormUrlEncoded
+    @POST("bar_code/getLogisticsPackageInfo")
+    fun getLogisticsPackageInfo(@Field("userId") userId: String, @Field("code") code: String): Call<ApiResponse<BarcodeInfo>>
+
+
 }

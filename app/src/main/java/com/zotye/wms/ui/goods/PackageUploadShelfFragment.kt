@@ -224,7 +224,7 @@ class PackageUploadShelfFragment :BaseFragment(), ScannerDelegate, GroupReceiveC
         if ((packageRecyclerView.adapter as GoodsPackageAdapter).data.contains(PackageInfo(result))) {
             showMessage(R.string.repeat_package_code_warn)
         } else
-            presenter.getPackageInfo(false,result)
+            presenter.getLogisticsPackageInfo(result)
     }
 
     override fun submitReceiveInfoSucceed(message: String) {
