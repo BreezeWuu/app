@@ -206,9 +206,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                         request.prNo = prNo
                         doAsync {
                             adapter.data.forEachByIndex { pickListPullOffShelf ->
-                                val code = if (TextUtils.isEmpty(pickListPullOffShelf.parentStorageUnitInfoCode)) pickListPullOffShelf.storageUnitInfoCode else pickListPullOffShelf.parentStorageUnitInfoCode
-                                if (code?.isNotEmpty()==true)
-                                    request.stCodes?.add(code)
+                                if (pickListPullOffShelf.storageUnitInfoCode?.isNotEmpty()==true)
+                                    request.stCodes?.add(pickListPullOffShelf.storageUnitInfoCode!!)
                             }
                             onUiThread {
                                 hideProgressDialog()
@@ -224,9 +223,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                                     request.prNo = prNo
                                     doAsync {
                                         adapter.data.forEachByIndex { pickListPullOffShelf ->
-                                            val code = if (TextUtils.isEmpty(pickListPullOffShelf.parentStorageUnitInfoCode)) pickListPullOffShelf.storageUnitInfoCode else pickListPullOffShelf.parentStorageUnitInfoCode
-                                            if (code?.isNotEmpty()==true)
-                                                request.stCodes?.add(code)
+                                            if (pickListPullOffShelf.storageUnitInfoCode?.isNotEmpty()==true)
+                                                request.stCodes?.add(pickListPullOffShelf.storageUnitInfoCode!!)
                                         }
                                         onUiThread {
                                             hideProgressDialog()
