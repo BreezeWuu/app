@@ -63,7 +63,7 @@ class Resource(
             ResourceType.ThreePLRECVCONFIRM -> {
                 R.drawable.ic_receipt_confirm
             }
-            ResourceType.ThreePLADJUST -> {
+            ResourceType.ThreePLADJUST,ResourceType.APPSJ -> {
                 R.drawable.ic_unit_modify
             }
             ResourceType.STRICT_RECV -> {
@@ -117,6 +117,7 @@ enum class ResourceType(val code: String) {
     TEST_RECV("TEST_RECV"),//测试
     CB001("CB001"),//拆包
     APPHB("APPHB"),//合包
+    APPSJ("PackageUploadShelf"),//包装上架
     JHDZDSHAPP("jhdzdshAPP"),//交货单整单收货
     Unknown("");
 

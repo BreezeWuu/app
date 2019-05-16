@@ -136,6 +136,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         ResourceType.JHDZDSHAPP -> {
                             fragment = LesDeliveryNoteReceiveFragment.newInstance(it.name)
                         }
+                        ResourceType.APPSJ->{
+                            fragment = PackageUploadShelfFragment.newInstance(it.name)
+                        }
                         else -> {
                             return@OnItemChildClickListener
                         }

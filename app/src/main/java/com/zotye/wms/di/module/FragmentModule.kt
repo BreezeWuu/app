@@ -87,4 +87,7 @@ abstract class FragmentModule {
     @ContributesAndroidInjector
     abstract fun contributeLesDeliveryNoteReceiveFragment(): LesDeliveryNoteReceiveFragment
 
+    @ContributesAndroidInjector
+    abstract fun contributeLesPackageUploadShelfFragment(): PackageUploadShelfFragment
+
 }
