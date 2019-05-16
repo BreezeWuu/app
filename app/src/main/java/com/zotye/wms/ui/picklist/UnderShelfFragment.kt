@@ -130,7 +130,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                     val stCode = if (TextUtils.isEmpty(it.parentStorageUnitInfoCode)) it.storageUnitInfoCode else it.parentStorageUnitInfoCode
                     if (!TextUtils.isEmpty(it.parentStorageUnitInfoCode) && result == it.storageUnitInfoCode) {
                         showMessage("请扫描供线包装号")
-                        return@forEachByIndex
+                        return@setNegativeButton
                     }
                     if (result == stCode) {
                         hasAdded = true
