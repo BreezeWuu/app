@@ -158,7 +158,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                             val stCode = if (TextUtils.isEmpty(it.parentStorageUnitInfoCode)) it.storageUnitInfoCode else it.parentStorageUnitInfoCode
                             if (!TextUtils.isEmpty(it.parentStorageUnitInfoCode) && result == it.storageUnitInfoCode) {
                                 showMessage("请扫描供线包装号")
-                                return@forEachByIndex
+                                return
                             }
                             if (result == stCode) {
                                 if (!addPackage.contains(result))
@@ -192,7 +192,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 var confirmed = true
                 var confirmedCount = 0
                 adapter.data.forEach {
-                    if (!it.isAddedPackage && !TextUtils.isEmpty(it.storageUnitInfoCode)) confirmed = false
+                    val stCode = if (TextUtils.isEmpty(it.parentStorageUnitInfoCode)) it.storageUnitInfoCode else it.parentStorageUnitInfoCode
+                    if (!addPackage.contains(stCode) && !TextUtils.isEmpty(it.storageUnitInfoCode)) confirmed = false
                     else confirmedCount += 1
                 }
                 if (confirmedCount == 0) {
@@ -206,8 +207,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                         doAsync {
                             adapter.data.forEachByIndex { pickListPullOffShelf ->
                                 val code = if (TextUtils.isEmpty(pickListPullOffShelf.parentStorageUnitInfoCode)) pickListPullOffShelf.storageUnitInfoCode else pickListPullOffShelf.parentStorageUnitInfoCode
-                                if (pickListPullOffShelf.isAddedPackage)
-                                    request.stCodes?.add(code ?: "")
+                                if (code?.isNotEmpty()==true)
+                                    request.stCodes?.add(code)
                             }
                             onUiThread {
                                 hideProgressDialog()
@@ -224,8 +225,8 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                                     doAsync {
                                         adapter.data.forEachByIndex { pickListPullOffShelf ->
                                             val code = if (TextUtils.isEmpty(pickListPullOffShelf.parentStorageUnitInfoCode)) pickListPullOffShelf.storageUnitInfoCode else pickListPullOffShelf.parentStorageUnitInfoCode
-                                            if (pickListPullOffShelf.isAddedPackage)
-                                                request.stCodes?.add(code ?: "")
+                                            if (code?.isNotEmpty()==true)
+                                                request.stCodes?.add(code)
                                         }
                                         onUiThread {
                                             hideProgressDialog()
