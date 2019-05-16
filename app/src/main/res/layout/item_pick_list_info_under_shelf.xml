@@ -386,6 +386,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="7"
                         android:gravity="center_vertical"
+                        android:visibility="@{TextUtils.isEmpty(info.storageUnitInfoCode)?View.GONE:View.VISIBLE}"
                         android:text='@{info.isAddedPackage?"已确认":"未确认"}'
                         android:textColor="@color/red" />
                 </LinearLayout>

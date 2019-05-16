@@ -128,6 +128,10 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 var hasAdded = false
                 adapter.data.forEachByIndex {
                     val stCode = if (TextUtils.isEmpty(it.parentStorageUnitInfoCode)) it.storageUnitInfoCode else it.parentStorageUnitInfoCode
+                    if (!TextUtils.isEmpty(it.parentStorageUnitInfoCode) && result == it.storageUnitInfoCode) {
+                        showMessage("请扫描供线包装号")
+                        return@forEachByIndex
+                    }
                     if (result == stCode) {
                         hasAdded = true
                         if (!addPackage.contains(result))
@@ -152,6 +156,10 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                     override fun succeed(result: String) {
                         adapter.data.forEachByIndex {
                             val stCode = if (TextUtils.isEmpty(it.parentStorageUnitInfoCode)) it.storageUnitInfoCode else it.parentStorageUnitInfoCode
+                            if (!TextUtils.isEmpty(it.parentStorageUnitInfoCode) && result == it.storageUnitInfoCode) {
+                                showMessage("请扫描供线包装号")
+                                return@forEachByIndex
+                            }
                             if (result == stCode) {
                                 if (!addPackage.contains(result))
                                     addPackage.add(result)
@@ -184,7 +192,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                 var confirmed = true
                 var confirmedCount = 0
                 adapter.data.forEach {
-                    if (!it.isAddedPackage) confirmed = false
+                    if (!it.isAddedPackage && !TextUtils.isEmpty(it.storageUnitInfoCode)) confirmed = false
                     else confirmedCount += 1
                 }
                 if (confirmedCount == 0) {
@@ -217,7 +225,7 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
                                         adapter.data.forEachByIndex { pickListPullOffShelf ->
                                             val code = if (TextUtils.isEmpty(pickListPullOffShelf.parentStorageUnitInfoCode)) pickListPullOffShelf.storageUnitInfoCode else pickListPullOffShelf.parentStorageUnitInfoCode
                                             if (pickListPullOffShelf.isAddedPackage)
-                                                request.stCodes?.add(code?: "")
+                                                request.stCodes?.add(code ?: "")
                                         }
                                         onUiThread {
                                             hideProgressDialog()
@@ -338,6 +346,15 @@ class UnderShelfFragment : BaseFragment(), UnderShelfContract.UnderShelfView, Sc
 
     override fun getPickListPullOffShelfList(barCode: String, pickListPullOffShelfList: List<PickListPullOffShelf>) {
         prNo = barCode
+        addPackageInput.visibility = View.VISIBLE
+        addPackageButton.visibility = View.VISIBLE
+        pickListPullOffShelfList.forEach {
+            if (TextUtils.isEmpty(it.storageUnitInfoCode)) {
+                addPackageInput.visibility = View.GONE
+                addPackageButton.visibility = View.GONE
+                return@forEach
+            }
+        }
         (pickListRecyclerView.adapter as PickListOffShelfAdapter).setNewData(pickListPullOffShelfList)
     }
 
