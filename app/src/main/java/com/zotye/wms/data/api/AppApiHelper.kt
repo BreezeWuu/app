@@ -118,4 +118,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto)=apiService.putAwayPackage(logisticsReceiveDto)
 
     override fun materialVatagueQuery(code: String)=apiService.materialVatagueQuery(code)
+
+    override fun queryMateiralInfos(materialNum: String)=apiService.queryMateiralInfos(materialNum)
 }

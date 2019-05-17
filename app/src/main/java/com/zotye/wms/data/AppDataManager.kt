@@ -112,13 +112,15 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun addPackage(prNo: String, stCode: String) = apiHelper.addPackage(prNo, stCode)
 
+    override fun queryMateiralInfos(materialNum: String) = apiHelper.queryMateiralInfos(materialNum)
+
     override fun deletePackage(dto: LESPackageInfoUpdateDto) = apiHelper.deletePackage(dto)
 
-    override fun reliveryForLesDeliveryNote(userId: String, noteId: String)=apiHelper.reliveryForLesDeliveryNote(userId, noteId)
+    override fun reliveryForLesDeliveryNote(userId: String, noteId: String) = apiHelper.reliveryForLesDeliveryNote(userId, noteId)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 
-    override fun getLogisticsPackageInfo(userId: String, code: String)=apiHelper.getLogisticsPackageInfo(userId, code)
+    override fun getLogisticsPackageInfo(userId: String, code: String) = apiHelper.getLogisticsPackageInfo(userId, code)
 
     override fun setCurrentUserId(userId: String?) = preferencesHelper.setCurrentUserId(userId)
 
@@ -130,11 +132,11 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun setAccessToken(token: String) = preferencesHelper.setAccessToken(token)
 
-    override fun reliveryForLesDeliveryNoteByCode(userId: String, barCode: String)=apiHelper.reliveryForLesDeliveryNoteByCode(userId, barCode)
+    override fun reliveryForLesDeliveryNoteByCode(userId: String, barCode: String) = apiHelper.reliveryForLesDeliveryNoteByCode(userId, barCode)
 
-    override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto)=apiHelper.putAwayPackage(logisticsReceiveDto)
+    override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto) = apiHelper.putAwayPackage(logisticsReceiveDto)
 
-    override fun materialVatagueQuery(code: String)=apiHelper.materialVatagueQuery(code)
+    override fun materialVatagueQuery(code: String) = apiHelper.materialVatagueQuery(code)
 
     override fun getAccessToken() = preferencesHelper.getAccessToken()
 

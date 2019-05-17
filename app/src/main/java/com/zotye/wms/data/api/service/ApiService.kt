@@ -221,4 +221,8 @@ interface ApiService {
     @FormUrlEncoded
     @POST("bar_code/materialVatagueQuery")
     fun materialVatagueQuery(@Field("code") code: String): Call<ApiResponse<List<MaterialVatague>>>
+
+    @FormUrlEncoded
+    @POST("bar_code/queryMateiralInfos")
+    fun queryMateiralInfos(@Field("materialNum") materialNum: String): Call<ResponseBody>
 }

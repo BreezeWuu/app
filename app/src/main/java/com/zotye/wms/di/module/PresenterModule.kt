@@ -3,6 +3,7 @@ package com.zotye.wms.di.module
 import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.main.MainContract
 import com.zotye.wms.ui.manualboard.ManualBoardOutContract
+import com.zotye.wms.ui.manualboard.ManualMaterialRequireContract
 import com.zotye.wms.ui.picking.ChooseCostCenterContract
 import com.zotye.wms.ui.picking.PickingContract
 import com.zotye.wms.ui.picklist.*
@@ -76,5 +77,8 @@ class PresenterModule {
 
     @Provides
     fun provideViewVehicleReceiptPresenter(presenter: ViewVehicleReceiptContract.ViewVehicleReceiptPresenterImpl): ViewVehicleReceiptContract.ViewVehicleReceiptPresenter = presenter
+
+    @Provides
+    fun provideViewManualMaterialRequirePresenter(presenter: ManualMaterialRequireContract.ManualMaterialRequirePresenterImpl): ManualMaterialRequireContract.ManualMaterialRequirePresenter = presenter
 
 }
