@@ -294,4 +294,7 @@
     <string name="confirm_add_package">确认添加该包装？</string>
     <string name="under_shelf_no_confirmed">包装尚未全部确认，是否确定下架该拣配单？</string>
     <string name="receive_list">已收详情</string>
+    <string name="box_number_format">箱数：</string>
+    <string name="need_number_format">需求量：</string>
+    <string name="submit">提交</string>
 </resources>

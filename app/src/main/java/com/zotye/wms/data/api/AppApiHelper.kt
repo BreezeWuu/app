@@ -8,6 +8,7 @@ import com.zotye.wms.data.api.model.receipt.MobilePickReceiptRecvDto
 import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
 import com.zotye.wms.data.api.service.ApiService
+import okhttp3.ResponseBody
 import retrofit2.Call
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -115,4 +116,6 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
     override fun getLogisticsPackageInfo(userId: String, code: String)=apiService.getLogisticsPackageInfo(userId, code)
 
     override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto)=apiService.putAwayPackage(logisticsReceiveDto)
+
+    override fun getUrlContent(url: String)=apiService.getUrlContent(url)
 }

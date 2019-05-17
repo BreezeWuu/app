@@ -22,6 +22,7 @@ import com.zotye.wms.ui.common.BaseFragment
 import com.zotye.wms.ui.common.MainActivity
 import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.manualboard.ManualBoardOutFragment
+import com.zotye.wms.ui.manualboard.ManualMaterialRequireFragment
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.*
 import com.zotye.wms.ui.storageunit.StorageUnitInfoFragment
@@ -138,6 +139,9 @@ class MainFragment : BaseFragment(), MainContract.MainMvpView {
                         }
                         ResourceType.APPSJ->{
                             fragment = PackageUploadShelfFragment.newInstance(it.name)
+                        }
+                        ResourceType.MANUAL_MATERIAL_REQUIRE->{
+                            fragment = ManualMaterialRequireFragment.newInstance(it.name)
                         }
                         else -> {
                             return@OnItemChildClickListener

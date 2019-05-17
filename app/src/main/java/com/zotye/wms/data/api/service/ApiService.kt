@@ -17,6 +17,7 @@ import com.zotye.wms.data.api.model.under.shelf.PrMobileConfirmRequest
 import com.zotye.wms.data.api.model.under.shelf.SUMaterialInfo
 import com.zotye.wms.data.api.request.MobileNoteRecvRequest
 import com.zotye.wms.data.api.response.ReceiveConfirmResponse
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -216,5 +217,9 @@ interface ApiService {
 
     @POST("bar_code/putAwayPackage")
     fun putAwayPackage(@Body logisticsReceiveDto: LogisticsReceiveDto): Call<ApiResponse<String>>
+
+
+    @POST
+    fun getUrlContent(@Url url: String): Call<ResponseBody>
 
 }

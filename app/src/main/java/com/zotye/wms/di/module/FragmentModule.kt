@@ -3,6 +3,7 @@ package com.zotye.wms.di.module
 import com.zotye.wms.ui.goods.*
 import com.zotye.wms.ui.main.MainFragment
 import com.zotye.wms.ui.manualboard.ManualBoardOutFragment
+import com.zotye.wms.ui.manualboard.ManualMaterialRequireFragment
 import com.zotye.wms.ui.picking.ChooseCostCenterFragment
 import com.zotye.wms.ui.picking.PickingFragment
 import com.zotye.wms.ui.picklist.*
@@ -90,4 +91,6 @@ abstract class FragmentModule {
     @ContributesAndroidInjector
     abstract fun contributeLesPackageUploadShelfFragment(): PackageUploadShelfFragment
 
+    @ContributesAndroidInjector
+    abstract fun contributeManualMaterialRequireFragment(): ManualMaterialRequireFragment
 }

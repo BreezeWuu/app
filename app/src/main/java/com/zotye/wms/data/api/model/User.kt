@@ -119,6 +119,7 @@ enum class ResourceType(val code: String) {
     APPHB("APPHB"),//合包
     APPSJ("PackageUploadShelf"),//包装上架
     JHDZDSHAPP("jhdzdshAPP"),//交货单整单收货
+    MANUAL_MATERIAL_REQUIRE("manualMaterialRequire"),//手工拉动
     Unknown("");
 
 

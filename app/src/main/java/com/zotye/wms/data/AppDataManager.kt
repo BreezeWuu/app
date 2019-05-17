@@ -14,6 +14,7 @@ import com.zotye.wms.data.db.DbHelper
 import com.zotye.wms.data.prefs.PreferencesHelper
 import com.zotye.wms.di.qualifier.ApplicationContext
 import com.zotye.wms.util.FileUtil
+import okhttp3.ResponseBody
 import retrofit2.Call
 import java.io.File
 import javax.inject.Inject
@@ -132,6 +133,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
     override fun reliveryForLesDeliveryNoteByCode(userId: String, barCode: String)=apiHelper.reliveryForLesDeliveryNoteByCode(userId, barCode)
 
     override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto)=apiHelper.putAwayPackage(logisticsReceiveDto)
+
+    override fun getUrlContent(url: String)=apiHelper.getUrlContent(url)
 
     override fun getAccessToken() = preferencesHelper.getAccessToken()
 

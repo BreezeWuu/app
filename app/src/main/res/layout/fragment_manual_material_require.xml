@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/spacing_larger">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="@dimen/spacing_normal"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/spacing_larger">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/material_id_format" />
+
+            <android.support.v7.widget.AppCompatAutoCompleteTextView
+                android:id="@+id/materialIdEditText"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="@dimen/spacing_normal"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/spacing_larger">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/supplier_full_name_format" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/supplierSpinner"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="@dimen/spacing_normal"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/spacing_larger">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/box_number_format" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/boxNumberEditText"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="@dimen/spacing_normal"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/spacing_larger">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/need_number_format" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/needNumberEditText"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="@dimen/spacing_normal"
+            android:orientation="horizontal"
+            android:paddingRight="@dimen/spacing_larger">
+
+            <android.support.v7.widget.AppCompatTextView
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/gong_wei_format" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/gongWeiSpinner"
+                style="@style/TextAppearance.AppCompat.Title"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/submitButton"
+            style="@style/Button.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height_normal"
+            android:layout_margin="@dimen/spacing_larger"
+            android:text="@string/submit"
+            android:textSize="18dp" />
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
