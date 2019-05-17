@@ -79,14 +79,10 @@ class ManualMaterialRequireFragment : BaseFragment() {
             searchCall?.cancel()
         mWordText?.apply {
             if (trim().isNotBlank()) {
-                materialIdEditText?.setAdapter(ArrayAdapter<String>(context!!,android.R.layout.simple_spinner_dropdown_item,mutableListOf("查询中……")))
-                materialIdEditText?.showDropDown()
                 searchCall = apiHelper.materialVatagueQuery(mWordText)
                 searchCall?.enqueue(object : Callback<ApiResponse<List<MaterialVatague>>> {
                     override fun onFailure(call: Call<ApiResponse<List<MaterialVatague>>>, t: Throwable) {
                         if (call.isCanceled) return
-                        materialIdEditText?.setAdapter(null)
-                        materialIdEditText?.dismissDropDown()
                         context?.let {
                             showMessage(t.message?:"")
                         }
@@ -100,16 +96,13 @@ class ManualMaterialRequireFragment : BaseFragment() {
                                     data?.get(index)?.apply {
                                         materialIdEditText?.removeTextChangedListener(textWatcher)
                                         materialIdEditText?.setText( this.materialId )
-                                        materialIdEditText?.setAdapter(null)
-                                        materialIdEditText?.dismissDropDown()
+                                        materialIdEditText?.setSelection(this.materialId.length)
                                         materialIdEditText?.addTextChangedListener(textWatcher)
                                     }
                                 }
                                 materialIdEditText?.showDropDown()
                             } else {
                                 showMessage(message)
-                                materialIdEditText?.setAdapter(null)
-                                materialIdEditText?.dismissDropDown()
                             }
                         }
                     }
