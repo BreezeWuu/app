@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_manual_material_require.*
 import kotlinx.android.synthetic.main.outbound_check_info.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
+import org.jetbrains.anko.sdk25.coroutines.onClick
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -72,6 +73,30 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
             activity?.onBackPressed()
         }
         materialIdEditText.addTextChangedListener(textWatcher)
+        submitButton.setOnClickListener {
+            var boxNumber = 0
+            var needNumber = 0
+            try {
+                boxNumber = boxNumberEditText.text.toString().toInt()
+                needNumber = needNumberEditText.text.toString().toInt()
+            } catch (e: Exception) {
+
+            }
+            if (materialIdEditText.text.toString().isEmpty()) {
+                showMessage("请输入物料号！")
+            } else if (supplierSpinner.selectedItem == null) {
+                showMessage("请选择供应商！")
+            } else if (boxNumber <= 0) {
+                showMessage("请正确填写箱数！")
+            } else if (needNumber <= 0) {
+                showMessage("请正确填写需求量！")
+            } else if (gongWeiSpinner.selectedItem == null) {
+                showMessage("请选择工位！")
+            } else {
+                val mProduceBean = ProduceBean()
+                presenter.saveManualMaterialRequire(mProduceBean)
+            }
+        }
     }
 
     private fun startSearchTimer(materialShort: String) {
@@ -139,6 +164,17 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
         gongWeiSpinner?.apply {
             adapter = ArrayAdapter<Station>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.stations.toMutableList())
         }
+    }
+
+    override fun saveManualMaterialRequireSucceed(message: String) {
+        showMessage(message)
+        materialIdEditText?.removeTextChangedListener(textWatcher)
+        materialIdEditText?.setText("")
+        materialIdEditText?.addTextChangedListener(textWatcher)
+        supplierSpinner.adapter = null
+        gongWeiSpinner.adapter = null
+        boxNumberEditText.setText("")
+        needNumberEditText.setText("")
     }
 
     override fun onDestroyView() {

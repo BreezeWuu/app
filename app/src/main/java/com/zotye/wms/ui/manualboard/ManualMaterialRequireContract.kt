@@ -25,7 +25,7 @@ object ManualMaterialRequireContract {
 
     interface ManualMaterialRequirePresenter : MvpPresenter<ManualMaterialRequireView> {
         fun queryMateiralInfos(materialNum: String)
-        fun saveManualMaterialRequire(userId: String, produceBean: ProduceBean)
+        fun saveManualMaterialRequire(produceBean: ProduceBean)
     }
 
     class ManualMaterialRequirePresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<ManualMaterialRequireView>(), ManualMaterialRequirePresenter {
@@ -51,25 +51,33 @@ object ManualMaterialRequireContract {
             })
         }
 
-        override fun saveManualMaterialRequire(userId: String, produceBean: ProduceBean) {
+        override fun saveManualMaterialRequire(produceBean: ProduceBean) {
             mvpView?.showProgressDialog(R.string.loading)
-            dataManager.saveManualMaterialRequire(userId, produceBean).enqueue(object : Callback<ApiResponse<String>> {
-                override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
-                    mvpView?.hideProgressDialog()
-                    t.message?.let { mvpView?.showMessage(it) }
-                }
+            appExecutors.diskIO().execute {
+                dataManager.getCurrentUser()?.let {
+                    appExecutors.mainThread().execute {
+                        produceBean.userId = it.userId
+                        produceBean.factoryCode = it.defaultFactoryCode
+                        dataManager.saveManualMaterialRequire(it.userId, produceBean).enqueue(object : Callback<ApiResponse<String>> {
+                            override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
+                                mvpView?.hideProgressDialog()
+                                t.message?.let { mvpView?.showMessage(it) }
+                            }
 
-                override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
-                    mvpView?.hideProgressDialog()
-                    response.body()?.let {
-                        if (it.isSucceed()) {
-                            mvpView?.saveManualMaterialRequireSucceed(it.message)
-                        } else {
-                            mvpView?.showMessage(it.message)
-                        }
+                            override fun onResponse(call: Call<ApiResponse<String>>?, response: Response<ApiResponse<String>>) {
+                                mvpView?.hideProgressDialog()
+                                response.body()?.let {
+                                    if (it.isSucceed()) {
+                                        mvpView?.saveManualMaterialRequireSucceed(it.message)
+                                    } else {
+                                        mvpView?.showMessage(it.message)
+                                    }
+                                }
+                            }
+                        })
                     }
                 }
-            })
+            }
         }
     }
 }
