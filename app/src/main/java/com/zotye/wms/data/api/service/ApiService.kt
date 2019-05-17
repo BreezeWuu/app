@@ -225,4 +225,8 @@ interface ApiService {
     @FormUrlEncoded
     @POST("bar_code/queryMateiralInfos")
     fun queryMateiralInfos(@Field("materialNum") materialNum: String): Call<ApiResponse<ManuaMaterialInfo>>
+
+    @FormUrlEncoded
+    @POST("bar_code/saveManualMaterialRequire")
+    fun saveManualMaterialRequire(@Field("userId") userId: String,@Body produceBean: ProduceBean): Call<ApiResponse<String>>
 }

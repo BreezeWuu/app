@@ -13,8 +13,10 @@ import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.AppApiHelper
 import com.zotye.wms.data.api.model.*
 import com.zotye.wms.ui.common.BaseFragment
+import kotlinx.android.synthetic.main.fragment_base.*
 import kotlinx.android.synthetic.main.fragment_manual_material_require.*
 import kotlinx.android.synthetic.main.outbound_check_info.*
+import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,6 +65,12 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.onAttach(this)
+        toolbar_base.visibility = View.VISIBLE
+        toolbar_base.title = arguments?.getString("title") ?: ""
+        toolbar_base.navigationIconResource = R.drawable.ic_arrow_back
+        toolbar_base.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
         materialIdEditText.addTextChangedListener(textWatcher)
     }
 
