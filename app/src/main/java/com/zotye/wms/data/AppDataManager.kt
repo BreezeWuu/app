@@ -116,7 +116,7 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun deletePackage(dto: LESPackageInfoUpdateDto) = apiHelper.deletePackage(dto)
 
-    override fun saveManualMaterialRequire(userId: String, produceBean: ProduceBean)=apiHelper.saveManualMaterialRequire(userId, produceBean)
+    override fun saveManualMaterialRequire(produceBean: ProduceBean)=apiHelper.saveManualMaterialRequire(produceBean)
 
     override fun reliveryForLesDeliveryNote(userId: String, noteId: String) = apiHelper.reliveryForLesDeliveryNote(userId, noteId)
 

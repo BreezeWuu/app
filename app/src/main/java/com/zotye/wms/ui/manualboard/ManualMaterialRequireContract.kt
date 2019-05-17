@@ -58,7 +58,7 @@ object ManualMaterialRequireContract {
                     appExecutors.mainThread().execute {
                         produceBean.userId = it.userId
                         produceBean.factoryCode = it.defaultFactoryCode
-                        dataManager.saveManualMaterialRequire(it.userId, produceBean).enqueue(object : Callback<ApiResponse<String>> {
+                        dataManager.saveManualMaterialRequire(produceBean).enqueue(object : Callback<ApiResponse<String>> {
                             override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }

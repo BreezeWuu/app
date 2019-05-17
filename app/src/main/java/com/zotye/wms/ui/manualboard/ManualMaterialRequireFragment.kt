@@ -94,6 +94,15 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                 showMessage("请选择工位！")
             } else {
                 val mProduceBean = ProduceBean()
+                mProduceBean.details = arrayListOf()
+                mProduceBean.details.add(ProduceDetailBean().apply {
+                    materialId = materialIdEditText.text.toString()
+                    materialNo = manuaMaterialInfo?.materialNum
+                    num = needNumber.toString()
+                    cellNum = boxNumber
+                    station = (gongWeiSpinner.selectedItem as Station).code
+                    supplierCode = (supplierSpinner.selectedItem as Supplier).code
+                })
                 presenter.saveManualMaterialRequire(mProduceBean)
             }
         }
@@ -153,7 +162,10 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
         mBackgroundTimer?.cancel()
     }
 
+    private var manuaMaterialInfo: ManuaMaterialInfo? = null
+
     override fun queryMateiralInfos(storagePackageMaterialInfoList: ManuaMaterialInfo) {
+        manuaMaterialInfo = storagePackageMaterialInfoList
         materialIdEditText?.removeTextChangedListener(textWatcher)
         materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
         materialIdEditText?.setSelection(storagePackageMaterialInfoList.materialId.length)

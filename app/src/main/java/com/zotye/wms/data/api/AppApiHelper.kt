@@ -121,5 +121,5 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun queryMateiralInfos(materialNum: String) = apiService.queryMateiralInfos(materialNum)
 
-    override fun saveManualMaterialRequire(userId: String, produceBean: ProduceBean) = apiService.saveManualMaterialRequire(userId, produceBean)
+    override fun saveManualMaterialRequire(produceBean: ProduceBean) = apiService.saveManualMaterialRequire(produceBean)
 }
