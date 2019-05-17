@@ -42,20 +42,22 @@ class ManualMaterialRequireFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_manual_material_require, container, false)
     }
 
+    private val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            startSearchTimer(s.toString())
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        materialIdEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                startSearchTimer(s.toString())
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
-        })
+        materialIdEditText.addTextChangedListener(textWatcher)
     }
 
     private fun startSearchTimer(materialShort: String) {
@@ -94,6 +96,15 @@ class ManualMaterialRequireFragment : BaseFragment() {
                         response.body()?.apply {
                             if (isSucceed()&&context!=null) {
                                 materialIdEditText?.setAdapter(ArrayAdapter<MaterialVatague>(context!!,android.R.layout.simple_spinner_dropdown_item,data?.toMutableList()?: mutableListOf()))
+                                materialIdEditText?.setOnItemClickListener{ _, _, index, l ->
+                                    data?.get(index)?.apply {
+                                        materialIdEditText?.removeTextChangedListener(textWatcher)
+                                        materialIdEditText?.setText( this.materialId )
+                                        materialIdEditText?.setAdapter(null)
+                                        materialIdEditText?.dismissDropDown()
+                                        materialIdEditText?.addTextChangedListener(textWatcher)
+                                    }
+                                }
                                 materialIdEditText?.showDropDown()
                             } else {
                                 showMessage(message)
