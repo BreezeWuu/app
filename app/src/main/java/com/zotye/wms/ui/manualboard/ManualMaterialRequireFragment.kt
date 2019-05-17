@@ -11,9 +11,10 @@ import android.widget.ArrayAdapter
 import com.zotye.wms.R
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.AppApiHelper
-import com.zotye.wms.data.api.model.MaterialVatague
+import com.zotye.wms.data.api.model.*
 import com.zotye.wms.ui.common.BaseFragment
 import kotlinx.android.synthetic.main.fragment_manual_material_require.*
+import kotlinx.android.synthetic.main.outbound_check_info.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,11 +24,15 @@ import javax.inject.Inject
 /**
  * Created by hechuangju on 2019/05/17
  */
-class ManualMaterialRequireFragment : BaseFragment() {
+class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContract.ManualMaterialRequireView {
+
     private var mBackgroundTimer: Timer? = null
     private val mHandler = Handler()
     @Inject
     lateinit var apiHelper: AppApiHelper
+    @Inject
+    lateinit var presenter: ManualMaterialRequireContract.ManualMaterialRequirePresenter
+
     companion object {
         fun newInstance(title: String): ManualMaterialRequireFragment {
             val fragment = ManualMaterialRequireFragment()
@@ -57,6 +62,7 @@ class ManualMaterialRequireFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter.onAttach(this)
         materialIdEditText.addTextChangedListener(textWatcher)
     }
 
@@ -84,20 +90,19 @@ class ManualMaterialRequireFragment : BaseFragment() {
                     override fun onFailure(call: Call<ApiResponse<List<MaterialVatague>>>, t: Throwable) {
                         if (call.isCanceled) return
                         context?.let {
-                            showMessage(t.message?:"")
+                            showMessage(t.message ?: "")
                         }
                     }
 
                     override fun onResponse(call: Call<ApiResponse<List<MaterialVatague>>>, response: Response<ApiResponse<List<MaterialVatague>>>) {
                         response.body()?.apply {
-                            if (isSucceed()&&context!=null) {
-                                materialIdEditText?.setAdapter(ArrayAdapter<MaterialVatague>(context!!,android.R.layout.simple_spinner_dropdown_item,data?.toMutableList()?: mutableListOf()))
-                                materialIdEditText?.setOnItemClickListener{ _, _, index, l ->
+                            if (isSucceed() && context != null) {
+                                materialIdEditText?.setAdapter(ArrayAdapter<MaterialVatague>(context!!, android.R.layout.simple_spinner_dropdown_item, data?.toMutableList()
+                                        ?: mutableListOf()))
+                                materialIdEditText?.setOnItemClickListener { _, _, index, l ->
                                     data?.get(index)?.apply {
-                                        materialIdEditText?.removeTextChangedListener(textWatcher)
-                                        materialIdEditText?.setText( this.materialId )
-                                        materialIdEditText?.setSelection(this.materialId.length)
-                                        materialIdEditText?.addTextChangedListener(textWatcher)
+                                        presenter.queryMateiralInfos(materialNum)
+                                        hideKeyboard(materialIdEditText)
                                     }
                                 }
                                 materialIdEditText?.showDropDown()
@@ -115,7 +120,21 @@ class ManualMaterialRequireFragment : BaseFragment() {
         mBackgroundTimer?.cancel()
     }
 
+    override fun queryMateiralInfos(storagePackageMaterialInfoList: ManuaMaterialInfo) {
+        materialIdEditText?.removeTextChangedListener(textWatcher)
+        materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
+        materialIdEditText?.setSelection(storagePackageMaterialInfoList.materialId.length)
+        materialIdEditText?.addTextChangedListener(textWatcher)
+        supplierSpinner?.apply {
+            adapter = ArrayAdapter<Supplier>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.suppliers.toMutableList())
+        }
+        gongWeiSpinner?.apply {
+            adapter = ArrayAdapter<Station>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.stations.toMutableList())
+        }
+    }
+
     override fun onDestroyView() {
+        presenter.onDetach()
         searchCall?.cancel()
         super.onDestroyView()
     }

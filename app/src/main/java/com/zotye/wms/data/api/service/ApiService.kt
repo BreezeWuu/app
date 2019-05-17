@@ -224,5 +224,5 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/queryMateiralInfos")
-    fun queryMateiralInfos(@Field("materialNum") materialNum: String): Call<ResponseBody>
+    fun queryMateiralInfos(@Field("materialNum") materialNum: String): Call<ApiResponse<ManuaMaterialInfo>>
 }
