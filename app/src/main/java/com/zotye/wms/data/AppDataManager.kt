@@ -134,7 +134,7 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto)=apiHelper.putAwayPackage(logisticsReceiveDto)
 
-    override fun getUrlContent(url: String)=apiHelper.getUrlContent(url)
+    override fun materialVatagueQuery(code: String)=apiHelper.materialVatagueQuery(code)
 
     override fun getAccessToken() = preferencesHelper.getAccessToken()
 

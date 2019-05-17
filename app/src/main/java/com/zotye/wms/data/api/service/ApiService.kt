@@ -218,8 +218,7 @@ interface ApiService {
     @POST("bar_code/putAwayPackage")
     fun putAwayPackage(@Body logisticsReceiveDto: LogisticsReceiveDto): Call<ApiResponse<String>>
 
-
-    @POST
-    fun getUrlContent(@Url url: String): Call<ResponseBody>
-
+    @FormUrlEncoded
+    @POST("bar_code/materialVatagueQuery")
+    fun materialVatagueQuery(@Field("code") code: String): Call<ApiResponse<List<MaterialVatague>>>
 }
