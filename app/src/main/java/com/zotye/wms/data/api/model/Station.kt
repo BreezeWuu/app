@@ -10,4 +10,8 @@ data class Station(
         val id: String,
         @SerializedName("name")
         val name: String
-)
+){
+        override fun toString(): String {
+                return name
+        }
+}

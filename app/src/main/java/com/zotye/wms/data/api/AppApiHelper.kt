@@ -109,15 +109,17 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun deletePackage(dto: LESPackageInfoUpdateDto) = apiService.deletePackage(dto)
 
-    override fun reliveryForLesDeliveryNote(userId: String, noteId: String)=apiService.reliveryForLesDeliveryNote(userId, noteId)
+    override fun reliveryForLesDeliveryNote(userId: String, noteId: String) = apiService.reliveryForLesDeliveryNote(userId, noteId)
 
-    override fun reliveryForLesDeliveryNoteByCode(userId: String, barCode: String)=apiService.reliveryForLesDeliveryNoteByCode(userId, barCode)
+    override fun reliveryForLesDeliveryNoteByCode(userId: String, barCode: String) = apiService.reliveryForLesDeliveryNoteByCode(userId, barCode)
 
-    override fun getLogisticsPackageInfo(userId: String, code: String)=apiService.getLogisticsPackageInfo(userId, code)
+    override fun getLogisticsPackageInfo(userId: String, code: String) = apiService.getLogisticsPackageInfo(userId, code)
 
-    override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto)=apiService.putAwayPackage(logisticsReceiveDto)
+    override fun putAwayPackage(logisticsReceiveDto: LogisticsReceiveDto) = apiService.putAwayPackage(logisticsReceiveDto)
 
-    override fun materialVatagueQuery(code: String)=apiService.materialVatagueQuery(code)
+    override fun materialVatagueQuery(code: String) = apiService.materialVatagueQuery(code)
 
-    override fun queryMateiralInfos(materialNum: String)=apiService.queryMateiralInfos(materialNum)
+    override fun queryMateiralInfos(materialNum: String) = apiService.queryMateiralInfos(materialNum)
+
+    override fun saveManualMaterialRequire(userId: String, produceBean: ProduceBean) = apiService.saveManualMaterialRequire(userId, produceBean)
 }
