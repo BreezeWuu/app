@@ -2,19 +2,26 @@ package com.zotye.wms.ui.manualboard
 
 import android.os.Bundle
 import android.os.Handler
+import android.support.v7.app.AlertDialog
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import com.zotye.wms.R
 import com.zotye.wms.data.api.ApiResponse
 import com.zotye.wms.data.api.AppApiHelper
 import com.zotye.wms.data.api.model.*
+import com.zotye.wms.ui.common.BarCodeScannerFragment
 import com.zotye.wms.ui.common.BaseFragment
+import com.zotye.wms.ui.common.ScannerDelegate
 import kotlinx.android.synthetic.main.fragment_base.*
+import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
 import kotlinx.android.synthetic.main.fragment_manual_material_require.*
+import kotlinx.android.synthetic.main.fragment_manual_material_require.packageInput
+import kotlinx.android.synthetic.main.fragment_manual_material_require.packageScanner
 import kotlinx.android.synthetic.main.outbound_check_info.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -27,7 +34,7 @@ import javax.inject.Inject
 /**
  * Created by hechuangju on 2019/05/17
  */
-class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContract.ManualMaterialRequireView {
+class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContract.ManualMaterialRequireView, ScannerDelegate {
 
     private var mBackgroundTimer: Timer? = null
     private val mHandler = Handler()
@@ -73,6 +80,20 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
             activity?.onBackPressed()
         }
         materialIdEditText.addTextChangedListener(textWatcher)
+        packageScanner.onClick {
+            val fragment = BarCodeScannerFragment()
+            fragment.setScannerDelegate(this@ManualMaterialRequireFragment)
+            fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+        }
+        packageInput.onClick {
+            val codeInputView = LayoutInflater.from(getContext()!!).inflate(R.layout.dialog_pda_code_input, null)
+            val editText = codeInputView.findViewById<EditText>(R.id.packageCode)
+            AlertDialog.Builder(getContext()!!).setTitle(R.string.action_input_package_code).setView(codeInputView).setNegativeButton(R.string.ok) { _, _ ->
+                presenter.getPackageInfo(editText.text.toString())
+                hideKeyboard(editText)
+            }.setPositiveButton(R.string.cancel, null).show()
+            showKeyboard(editText)
+        }
         submitButton.setOnClickListener {
             var boxNumber = 0
             var needNumber = 0
@@ -86,7 +107,7 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                 showMessage("请输入物料号！")
             } else if (supplierSpinner.selectedItem == null) {
                 showMessage("请选择供应商！")
-            } else if (boxNumber <= 0) {
+            } else if (boxNumber < 0) {
                 showMessage("请正确填写箱数！")
             } else if (needNumber <= 0) {
                 showMessage("请正确填写需求量！")
@@ -94,6 +115,8 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                 showMessage("请选择工位！")
             } else {
                 val mProduceBean = ProduceBean()
+                mProduceBean.modus = "0"
+                mProduceBean.type = "1"
                 mProduceBean.details = arrayListOf()
                 mProduceBean.details.add(ProduceDetailBean().apply {
                     materialId = materialIdEditText.text.toString()
@@ -106,6 +129,14 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                 presenter.saveManualMaterialRequire(mProduceBean)
             }
         }
+    }
+
+    override fun getPackageInfo(fromJson: PackageInfo) {
+        materialIdEditText.setText(fromJson.materialNum)
+    }
+
+    override fun succeed(result: String) {
+        presenter.getPackageInfo(result)
     }
 
     private fun startSearchTimer(materialShort: String) {

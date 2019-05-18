@@ -118,6 +118,8 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun saveManualMaterialRequire(produceBean: ProduceBean)=apiHelper.saveManualMaterialRequire(produceBean)
 
+    override fun getPackageInfo(code: String)=apiHelper.getPackageInfo(code)
+
     override fun reliveryForLesDeliveryNote(userId: String, noteId: String) = apiHelper.reliveryForLesDeliveryNote(userId, noteId)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)

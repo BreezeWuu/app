@@ -41,6 +41,8 @@ class AppApiHelper @Inject constructor(private val apiService: ApiService) : Api
 
     override fun logisticsReceiveConfirm(userId: String, noteId: String) = apiService.logisticsReceiveConfirm(userId, noteId)
 
+    override fun getPackageInfo(code: String)=apiService.getPackageInfo(code)
+
     override fun getPickListInfoByCode(userId: String, OpterationType: String, barCode: String) = apiService.getPickListInfoByCode(userId, OpterationType, barCode)
 
     override fun getStorageUnitMaterialTotalNumber(userId: String, storageUnitInfoCode: String, spDetailId: String) = apiService.getStorageUnitMaterialTotalNumber(userId, storageUnitInfoCode, spDetailId)

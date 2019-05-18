@@ -228,4 +228,9 @@ interface ApiService {
 
     @POST("bar_code/saveManualMaterialRequire")
     fun saveManualMaterialRequire(@Body produceBean: ProduceBean): Call<ApiResponse<String>>
+
+    @FormUrlEncoded
+    @POST("bar_code/getPackageInfo")
+    fun getPackageInfo( @Field("code") code: String): Call<ApiResponse<BarcodeInfo>>
+
 }
