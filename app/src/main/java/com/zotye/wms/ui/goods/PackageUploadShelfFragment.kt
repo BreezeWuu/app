@@ -143,17 +143,19 @@ class PackageUploadShelfFragment :BaseFragment(), ScannerDelegate, GroupReceiveC
 
     fun joinPackage(result: String) {
         val adapter = (packageRecyclerView.adapter as GoodsPackageAdapter)
-        val codeList = arrayListOf<String>()
-        adapter.data.forEachIndexed { index, packageInfo ->
-            codeList.add(packageInfo.code)
-        }
-        if (codeList.size < 1) {
+        if (adapter.data.size < 1) {
             showMessage(R.string.package_list_empty)
             return
         }
         val logisticsReceiveDto = LogisticsReceiveDto()
-        logisticsReceiveDto.code = codeList[0]
-        logisticsReceiveDto.receiveNum = adapter.data[0].receiveNum
+        logisticsReceiveDto.children = arrayListOf()
+        adapter.data.forEachIndexed { _, packageInfo ->
+            logisticsReceiveDto.children.add(LogisticsReceiveDto().apply {
+                code = packageInfo.code
+                receiveNum = packageInfo.receiveNum
+                spCode = result
+            })
+        }
         logisticsReceiveDto.spCode = result
         presenter.putAwayPackage(logisticsReceiveDto)
     }
