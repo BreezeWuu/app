@@ -57,7 +57,7 @@ class Resource(
             ResourceType.ThreePLSOLDOUT -> {
                 R.drawable.ic_under_shell_confirm
             }
-            ResourceType.PRODUCE_ANDROID -> {
+            ResourceType.PRODUCE_ANDROID,ResourceType.MANUAL_MATERIAL_REQUIRE -> {
                 R.drawable.ic_get_product
             }
             ResourceType.ThreePLRECVCONFIRM -> {
