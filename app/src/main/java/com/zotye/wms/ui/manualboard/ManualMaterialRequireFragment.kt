@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_goods_receive_group.*
 import kotlinx.android.synthetic.main.fragment_manual_material_require.*
 import kotlinx.android.synthetic.main.fragment_manual_material_require.packageInput
 import kotlinx.android.synthetic.main.fragment_manual_material_require.packageScanner
+import kotlinx.android.synthetic.main.fragment_manual_material_require.view.*
 import kotlinx.android.synthetic.main.outbound_check_info.*
 import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
@@ -156,6 +157,7 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
     private fun searchWord(mWordText: String?) {
         if (searchCall?.isCanceled == false)
             searchCall?.cancel()
+        materialNameLayout.visibility = View.GONE
         mWordText?.apply {
             if (trim().isNotBlank()) {
                 searchCall = apiHelper.materialVatagueQuery(mWordText)
@@ -174,6 +176,10 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                                         ?: mutableListOf()))
                                 materialIdEditText?.setOnItemClickListener { _, _, index, l ->
                                     data?.get(index)?.apply {
+                                        materialNameLayout.visibility = View.VISIBLE
+                                        materialNameLayout.materialName.text = materialName
+                                        materialNameLayout.packageNumber.text = packageNum.toString()
+                                        materialNameLayout.unitText.text = unit
                                         presenter.queryMateiralInfos(materialNum)
                                         hideKeyboard(materialIdEditText)
                                     }
