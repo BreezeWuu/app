@@ -157,7 +157,6 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
     private fun searchWord(mWordText: String?) {
         if (searchCall?.isCanceled == false)
             searchCall?.cancel()
-        materialNameLayout.visibility = View.GONE
         mWordText?.apply {
             if (trim().isNotBlank()) {
                 searchCall = apiHelper.materialVatagueQuery(mWordText)
@@ -176,10 +175,6 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                                         ?: mutableListOf()))
                                 materialIdEditText?.setOnItemClickListener { _, _, index, l ->
                                     data?.get(index)?.apply {
-                                        materialNameLayout.visibility = View.VISIBLE
-                                        materialNameLayout.materialName.text = materialName
-                                        materialNameLayout.packageNumber.text = packageNum.toString()
-                                        materialNameLayout.unitText.text = unit
                                         presenter.queryMateiralInfos(materialNum)
                                         hideKeyboard(materialIdEditText)
                                     }
@@ -192,6 +187,7 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                     }
                 })
             } else {
+                materialNameLayout.visibility = View.GONE
 //                showResultMessage("")
 //                (recyclerView.adapter as? BookUnitWordAdapter)?.setNewData(null)
             }
@@ -206,13 +202,20 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
         materialIdEditText?.removeTextChangedListener(textWatcher)
         materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
         materialIdEditText?.setSelection(storagePackageMaterialInfoList.materialId.length)
-        materialIdEditText?.addTextChangedListener(textWatcher)
+        materialIdEditText?.dismissDropDown()
+        materialNameLayout.visibility = View.VISIBLE
+        materialNameLayout.materialName.text = storagePackageMaterialInfoList.materialName
+        materialNameLayout.packageNumber.text = storagePackageMaterialInfoList.packageNum.toString()
+        materialNameLayout.unitText.text = storagePackageMaterialInfoList.unit
         supplierSpinner?.apply {
-            adapter = ArrayAdapter<Supplier>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.suppliers.toMutableList())
+            if (storagePackageMaterialInfoList.suppliers != null)
+                adapter = ArrayAdapter<Supplier>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.suppliers.toMutableList())
         }
         gongWeiSpinner?.apply {
-            adapter = ArrayAdapter<Station>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.stations.toMutableList())
+            if (storagePackageMaterialInfoList.stations != null)
+                adapter = ArrayAdapter<Station>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.stations.toMutableList())
         }
+        materialIdEditText?.addTextChangedListener(textWatcher)
     }
 
     override fun saveManualMaterialRequireSucceed(message: String) {

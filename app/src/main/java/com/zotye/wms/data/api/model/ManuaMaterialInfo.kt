@@ -17,9 +17,9 @@ data class ManuaMaterialInfo(
         @SerializedName("packageNum")
         val packageNum: Int,
         @SerializedName("stations")
-        val stations: List<Station>,
+        val stations: List<Station>?,
         @SerializedName("suppliers")
-        val suppliers: List<Supplier>,
+        val suppliers: List<Supplier>?,
         @SerializedName("unit")
         val unit: String
 )
