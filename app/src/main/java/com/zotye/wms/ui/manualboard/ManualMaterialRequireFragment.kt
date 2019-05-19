@@ -295,9 +295,10 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
     }
 
     override fun saveManualMaterialRequireSucceed(message: String) {
-        showMessage(message)
+        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setNegativeButton(R.string.ok,null).show()
         materialIdEditText?.removeTextChangedListener(textWatcher)
         materialIdEditText?.setText("")
+        materialNameLayout.visibility = View.GONE
         materialIdEditText?.addTextChangedListener(textWatcher)
         supplierSpinner.adapter = null
         gongWeiSpinner.adapter = null
