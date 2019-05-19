@@ -151,7 +151,13 @@ object GroupReceiveContract {
             mvpView?.showProgressDialog(R.string.submiting)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
-                    logisticsReceiveDto.userId = it.userId
+                    user->
+                    logisticsReceiveDto.userId = user.userId
+                    if(logisticsReceiveDto.children!=null){
+                        logisticsReceiveDto.children.forEach {
+                            it.userId = user.userId
+                        }
+                    }
                     appExecutors.mainThread().execute {
                         dataManager.putAwayPackage(logisticsReceiveDto).enqueue(object : Callback<ApiResponse<String>> {
                             override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {

@@ -13,7 +13,7 @@ public class ProduceDetailBean implements Serializable {
      */
     private String index;
 
-    private int cellNum;
+    private float cellNum;
     /**
      * 物料id
      */
@@ -82,11 +82,11 @@ public class ProduceDetailBean implements Serializable {
         this.index = index;
     }
 
-    public int getCellNum() {
+    public float getCellNum() {
         return cellNum;
     }
 
-    public void setCellNum(int cellNum) {
+    public void setCellNum(float cellNum) {
         this.cellNum = cellNum;
     }
     /**

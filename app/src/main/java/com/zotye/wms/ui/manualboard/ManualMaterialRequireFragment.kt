@@ -95,11 +95,58 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
             }.setPositiveButton(R.string.cancel, null).show()
             showKeyboard(editText)
         }
+        val boxNumberTextWatcher: TextWatcher
+        var needNumberTextWatcher: TextWatcher? = null
+        boxNumberTextWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                try {
+                    val boxNumber = s.toString().toFloat()
+                    val needNumber = if (needNumberEditText.text?.isEmpty() == true) 0 else needNumberEditText.text.toString().toInt()
+                    if ((boxNumber * 30).toInt() != needNumber) {
+                        needNumberEditText.removeTextChangedListener(needNumberTextWatcher)
+                        needNumberEditText.setText((boxNumber * 30).toInt().toString())
+                        needNumberEditText.addTextChangedListener(needNumberTextWatcher)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        }
+        needNumberTextWatcher = object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                try {
+                    val needNumber = s.toString().toInt()
+                    val boxNumber = boxNumberEditText.text.toString()
+                    val newBoxNumber = String.format("%.2f", (needNumber.toFloat() / 30))
+                    if (newBoxNumber != boxNumber) {
+                        boxNumberEditText.removeTextChangedListener(boxNumberTextWatcher)
+                        boxNumberEditText.setText(newBoxNumber)
+                        boxNumberEditText.addTextChangedListener(boxNumberTextWatcher)
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        }
+        boxNumberEditText.addTextChangedListener(boxNumberTextWatcher)
+        needNumberEditText.addTextChangedListener(needNumberTextWatcher)
         submitButton.setOnClickListener {
-            var boxNumber = 0
+            var boxNumber = 0f
             var needNumber = 0
             try {
-                boxNumber = boxNumberEditText.text.toString().toInt()
+                boxNumber = boxNumberEditText.text.toString().toFloat()
                 needNumber = needNumberEditText.text.toString().toInt()
             } catch (e: Exception) {
 
@@ -198,7 +245,7 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
     private var manuaMaterialInfo: ManuaMaterialInfo? = null
 
     override fun queryMateiralInfos(storagePackageMaterialInfoList: ManuaMaterialInfo) {
-        if (storagePackageMaterialInfoList.error=="1"){
+        if (storagePackageMaterialInfoList.error == "1") {
             AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage("有未完成的拣配任务，是否继续？").setNegativeButton(R.string.ok) { _, _ ->
                 manuaMaterialInfo = storagePackageMaterialInfoList
                 materialIdEditText?.removeTextChangedListener(textWatcher)
@@ -218,15 +265,14 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                         adapter = ArrayAdapter<Station>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.stations.toMutableList())
                 }
                 materialIdEditText?.addTextChangedListener(textWatcher)
-            }.setPositiveButton(R.string.cancel){
-                _, _ ->
+            }.setPositiveButton(R.string.cancel) { _, _ ->
                 materialNameLayout.visibility = View.GONE
                 materialIdEditText?.removeTextChangedListener(textWatcher)
                 materialIdEditText?.setText("")
                 materialIdEditText?.dismissDropDown()
                 materialIdEditText?.addTextChangedListener(textWatcher)
             }.show()
-        }else{
+        } else {
             manuaMaterialInfo = storagePackageMaterialInfoList
             materialIdEditText?.removeTextChangedListener(textWatcher)
             materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
