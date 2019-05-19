@@ -198,24 +198,54 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
     private var manuaMaterialInfo: ManuaMaterialInfo? = null
 
     override fun queryMateiralInfos(storagePackageMaterialInfoList: ManuaMaterialInfo) {
-        manuaMaterialInfo = storagePackageMaterialInfoList
-        materialIdEditText?.removeTextChangedListener(textWatcher)
-        materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
-        materialIdEditText?.setSelection(storagePackageMaterialInfoList.materialId.length)
-        materialIdEditText?.dismissDropDown()
-        materialNameLayout.visibility = View.VISIBLE
-        materialNameLayout.materialName.text = storagePackageMaterialInfoList.materialName
-        materialNameLayout.packageNumber.text = storagePackageMaterialInfoList.packageNum.toString()
-        materialNameLayout.unitText.text = storagePackageMaterialInfoList.unit
-        supplierSpinner?.apply {
-            if (storagePackageMaterialInfoList.suppliers != null)
-                adapter = ArrayAdapter<Supplier>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.suppliers.toMutableList())
+        if (storagePackageMaterialInfoList.error=="1"){
+            AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage("有未完成的拣配任务，是否继续？").setNegativeButton(R.string.ok) { _, _ ->
+                manuaMaterialInfo = storagePackageMaterialInfoList
+                materialIdEditText?.removeTextChangedListener(textWatcher)
+                materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
+                materialIdEditText?.setSelection(storagePackageMaterialInfoList.materialId.length)
+                materialIdEditText?.dismissDropDown()
+                materialNameLayout.visibility = View.VISIBLE
+                materialNameLayout.materialName.text = storagePackageMaterialInfoList.materialName
+                materialNameLayout.packageNumber.text = storagePackageMaterialInfoList.packageNum.toString()
+                materialNameLayout.unitText.text = storagePackageMaterialInfoList.unit
+                supplierSpinner?.apply {
+                    if (storagePackageMaterialInfoList.suppliers != null)
+                        adapter = ArrayAdapter<Supplier>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.suppliers.toMutableList())
+                }
+                gongWeiSpinner?.apply {
+                    if (storagePackageMaterialInfoList.stations != null)
+                        adapter = ArrayAdapter<Station>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.stations.toMutableList())
+                }
+                materialIdEditText?.addTextChangedListener(textWatcher)
+            }.setPositiveButton(R.string.cancel){
+                _, _ ->
+                materialNameLayout.visibility = View.GONE
+                materialIdEditText?.removeTextChangedListener(textWatcher)
+                materialIdEditText?.setText("")
+                materialIdEditText?.dismissDropDown()
+                materialIdEditText?.addTextChangedListener(textWatcher)
+            }.show()
+        }else{
+            manuaMaterialInfo = storagePackageMaterialInfoList
+            materialIdEditText?.removeTextChangedListener(textWatcher)
+            materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
+            materialIdEditText?.setSelection(storagePackageMaterialInfoList.materialId.length)
+            materialIdEditText?.dismissDropDown()
+            materialNameLayout.visibility = View.VISIBLE
+            materialNameLayout.materialName.text = storagePackageMaterialInfoList.materialName
+            materialNameLayout.packageNumber.text = storagePackageMaterialInfoList.packageNum.toString()
+            materialNameLayout.unitText.text = storagePackageMaterialInfoList.unit
+            supplierSpinner?.apply {
+                if (storagePackageMaterialInfoList.suppliers != null)
+                    adapter = ArrayAdapter<Supplier>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.suppliers.toMutableList())
+            }
+            gongWeiSpinner?.apply {
+                if (storagePackageMaterialInfoList.stations != null)
+                    adapter = ArrayAdapter<Station>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.stations.toMutableList())
+            }
+            materialIdEditText?.addTextChangedListener(textWatcher)
         }
-        gongWeiSpinner?.apply {
-            if (storagePackageMaterialInfoList.stations != null)
-                adapter = ArrayAdapter<Station>(context!!, android.R.layout.simple_spinner_dropdown_item, storagePackageMaterialInfoList.stations.toMutableList())
-        }
-        materialIdEditText?.addTextChangedListener(textWatcher)
     }
 
     override fun saveManualMaterialRequireSucceed(message: String) {
