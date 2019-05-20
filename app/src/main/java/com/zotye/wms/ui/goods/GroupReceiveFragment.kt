@@ -291,8 +291,13 @@ class GroupReceiveFragment : BaseFragment(), ScannerDelegate, GroupReceiveContra
     }
 
     override fun submitReceiveInfoSucceed(message: String) {
-        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setPositiveButton(R.string.ok, null).show()
+        showMessage(message)
+//        AlertDialog.Builder(context!!).setTitle(R.string.info).setMessage(message).setPositiveButton(R.string.ok, null).show()
         (packageRecyclerView.adapter as GoodsPackageAdapter).setNewData(null)
+        val fragment = BarCodeScannerFragment()
+        fragment.setScannerDelegate(this@GroupReceiveFragment)
+        fragmentManager!!.beginTransaction().add(R.id.main_content, fragment).addToBackStack(null).commit()
+
     }
 
     override fun onDestroyView() {
