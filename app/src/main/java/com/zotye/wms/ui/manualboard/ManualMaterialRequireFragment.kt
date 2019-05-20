@@ -70,7 +70,7 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
 
         }
     }
-
+    private var defalutPackage = 30
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter.onAttach(this)
@@ -102,9 +102,9 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                 try {
                     val boxNumber = s.toString().toFloat()
                     val needNumber = if (needNumberEditText.text?.isEmpty() == true) 0 else needNumberEditText.text.toString().toInt()
-                    if ((boxNumber * 30).toInt() != needNumber) {
+                    if ((boxNumber * defalutPackage).toInt() != needNumber) {
                         needNumberEditText.removeTextChangedListener(needNumberTextWatcher)
-                        needNumberEditText.setText((boxNumber * 30).toInt().toString())
+                        needNumberEditText.setText((boxNumber * defalutPackage).toInt().toString())
                         needNumberEditText.addTextChangedListener(needNumberTextWatcher)
                     }
                 } catch (e: Exception) {
@@ -123,7 +123,7 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                 try {
                     val needNumber = s.toString().toInt()
                     val boxNumber = boxNumberEditText.text.toString()
-                    val newBoxNumber = String.format("%.2f", (needNumber.toFloat() / 30))
+                    val newBoxNumber = String.format("%.2f", (needNumber.toFloat() / defalutPackage))
                     if (newBoxNumber != boxNumber) {
                         boxNumberEditText.removeTextChangedListener(boxNumberTextWatcher)
                         boxNumberEditText.setText(newBoxNumber)
@@ -252,6 +252,7 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
                 materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
                 materialIdEditText?.setSelection(storagePackageMaterialInfoList.materialId.length)
                 materialIdEditText?.dismissDropDown()
+                defalutPackage = storagePackageMaterialInfoList.packageNum
                 materialNameLayout.visibility = View.VISIBLE
                 materialNameLayout.materialName.text = storagePackageMaterialInfoList.materialName
                 materialNameLayout.packageNumber.text = storagePackageMaterialInfoList.packageNum.toString()
@@ -276,6 +277,7 @@ class ManualMaterialRequireFragment : BaseFragment(), ManualMaterialRequireContr
             manuaMaterialInfo = storagePackageMaterialInfoList
             materialIdEditText?.removeTextChangedListener(textWatcher)
             materialIdEditText?.setText(storagePackageMaterialInfoList.materialId)
+            defalutPackage = storagePackageMaterialInfoList.packageNum
             materialIdEditText?.setSelection(storagePackageMaterialInfoList.materialId.length)
             materialIdEditText?.dismissDropDown()
             materialNameLayout.visibility = View.VISIBLE
