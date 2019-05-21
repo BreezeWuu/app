@@ -6,9 +6,6 @@ import com.zotye.wms.R
 import com.zotye.wms.data.AppExecutors
 import com.zotye.wms.data.DataManager
 import com.zotye.wms.data.api.ApiResponse
-import com.zotye.wms.data.api.model.BarCodeType
-import com.zotye.wms.data.api.model.BarcodeInfo
-import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.ui.common.BasePresenter
 import com.zotye.wms.ui.common.MvpPresenter
 import com.zotye.wms.ui.common.MvpView
@@ -17,7 +14,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 import com.google.gson.reflect.TypeToken
-import com.zotye.wms.data.api.model.PickListInfo
+import com.zotye.wms.data.api.RecLesDto
+import com.zotye.wms.data.api.model.*
 
 
 /**
@@ -34,7 +32,7 @@ object ReceiveConfirmContract {
         fun logisticsReceiveConfirmInfoByCode(barCode: String)
         fun reliveryForLesDeliveryNoteByCode(barCode: String)
         fun logisticsReceiveConfirm(barCode: String)
-        fun reliveryForLesDeliveryNote(barCode: String)
+        fun reliveryForLesDeliveryNote(barCode: RecLesDto)
     }
 
     class ReceiveConfirmPresenterImpl @Inject constructor(private val dataManager: DataManager, private val appExecutors: AppExecutors) : BasePresenter<ReceiveConfirmView>(), ReceiveConfirmPresenter {
@@ -147,12 +145,12 @@ object ReceiveConfirmContract {
             }
         }
 
-        override fun reliveryForLesDeliveryNote(barCode: String) {
+        override fun reliveryForLesDeliveryNote(barCode: RecLesDto) {
             mvpView?.showProgressDialog(R.string.loading_submit_receive_info)
             appExecutors.diskIO().execute {
                 dataManager.getCurrentUser()?.let {
                     appExecutors.mainThread().execute {
-                        dataManager.reliveryForLesDeliveryNote(it.userId, barCode).enqueue(object : Callback<ApiResponse<String>> {
+                        dataManager.reliveryForLesDeliveryNote(barCode).enqueue(object : Callback<ApiResponse<String>> {
                             override fun onFailure(call: Call<ApiResponse<String>>?, t: Throwable) {
                                 mvpView?.hideProgressDialog()
                                 t.message?.let { mvpView?.showMessage(it) }

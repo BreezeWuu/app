@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,10 @@ import android.widget.EditText
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.zotye.wms.R
+import com.zotye.wms.data.api.RecLesDto
 import com.zotye.wms.data.api.model.PackageInfo
 import com.zotye.wms.data.api.model.PickListInfo
+import com.zotye.wms.data.api.model.RecLesDetail
 import com.zotye.wms.data.binding.FragmentDataBindingComponent
 import com.zotye.wms.databinding.ItemPickListInfoBinding
 import com.zotye.wms.databinding.ItemUnReceivePackageBinding
@@ -27,6 +30,7 @@ import org.jetbrains.anko.appcompat.v7.navigationIconResource
 import org.jetbrains.anko.appcompat.v7.titleResource
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.textResource
+import java.math.BigDecimal
 import javax.inject.Inject
 
 /**
@@ -83,8 +87,23 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
             fragmentManager?.beginTransaction()?.remove(this@LesDeliveryNoteReceiveFragment)?.commit()
         }
         confirmButton.onClick {
+            val packList = ArrayList<RecLesDetail>()
+            (recyclerView.adapter as PackageAdapter).data.forEachIndexed { index, packageInfo ->
+                (recyclerView.adapter as PackageAdapter).getViewByPosition(recyclerView, index, R.id.receiveNumberText)?.let {
+                    if (it is EditText) {
+                        val count = if (TextUtils.isEmpty(it.text)) 0 else it.text.toString().toInt()
+                        if (count < 0 || count > packageInfo.deliveryNum?.toInt() ?: 0) {
+                            showMessage("请输入有效收货数量")
+                            return@onClick
+                        } else {
+                            packList.add(RecLesDetail(packageInfo.code, BigDecimal(count)))
+                        }
+                    }
+                }
+            }
+            val resLesDto = RecLesDto(barCode,packList)
             AlertDialog.Builder(getContext()!!).setTitle(R.string.info).setMessage("是否确定整单收货").setNegativeButton(R.string.ok) { _, _ ->
-                presenter.reliveryForLesDeliveryNote(barCode)
+                presenter.reliveryForLesDeliveryNote(resLesDto)
             }.setPositiveButton(R.string.cancel, null).show()
         }
     }
@@ -99,11 +118,11 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
         toolbar_base.titleResource = R.string.un_receive_package_list
 
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = PackageAdapter()
+        val adapter = PackageAdapter(true)
         recyclerView.adapter = adapter
 
         receiveRecyclerView.layoutManager = LinearLayoutManager(context)
-        val receiveAdapter = PackageAdapter()
+        val receiveAdapter = PackageAdapter(false)
         receiveRecyclerView.adapter = receiveAdapter
 
 
@@ -155,11 +174,12 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
         super.onDestroyView()
     }
 
-    class PackageAdapter : BaseQuickAdapter<PackageInfo, BaseViewHolder>(R.layout.item_un_receive_package) {
+    class PackageAdapter(val showReceiveNumber: Boolean) : BaseQuickAdapter<PackageInfo, BaseViewHolder>(R.layout.item_un_receive_package) {
         private var fragmentDataBindingComponent: FragmentDataBindingComponent = FragmentDataBindingComponent()
         override fun convert(helper: BaseViewHolder, item: PackageInfo) {
             val dataBind = DataBindingUtil.bind<ItemUnReceivePackageBinding>(helper.itemView, fragmentDataBindingComponent)
             dataBind?.info = item
+            helper.getView<View>(R.id.receiveNumberLayout).visibility = if (showReceiveNumber) View.VISIBLE else View.GONE
         }
     }
 

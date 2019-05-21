@@ -181,7 +181,35 @@
                     android:text="@{String.valueOf(info.deliveryNum)}"
                     android:textColor="@color/black" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/receiveNumberLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
 
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical|right"
+                    android:singleLine="true"
+                    android:text="@string/receive_num_format"
+                    android:textColor="@color/black" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/receiveNumberText"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="7"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="@{String.valueOf(info.deliveryNum)}"
+                    android:textColor="@color/black" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

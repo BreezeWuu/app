@@ -1,6 +1,7 @@
 package com.zotye.wms.data.api.service
 
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.RecLesDto
 import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
@@ -79,7 +80,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("bar_code/reliveryForLesDeliveryNote")
-    fun reliveryForLesDeliveryNote(@Field("userId") userId: String, @Field("noteId") noteId: String): Call<ApiResponse<String>>
+    fun reliveryForLesDeliveryNote(@Body data: RecLesDto): Call<ApiResponse<String>>
 
     @FormUrlEncoded
     @POST("bar_code/pickListInfoByCode")
