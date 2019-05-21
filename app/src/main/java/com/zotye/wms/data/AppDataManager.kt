@@ -3,6 +3,7 @@ package com.zotye.wms.data
 import android.content.Context
 import com.zotye.wms.data.api.ApiHelper
 import com.zotye.wms.data.api.ApiResponse
+import com.zotye.wms.data.api.RecLesDto
 import com.zotye.wms.data.api.model.*
 import com.zotye.wms.data.api.model.checkbad.ExternalCheckPickReceiptConfirmDto
 import com.zotye.wms.data.api.model.checkbad.GetPickReceiptShelfDetailRequestDto
@@ -120,7 +121,7 @@ class AppDataManager @Inject constructor(@ApplicationContext val context: Contex
 
     override fun getPackageInfo(code: String)=apiHelper.getPackageInfo(code)
 
-    override fun reliveryForLesDeliveryNote(userId: String, noteId: String) = apiHelper.reliveryForLesDeliveryNote(userId, noteId)
+    override fun reliveryForLesDeliveryNote(data: RecLesDto)=apiHelper.reliveryForLesDeliveryNote(data)
 
     override fun getCostCenterByUser(userId: String) = apiHelper.getCostCenterByUser(userId)
 
