@@ -92,12 +92,12 @@ class LesDeliveryNoteReceiveFragment : BaseFragment(), ScannerDelegate, ReceiveC
                 (recyclerView.adapter as PackageAdapter).getViewByPosition(recyclerView, index, R.id.receiveNumberText)?.let {
                     if (it is EditText) {
                         val count = if (TextUtils.isEmpty(it.text)) 0 else it.text.toString().toInt()
-                        if (count < 0 || count > packageInfo.deliveryNum?.toInt() ?: 0) {
-                            showMessage("请输入有效收货数量")
-                            return@onClick
-                        } else {
+//                        if (count < 0 || count > packageInfo.deliveryNum?.toInt() ?: 0) {
+//                            showMessage("请输入有效收货数量")
+//                            return@onClick
+//                        } else {
                             packList.add(RecLesDetail(packageInfo.code, BigDecimal(count)))
-                        }
+//                        }
                     }
                 }
             }
