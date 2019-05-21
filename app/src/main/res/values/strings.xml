@@ -298,4 +298,5 @@
     <string name="need_number_format">需求量：</string>
     <string name="submit">提交</string>
     <string name="package_number_format">包装数：</string>
+    <string name="jp_detail">拣配任务</string>
 </resources>
