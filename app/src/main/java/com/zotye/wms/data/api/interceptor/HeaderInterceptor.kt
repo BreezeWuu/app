@@ -24,6 +24,7 @@ class HeaderInterceptor @Inject constructor(@ApplicationContext private var cont
                 .addHeader("Agent", BuildConfig.OS)
                 .addHeader("Accept-Language", "zh-CN")
                 .addHeader("Channel", BuildConfig.FLAVOR)
+                .addHeader("userId", preferencesHelper.getCurrentUserId()?:"")
                 .addHeader("factoryCode", preferencesHelper.getDefaultFactoryCode() ?: "")
                 .build()
         return chain.proceed(request)

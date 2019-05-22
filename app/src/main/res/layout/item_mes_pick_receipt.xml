@@ -197,7 +197,7 @@
                 android:layout_height="@dimen/button_height_tall"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/spacing_normal"
-                android:text="@string/jp_detail"
+                android:text="拣货明细"
                 android:visibility="@{info.state>=3?View.GONE:View.VISIBLE}" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
